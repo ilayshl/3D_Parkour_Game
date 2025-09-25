@@ -2,7 +2,7 @@ using System;
 
 public interface IMovementManager
 {
-    public Action<MovementState> OnMovementStateChanged { get; set; }
+    public event Action<MovementState> OnMovementStateChanged;
     public MovementState State { get; }
 
     public void ChangeMovementState(MovementState newState = MovementState.Airborne);

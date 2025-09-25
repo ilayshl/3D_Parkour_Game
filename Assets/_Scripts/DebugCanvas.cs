@@ -18,7 +18,7 @@ public class DebugCanvas : MonoBehaviour
         playerManager.OnMovementStateChanged -= UpdateStateText;
     }
 
-    void Update()
+    void LateUpdate()
     {
         speedValueText.SetText(Math.Round(player.currentVelocity.magnitude, 3).ToString());
     }

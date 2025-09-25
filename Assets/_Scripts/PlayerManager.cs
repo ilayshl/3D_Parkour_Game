@@ -3,11 +3,11 @@ using UnityEngine;
 
 public class PlayerManager : MonoBehaviour, IMovementManager
 {
-    public Action<MovementState> OnMovementStateChanged { get; set; }
+    public event Action<MovementState> OnMovementStateChanged;
     public MovementState State { get => state; }
     private MovementState state;
 
-    public void ChangeMovementState(MovementState newState = MovementState.Walking)
+    public void ChangeMovementState(MovementState newState = MovementState.Airborne)
     {
         if (newState == state) return;
         switch (newState)
@@ -37,5 +37,7 @@ public class PlayerManager : MonoBehaviour, IMovementManager
 
         state = newState;
         OnMovementStateChanged?.Invoke(state);
-    } 
+        Debug.Log($"[PlayerManager] Changed state to {newState}");
+    }
+
 }
