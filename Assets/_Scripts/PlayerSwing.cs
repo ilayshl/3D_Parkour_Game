@@ -1,4 +1,5 @@
 using System.Collections;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class PlayerSwing : MonoBehaviour
@@ -6,6 +7,7 @@ public class PlayerSwing : MonoBehaviour
     [SerializeField] private Transform lookDirection;
     [SerializeField] private KeyCode swingInput;
     [SerializeField] private Transform predictionHitObject;
+    [SerializeField] private LineRenderer lineRenderer;
     private Vector3 _swingPoint;
     private SpringJoint _joint;
     private Vector3 _currentGrapplePosition; //For line animation
@@ -53,7 +55,7 @@ public class PlayerSwing : MonoBehaviour
         _joint.damper = 7f;
         _joint.massScale = 4.5f;
 
-        _playerData.lr.positionCount = 2;
+        lineRenderer.positionCount = 2;
         _currentGrapplePosition = lookDirection.position;
 
         _playerManager.ChangeMovementState(MovementState.Swinging);
@@ -64,7 +66,7 @@ public class PlayerSwing : MonoBehaviour
 
     private void StopSwing()
     {
-        _playerData.lr.positionCount = 0;
+        lineRenderer.positionCount = 0;
         Destroy(_joint);
         _playerData.playerManager.ChangeMovementState();
         _checkForSwingPoints = StartCoroutine(nameof(CheckForSwingPoints));
@@ -75,9 +77,13 @@ public class PlayerSwing : MonoBehaviour
     {
         while (_playerManager.State == MovementState.Swinging)
         {
-            _currentGrapplePosition = Vector3.Lerp(_currentGrapplePosition, _swingPoint, Time.deltaTime * 9);
-            _playerData.lr.SetPosition(0, lookDirection.position);
-            _playerData.lr.SetPosition(1, _currentGrapplePosition);
+            float distance = Vector3.Distance(lookDirection.position, _swingPoint);
+            if (_currentGrapplePosition != _swingPoint)
+            {
+                _currentGrapplePosition = Vector3.MoveTowards(_currentGrapplePosition, _swingPoint, Time.deltaTime * distance * 15);
+            }
+            lineRenderer.SetPosition(0, lookDirection.position);
+            lineRenderer.SetPosition(1, _currentGrapplePosition);
             yield return null;
         }
         _drawRope = null;
