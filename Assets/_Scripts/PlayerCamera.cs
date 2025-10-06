@@ -5,10 +5,17 @@ public class PlayerCamera : MonoBehaviour
     public float sensitivityX;
     public float sensitivityY;
 
-    [SerializeField] private Transform playerOrientation;
+    [SerializeField] private Transform playerOrientation, playerLook;
 
     private float _xRotation;
     private float _yRotation;
+
+    private Rigidbody _rb;
+
+    void Awake()
+    {
+        _rb = GetComponent<Rigidbody>();
+    }
 
     void Start()
     {
@@ -34,11 +41,16 @@ public class PlayerCamera : MonoBehaviour
         _xRotation = Mathf.Clamp(_xRotation, -90f, 90f);
     }
 
+    private void RotateModel()
+    {
+        //playerModel.transform.rotation = Quaternion.Euler(0, _yRotation, 0);
+    }
+
     private void RotateCamera()
     {
-        //Moving the rotation itself
-        playerOrientation.rotation = Quaternion.Euler(_xRotation, _yRotation, 0);
-        transform.rotation = Quaternion.Euler(0, _yRotation, 0);
+        playerLook.transform.rotation = Quaternion.Euler(_xRotation, _yRotation, 0);
+        playerOrientation.transform.rotation = Quaternion.Euler(0, _yRotation, 0);
+
     }
 
 }

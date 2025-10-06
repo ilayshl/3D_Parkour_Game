@@ -5,11 +5,14 @@ public class PlayerMovement : MonoBehaviour, IMovementStateReceiver
 {
     public Vector2 currentVelocity;
 
+    [SerializeField] private Transform movementOrientation;
+
     private bool _readyToJump = true;
 
     private Vector3 moveDirection;
     private Coroutine _checkInput;
     private Coroutine _move;
+    private Coroutine _groundCheck;
 
     private PlayerData _playerData;
     private IMovementManager _playerManager;
@@ -35,13 +38,19 @@ public class PlayerMovement : MonoBehaviour, IMovementStateReceiver
         _playerManager.ChangeMovementState(MovementState.Walking);
     }
 
+    void Update()
+    {
+        currentVelocity = new Vector2(_playerData.rb.linearVelocity.x, _playerData.rb.linearVelocity.z);
+    }
+
     public void OnMovementStateChanged(MovementState newState)
     {
         if (newState == MovementState.Walking)
         {
             _playerData.rb.linearDamping = _playerData.GroundDrag;
-            _checkInput = StartCoroutine(nameof(CheckInput));
             _move = StartCoroutine(nameof(Move));
+            _groundCheck = StartCoroutine(nameof(CheckForGround));
+            _checkInput = StartCoroutine(nameof(CheckInput));
         }
 
     }
@@ -51,7 +60,6 @@ public class PlayerMovement : MonoBehaviour, IMovementStateReceiver
         while (_playerManager.State == MovementState.Walking)
         {
             GetInput();
-            currentVelocity = new Vector2(_playerData.rb.linearVelocity.x, _playerData.rb.linearVelocity.z);
             LimitSpeed();
             yield return null;
         }
@@ -68,6 +76,21 @@ public class PlayerMovement : MonoBehaviour, IMovementStateReceiver
         }
     }
 
+    private IEnumerator CheckForGround()
+    {
+        yield return new WaitForSeconds(_playerData.JumpCooldown);
+        while (_playerManager.State == MovementState.Walking)
+        {
+            if (!Physics.CheckSphere(transform.position, 0.1f, _playerData.GroundLayer))
+            {
+                _playerManager.ChangeMovementState(MovementState.Airborne);
+            }
+            yield return null;
+        }
+
+        _groundCheck = null;
+    }
+
     private void LimitSpeed()
     {
         if (currentVelocity.magnitude > _playerData.MoveSpeed)
@@ -79,10 +102,10 @@ public class PlayerMovement : MonoBehaviour, IMovementStateReceiver
 
     private void Jump()
     {
-        _playerManager.ChangeMovementState();
         _playerData.rb.linearVelocity = new Vector3(_playerData.rb.linearVelocity.x, 0, _playerData.rb.linearVelocity.z);
         _playerData.rb.AddForce(transform.up * _playerData.JumpForce, ForceMode.Impulse);
         _readyToJump = false;
+        _playerManager.ChangeMovementState();
     }
 
     private void ResetJump()
@@ -94,8 +117,8 @@ public class PlayerMovement : MonoBehaviour, IMovementStateReceiver
     {
         while (_playerManager.State == MovementState.Walking)
         {
-            moveDirection = transform.forward * Input.GetAxisRaw("Vertical") + transform.right * Input.GetAxisRaw("Horizontal");
-            Vector3 forceToAdd = moveDirection.normalized * _playerData.MoveSpeed * 10f;
+            moveDirection = movementOrientation.forward * Input.GetAxisRaw("Vertical") + movementOrientation.right * Input.GetAxisRaw("Horizontal");
+            Vector3 forceToAdd = moveDirection.normalized * _playerData.MoveSpeed * 10;
             _playerData.rb.AddForce(forceToAdd, ForceMode.Force);
 
             yield return new WaitForFixedUpdate();

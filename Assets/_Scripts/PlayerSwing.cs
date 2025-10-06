@@ -3,7 +3,10 @@ using UnityEngine;
 
 public class PlayerSwing : MonoBehaviour
 {
-    public Vector3 _swingPoint;
+    [SerializeField] private Transform lookDirection;
+    [SerializeField] private KeyCode swingInput;
+    [SerializeField] private Transform predictionHitObject;
+    private Vector3 _swingPoint;
     private SpringJoint _joint;
     private Vector3 _currentGrapplePosition; //For line animation
     private RaycastHit _predictionHit;
@@ -21,25 +24,20 @@ public class PlayerSwing : MonoBehaviour
 
     void Update()
     {
-        if (Input.GetKeyDown(_playerData.LeftSwingInput)) CheckSwingLeft();
-        if (Input.GetKeyUp(_playerData.LeftSwingInput)) StopSwingLeft();
+        if (Input.GetKeyDown(swingInput)) CheckSwing();
+        if (Input.GetKeyUp(swingInput)) StopSwing();
 
     }
 
-    void LateUpdate()
-    {
-        DrawRope();
-    }
-
-    private void CheckSwingLeft()
+    private void CheckSwing()
     {
         if (_predictionHit.point != Vector3.zero)
         {
-            StartSwingLeft();
+            StartSwing();
         }
     }
 
-    private void StartSwingLeft()
+    private void StartSwing()
     {
         _swingPoint = _predictionHit.point;
         _joint = this.gameObject.AddComponent<SpringJoint>();
@@ -56,7 +54,7 @@ public class PlayerSwing : MonoBehaviour
         _joint.massScale = 4.5f;
 
         _playerData.lr.positionCount = 2;
-        _currentGrapplePosition = _playerData.LeftGunTip.position;
+        _currentGrapplePosition = lookDirection.position;
 
         _playerManager.ChangeMovementState(MovementState.Swinging);
         _odmMovement = StartCoroutine(nameof(OdmMovement));
@@ -64,7 +62,7 @@ public class PlayerSwing : MonoBehaviour
         _playerData.rb.linearDamping = _playerData.AirDrag;
     }
 
-    private void StopSwingLeft()
+    private void StopSwing()
     {
         _playerData.lr.positionCount = 0;
         Destroy(_joint);
@@ -78,7 +76,7 @@ public class PlayerSwing : MonoBehaviour
         while (_playerManager.State == MovementState.Swinging)
         {
             _currentGrapplePosition = Vector3.Lerp(_currentGrapplePosition, _swingPoint, Time.deltaTime * 9);
-            _playerData.lr.SetPosition(0, _playerData.LeftGunTip.position);
+            _playerData.lr.SetPosition(0, lookDirection.position);
             _playerData.lr.SetPosition(1, _currentGrapplePosition);
             yield return null;
         }
@@ -90,7 +88,7 @@ public class PlayerSwing : MonoBehaviour
         while (_playerManager.State == MovementState.Swinging)
         {
             //Sideways movement
-            Vector3 moveDirection = transform.right * Input.GetAxisRaw("Horizontal") * _playerData.HorizontalThrustForce;
+            Vector3 moveDirection = _playerData.Cam.transform.right * Input.GetAxisRaw("Horizontal") * _playerData.HorizontalThrustForce;
             _playerData.rb.AddForce(moveDirection.normalized);
 
             //Lenghtening the joint
@@ -138,28 +136,15 @@ public class PlayerSwing : MonoBehaviour
                     out raycastHit, _playerData.MaxSwingDistance, _playerData.GrappableLayer);
 
             RaycastHit sphereCastHit;
-            Physics.SphereCast(_playerData.Cam.position, _playerData.PredictionSphereCastRadius, _playerData.Cam.forward,
+            Physics.SphereCast(_playerData.Cam.position, _playerData.PredictionSphereCastRadius, lookDirection.forward,
                     out sphereCastHit, _playerData.MaxSwingDistance, _playerData.GrappableLayer);
 
-           /*  Vector3 hitPosition;
-            if (raycastHit.point != Vector3.zero)
-            {
-                hitPosition = raycastHit.point;
-            }
-            else if (sphereCastHit.point != Vector3.zero)
-            {
-                hitPosition = sphereCastHit.point;
-            }
-            else
-            {
-                hitPosition = Vector3.zero;
-            } */
             _predictionHit = raycastHit.point == Vector3.zero ? sphereCastHit : raycastHit;
-            _playerData.SwingPredictionPoint.position = _predictionHit.point;
-            _playerData.SwingPredictionPoint.gameObject.SetActive(_predictionHit.point != Vector3.zero);
+            predictionHitObject.transform.position = _predictionHit.point;
+            predictionHitObject.gameObject.SetActive(_predictionHit.point != Vector3.zero);
             yield return null;
         }
         _checkForSwingPoints = null;
-        _playerData.SwingPredictionPoint.gameObject.SetActive(false);
+        predictionHitObject.gameObject.SetActive(false);
     }
     }

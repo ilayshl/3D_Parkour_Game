@@ -3,6 +3,7 @@ using UnityEngine;
 
 public class PlayerAirborne : MonoBehaviour
 {
+    [SerializeField] private Transform movementOrientation;
     private PlayerData _playerData;
     private IMovementManager _playerManager;
 
@@ -54,7 +55,7 @@ public class PlayerAirborne : MonoBehaviour
     {
         while (_playerManager.State == MovementState.Airborne)
         {
-            Vector3 currentInput = transform.forward * Input.GetAxisRaw("Vertical") + transform.right * Input.GetAxisRaw("Horizontal");
+            Vector3 currentInput = movementOrientation.forward * Input.GetAxisRaw("Vertical") + movementOrientation.right * Input.GetAxisRaw("Horizontal");
             Vector3 forceToAdd = currentInput.normalized * _playerData.MoveSpeed * 10f;
             _playerData.rb.AddForce(forceToAdd * _playerData.AirMultiplier, ForceMode.Force);
             yield return new WaitForFixedUpdate();
