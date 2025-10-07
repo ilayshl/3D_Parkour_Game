@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using Unity.VisualScripting;
 using UnityEngine;
@@ -6,7 +7,7 @@ public class PlayerSwing : MonoBehaviour
 {
     [SerializeField] private Transform lookDirection;
     [SerializeField] private KeyCode swingInput;
-    [SerializeField] private Transform predictionHitObject;
+    [SerializeField] private HitPrediction predictionHitObject;
     [SerializeField] private LineRenderer lineRenderer;
     private Vector3 _swingPoint;
     private SpringJoint _joint;
@@ -146,11 +147,11 @@ public class PlayerSwing : MonoBehaviour
                     out sphereCastHit, _playerData.MaxSwingDistance, _playerData.GrappableLayer);
 
             _predictionHit = raycastHit.point == Vector3.zero ? sphereCastHit : raycastHit;
-            predictionHitObject.transform.position = _predictionHit.point;
-            predictionHitObject.gameObject.SetActive(_predictionHit.point != Vector3.zero);
+            predictionHitObject.SetPosition(_playerData.Cam.position, _predictionHit.point, _playerData.MaxSwingDistance);
             yield return null;
         }
         _checkForSwingPoints = null;
         predictionHitObject.gameObject.SetActive(false);
     }
+
     }
