@@ -71,8 +71,8 @@ public class Rope : MonoBehaviour
     private void ShootRope()
     {
         float distance = Vector3.Distance(_playerPos.position, _wallPos);
-        _currentRopeEndPos = Vector3.MoveTowards(_currentRopeEndPos, _wallPos, Time.deltaTime * distance * 10);
-        SetPositions(_playerPos.position, _wallPos);
+        _currentRopeEndPos = Vector3.MoveTowards(_currentRopeEndPos, _wallPos, Time.deltaTime * distance * 7);
+        SetPositions(_playerPos.position, _currentRopeEndPos);
         if (_currentRopeEndPos == _wallPos)
         {
             SetupRopeComplete();
@@ -103,7 +103,7 @@ public class Rope : MonoBehaviour
         }
 
         float distance = Vector3.Distance(_playerPos.position, _wallPos);
-        _currentRopeEndPos = Vector3.MoveTowards(_currentRopeEndPos, _playerPos.position, Time.deltaTime * distance * 15);
+        _currentRopeEndPos = Vector3.MoveTowards(_currentRopeEndPos, _playerPos.position, Time.deltaTime * distance * 10);
         SetPositions(_playerPos.position, _currentRopeEndPos);
         if (Vector3.Distance(_currentRopeEndPos, _playerPos.position) < 0.5f)
         {

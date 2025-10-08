@@ -10,13 +10,6 @@ public class PlayerCamera : MonoBehaviour
     private float _xRotation;
     private float _yRotation;
 
-    private Rigidbody _rb;
-
-    void Awake()
-    {
-        _rb = GetComponent<Rigidbody>();
-    }
-
     void Start()
     {
         Cursor.lockState = CursorLockMode.Locked;
@@ -50,7 +43,6 @@ public class PlayerCamera : MonoBehaviour
     {
         playerLook.transform.rotation = Quaternion.Euler(_xRotation, _yRotation, 0);
         playerOrientation.transform.rotation = Quaternion.Euler(0, _yRotation, 0);
-
     }
 
 }
