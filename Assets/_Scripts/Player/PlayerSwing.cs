@@ -1,14 +1,14 @@
-using System;
 using System.Collections;
-using Unity.VisualScripting;
 using UnityEngine;
 
 public class PlayerSwing : MonoBehaviour
 {
+    [SerializeField] private Transform checkObject;
     [SerializeField] private Transform lookDirection;
     [SerializeField] private KeyCode swingInput;
     [SerializeField] private HitPrediction predictionHitObject;
     [SerializeField] private LineRenderer lineRenderer;
+    [SerializeField] private RopeCutoff ropeCutoff;
     private Vector3 _swingPoint;
     private SpringJoint _joint;
     private Vector3 _currentGrapplePosition; //For line animation
@@ -25,11 +25,16 @@ public class PlayerSwing : MonoBehaviour
         _playerManager = GetComponent<IMovementManager>();
     }
 
+    void Start()
+    {
+        _checkForSwingPoints = StartCoroutine(nameof(CheckForSwingPoints));
+        _playerData.SwingPredictionPoint.gameObject.SetActive(true);
+    }
+
     void Update()
     {
         if (Input.GetKeyDown(swingInput)) CheckSwing();
         if (Input.GetKeyUp(swingInput)) StopSwing();
-
     }
 
     private void CheckSwing()
@@ -50,7 +55,7 @@ public class PlayerSwing : MonoBehaviour
         float distanceFromPoint = Vector3.Distance(transform.position, _swingPoint);
 
         _joint.maxDistance = distanceFromPoint * 0.8f;
-        _joint.minDistance = distanceFromPoint * 0.2f;
+        _joint.minDistance = distanceFromPoint * 0.1f;
 
         _joint.spring = 4.5f;
         _joint.damper = 7f;
@@ -67,24 +72,47 @@ public class PlayerSwing : MonoBehaviour
 
     private void StopSwing()
     {
-        lineRenderer.positionCount = 0;
-        Destroy(_joint);
-        _playerData.playerManager.ChangeMovementState();
-        _checkForSwingPoints = StartCoroutine(nameof(CheckForSwingPoints));
-        _playerData.SwingPredictionPoint.gameObject.SetActive(true);
+        if (_playerManager.State == MovementState.Swinging)
+        {
+            if (lineRenderer.GetPosition(2) != null)
+            {
+                var newCutoff = Instantiate(ropeCutoff, transform.position, Quaternion.identity);
+                Vector3 distanceFromPoint = Vector3.Lerp(transform.position, _swingPoint, 0.5f);
+                newCutoff.Initialize(lineRenderer.GetPosition(2), distanceFromPoint);
+                newCutoff.SetMomentum(_playerData.rb.linearVelocity);
+            }
+            lineRenderer.positionCount = 0;
+            Destroy(_joint);
+            _playerData.playerManager.ChangeMovementState();
+            _checkForSwingPoints = StartCoroutine(nameof(CheckForSwingPoints));
+            _playerData.SwingPredictionPoint.gameObject.SetActive(true);
+            _swingPoint = Vector3.zero;
+        }
     }
 
     private IEnumerator DrawRope()
     {
-        while (_playerManager.State == MovementState.Swinging)
+        while (_playerManager.State == MovementState.Swinging && _currentGrapplePosition != _swingPoint)
         {
             float distance = Vector3.Distance(lookDirection.position, _swingPoint);
-            if (_currentGrapplePosition != _swingPoint)
-            {
-                _currentGrapplePosition = Vector3.MoveTowards(_currentGrapplePosition, _swingPoint, Time.deltaTime * distance * 15);
-            }
+            _currentGrapplePosition = Vector3.MoveTowards(_currentGrapplePosition, _swingPoint, Time.deltaTime * distance * 15);
             lineRenderer.SetPosition(0, lookDirection.position);
             lineRenderer.SetPosition(1, _currentGrapplePosition);
+            yield return null;
+        }
+        _drawRope = StartCoroutine(nameof(DrawConnectedRope));
+    }
+
+    private IEnumerator DrawConnectedRope()
+    {
+        lineRenderer.positionCount = 3;
+        while (_playerManager.State == MovementState.Swinging)
+        {
+            Vector3 midway = Vector3.Lerp(lookDirection.position, _swingPoint, 0.5f);
+            lineRenderer.SetPosition(0, lookDirection.position);
+            lineRenderer.SetPosition(1, midway);
+            checkObject.position = midway;
+            lineRenderer.SetPosition(2, _currentGrapplePosition);
             yield return null;
         }
         _drawRope = null;
@@ -154,4 +182,4 @@ public class PlayerSwing : MonoBehaviour
         predictionHitObject.gameObject.SetActive(false);
     }
 
-    }
+}
