@@ -11,19 +11,33 @@ public class RopeCutoff : MonoBehaviour
     void Awake()
     {
         _lr = GetComponent<LineRenderer>();
-        
+    }
+
+    void LateUpdate()
+    {
+        DrawLine();
     }
 
     public void Initialize(Vector3 startPos, Vector3 endPos)
     {
         anchorEdge.position = startPos;
         movingEdge.position = endPos;
+        InitializeLineRenderer();
         InitializeSpringJoint();
+        Destroy(gameObject, lifetime);
     }
 
     public void SetMomentum(Vector3 matchVelocity)
     {
-        movingEdge.GetComponent<Rigidbody>().linearVelocity = matchVelocity * 0.5f;
+        var rb = movingEdge.GetComponent<Rigidbody>();
+        rb.linearVelocity = Vector3.zero;
+        rb.linearVelocity = matchVelocity * 0.5f;
+    }
+
+    private void InitializeLineRenderer()
+    {
+        _lr.positionCount = 2;
+        Debug.Log("Initialized line renderer");
     }
 
     private void InitializeSpringJoint()
@@ -35,24 +49,16 @@ public class RopeCutoff : MonoBehaviour
         joint.maxDistance = distanceFromPoint * 0.15f;
         joint.minDistance = distanceFromPoint * 0.1f;
 
-        joint.spring = 40f;
-        joint.damper = 15f;
+        joint.spring = 30f;
+        joint.damper = 10f;
         joint.massScale = 1f;
 
         _drawLine = StartCoroutine(nameof(DrawLine));
     }
 
-    private IEnumerator DrawLine()
+    private void DrawLine()
     {
-        float timePassed = 0;
-        while (timePassed < lifetime)
-        {
-            timePassed += Time.deltaTime;
             _lr.SetPosition(0, anchorEdge.position);
             _lr.SetPosition(1, movingEdge.position);
-            yield return null;
-        }
-        _drawLine = null;
-        Destroy(gameObject);
     }
 }

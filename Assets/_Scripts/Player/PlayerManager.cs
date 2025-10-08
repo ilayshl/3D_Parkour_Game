@@ -37,7 +37,6 @@ public class PlayerManager : MonoBehaviour, IMovementManager
 
         state = newState;
         OnMovementStateChanged?.Invoke(state);
-        Debug.Log($"[PlayerManager] Changed state to {newState}");
     }
 
 }

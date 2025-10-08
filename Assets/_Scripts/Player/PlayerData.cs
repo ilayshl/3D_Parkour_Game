@@ -36,20 +36,20 @@ public class PlayerData : MonoBehaviour
     [SerializeField] private float groundDrag = 5;
     [SerializeField] private float airDrag = 0.01f;
     [SerializeField] private float swingSpeedLimitMult = 4f;
+    [SerializeField] private float airMultiplier = 0.4f;
 
     public float MoveSpeed { get => moveSpeed; }
     public float GroundDrag { get => groundDrag; }
     public float AirDrag { get => airDrag; }
     public float SwingSpeedLimitMult { get => swingSpeedLimitMult; }
+    public float AirMultiplier { get => airMultiplier; }
 
     [Header("Jump")]
     [SerializeField] private float jumpForce = 12;
     [SerializeField] private float jumpCooldown = 0.25f;
-    [SerializeField] private float airMultiplier = 0.4f;
 
     public float JumpForce { get => jumpForce; }
     public float JumpCooldown { get => jumpCooldown; }
-    public float AirMultiplier { get => airMultiplier; }
 
     [Header("Swinging")]
     [SerializeField] private float maxSwingDistance = 25f;

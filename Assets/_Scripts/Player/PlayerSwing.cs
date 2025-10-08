@@ -7,12 +7,12 @@ public class PlayerSwing : MonoBehaviour
     [SerializeField] private Transform lookDirection;
     [SerializeField] private KeyCode swingInput;
     [SerializeField] private HitPrediction predictionHitObject;
-    [SerializeField] private LineRenderer lineRenderer;
-    [SerializeField] private RopeCutoff ropeCutoff;
+    [SerializeField] private Rope rope;
     private Vector3 _swingPoint;
-    private SpringJoint _joint;
     private Vector3 _currentGrapplePosition; //For line animation
+    private SpringJoint _joint;
     private RaycastHit _predictionHit;
+    private Rope _activeRope;
 
     private Coroutine _odmMovement, _drawRope, _checkForSwingPoints;
 
@@ -41,13 +41,25 @@ public class PlayerSwing : MonoBehaviour
     {
         if (_predictionHit.point != Vector3.zero)
         {
-            StartSwing();
+            InitializeSwing();
         }
     }
 
-    private void StartSwing()
+    private void InitializeSwing()
     {
         _swingPoint = _predictionHit.point;
+
+        InitializeSpringJoint();
+        _activeRope = Instantiate(rope, transform.position, Quaternion.identity);
+        _activeRope.Initialize(lookDirection, _swingPoint);
+
+        _playerManager.ChangeMovementState(MovementState.Swinging);
+        _odmMovement = StartCoroutine(nameof(OdmMovement));
+        _playerData.rb.linearDamping = _playerData.AirDrag;
+    }
+
+    private void InitializeSpringJoint()
+    {
         _joint = this.gameObject.AddComponent<SpringJoint>();
         _joint.autoConfigureConnectedAnchor = false;
         _joint.connectedAnchor = _swingPoint;
@@ -60,62 +72,18 @@ public class PlayerSwing : MonoBehaviour
         _joint.spring = 4.5f;
         _joint.damper = 7f;
         _joint.massScale = 4.5f;
-
-        lineRenderer.positionCount = 2;
-        _currentGrapplePosition = lookDirection.position;
-
-        _playerManager.ChangeMovementState(MovementState.Swinging);
-        _odmMovement = StartCoroutine(nameof(OdmMovement));
-        _drawRope = StartCoroutine(nameof(DrawRope));
-        _playerData.rb.linearDamping = _playerData.AirDrag;
     }
 
     private void StopSwing()
     {
         if (_playerManager.State == MovementState.Swinging)
         {
-            if (lineRenderer.GetPosition(2) != null)
-            {
-                var newCutoff = Instantiate(ropeCutoff, transform.position, Quaternion.identity);
-                Vector3 distanceFromPoint = Vector3.Lerp(transform.position, _swingPoint, 0.5f);
-                newCutoff.Initialize(lineRenderer.GetPosition(2), distanceFromPoint);
-                newCutoff.SetMomentum(_playerData.rb.linearVelocity);
-            }
-            lineRenderer.positionCount = 0;
-            Destroy(_joint);
+            _activeRope.CutRope(_playerData.rb.linearVelocity);
             _playerData.playerManager.ChangeMovementState();
+            Destroy(_joint);
             _checkForSwingPoints = StartCoroutine(nameof(CheckForSwingPoints));
             _playerData.SwingPredictionPoint.gameObject.SetActive(true);
-            _swingPoint = Vector3.zero;
         }
-    }
-
-    private IEnumerator DrawRope()
-    {
-        while (_playerManager.State == MovementState.Swinging && _currentGrapplePosition != _swingPoint)
-        {
-            float distance = Vector3.Distance(lookDirection.position, _swingPoint);
-            _currentGrapplePosition = Vector3.MoveTowards(_currentGrapplePosition, _swingPoint, Time.deltaTime * distance * 15);
-            lineRenderer.SetPosition(0, lookDirection.position);
-            lineRenderer.SetPosition(1, _currentGrapplePosition);
-            yield return null;
-        }
-        _drawRope = StartCoroutine(nameof(DrawConnectedRope));
-    }
-
-    private IEnumerator DrawConnectedRope()
-    {
-        lineRenderer.positionCount = 3;
-        while (_playerManager.State == MovementState.Swinging)
-        {
-            Vector3 midway = Vector3.Lerp(lookDirection.position, _swingPoint, 0.5f);
-            lineRenderer.SetPosition(0, lookDirection.position);
-            lineRenderer.SetPosition(1, midway);
-            checkObject.position = midway;
-            lineRenderer.SetPosition(2, _currentGrapplePosition);
-            yield return null;
-        }
-        _drawRope = null;
     }
 
     private IEnumerator OdmMovement()
@@ -173,7 +141,7 @@ public class PlayerSwing : MonoBehaviour
             RaycastHit sphereCastHit;
             Physics.SphereCast(_playerData.Cam.position, _playerData.PredictionSphereCastRadius, lookDirection.forward,
                     out sphereCastHit, _playerData.MaxSwingDistance, _playerData.GrappableLayer);
-
+            
             _predictionHit = raycastHit.point == Vector3.zero ? sphereCastHit : raycastHit;
             predictionHitObject.SetPosition(_playerData.Cam.position, _predictionHit.point, _playerData.MaxSwingDistance);
             yield return null;
@@ -181,5 +149,7 @@ public class PlayerSwing : MonoBehaviour
         _checkForSwingPoints = null;
         predictionHitObject.gameObject.SetActive(false);
     }
+
+    
 
 }

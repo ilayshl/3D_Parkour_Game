@@ -20,7 +20,7 @@ public class DebugCanvas : MonoBehaviour
 
     void LateUpdate()
     {
-        speedValueText.SetText(Math.Round(player.currentVelocity.magnitude, 3).ToString());
+        speedValueText.SetText(Math.Round(player.CurrentVelocity.magnitude, 3).ToString());
     }
 
     private void UpdateStateText(MovementState state)

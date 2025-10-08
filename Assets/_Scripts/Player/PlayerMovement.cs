@@ -3,16 +3,18 @@ using UnityEngine;
 
 public class PlayerMovement : MonoBehaviour, IMovementStateReceiver
 {
-    public Vector2 currentVelocity;
+    public Vector2 CurrentVelocity { get; private set; }
 
     [SerializeField] private Transform movementOrientation;
+    [SerializeField] private float airDrag;
 
     private bool _readyToJump = true;
 
     private Vector3 moveDirection;
-    private Coroutine _checkInput;
-    private Coroutine _move;
-    private Coroutine _groundCheck;
+    private Coroutine _checkInput,_move, _groundCheck;
+
+    private bool _isGrounded;
+    private float _speedLimitMult = 1;
 
     private PlayerData _playerData;
     private IMovementManager _playerManager;
@@ -40,7 +42,7 @@ public class PlayerMovement : MonoBehaviour, IMovementStateReceiver
 
     void Update()
     {
-        currentVelocity = new Vector2(_playerData.rb.linearVelocity.x, _playerData.rb.linearVelocity.z);
+        CurrentVelocity = new Vector2(_playerData.rb.linearVelocity.x, _playerData.rb.linearVelocity.z);
     }
 
     public void OnMovementStateChanged(MovementState newState)
@@ -93,9 +95,9 @@ public class PlayerMovement : MonoBehaviour, IMovementStateReceiver
 
     private void LimitSpeed()
     {
-        if (currentVelocity.magnitude > _playerData.MoveSpeed)
+        if (CurrentVelocity.magnitude > _playerData.MoveSpeed)
         {
-            Vector2 limitVelocity = currentVelocity.normalized * _playerData.MoveSpeed;
+            Vector2 limitVelocity = CurrentVelocity.normalized * _playerData.MoveSpeed * _speedLimitMult;
             _playerData.rb.linearVelocity = new Vector3(limitVelocity.x, _playerData.rb.linearVelocity.y, limitVelocity.y);
         }
     }
@@ -119,6 +121,7 @@ public class PlayerMovement : MonoBehaviour, IMovementStateReceiver
         {
             moveDirection = movementOrientation.forward * Input.GetAxisRaw("Vertical") + movementOrientation.right * Input.GetAxisRaw("Horizontal");
             Vector3 forceToAdd = moveDirection.normalized * _playerData.MoveSpeed * 10;
+            forceToAdd = _isGrounded ? forceToAdd : forceToAdd * _playerData.GroundDrag;
             _playerData.rb.AddForce(forceToAdd, ForceMode.Force);
 
             yield return new WaitForFixedUpdate();
