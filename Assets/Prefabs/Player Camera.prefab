@@ -216,7 +216,6 @@ GameObject:
   m_Component:
   - component: {fileID: 3638840473540064944}
   - component: {fileID: 3976721454873257997}
-  - component: {fileID: 6683236741029327001}
   - component: {fileID: 7549829311272745684}
   m_Layer: 0
   m_Name: Player Camera
@@ -255,18 +254,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e9e4bf61172b8c34fbf08515dcfa3c1a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerCamera
-  sensitivityX: 400
-  sensitivityY: 400
+  sensitivityX: 600
+  sensitivityY: 600
   playerOrientation: {fileID: 0}
   playerLook: {fileID: 0}
---- !u!81 &6683236741029327001
-AudioListener:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5479377864620805952}
-  m_Enabled: 1
 --- !u!114 &7549829311272745684
 MonoBehaviour:
   m_ObjectHideFlags: 0

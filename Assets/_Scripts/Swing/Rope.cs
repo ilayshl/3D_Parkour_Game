@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 /// <summary>
@@ -5,14 +6,16 @@ using UnityEngine;
 /// </summary>
 public class Rope : MonoBehaviour
 {
-    public bool CanActivate { get => !isActiveAndEnabled; }
-    [SerializeField] private RopeCutoff ropeCutoff;
+    private const float VISUAL_MIDPOINT = 0.3f;
+    private const float ROPE_SHOOT_SPEED = 12f;
+    public Action OnRopeComplete;
     private bool _isActive = true;
     private bool _isComplete = false;
     private Transform _playerPos;
     private Vector3 _wallPos;
     private Vector3 _currentRopeEndPos;
     private LineRenderer _lr;
+
 
     void Awake()
     {
@@ -40,9 +43,8 @@ public class Rope : MonoBehaviour
         _lr.positionCount = 2;
     }
 
-    public void CutRope(Vector3 playerMomentum)
+    public void DestroyRope()
     {
-        SpawnRopeCutoff(playerMomentum);
         _isActive = false;
     }
 
@@ -53,25 +55,22 @@ public class Rope : MonoBehaviour
             if (!_isComplete)
             {
                 ShootRope();
-                Debug.Log("Shooting rope!");
             }
             else
             {
                 DrawCompleteRope();
-                Debug.Log("Drawing complete rope!");
             }
         }
         else
         {
             RetractRope();
-            Debug.Log("Retracting rope!");
         }
     }
 
     private void ShootRope()
     {
         float distance = Vector3.Distance(_playerPos.position, _wallPos);
-        _currentRopeEndPos = Vector3.MoveTowards(_currentRopeEndPos, _wallPos, Time.deltaTime * distance * 7);
+        _currentRopeEndPos = Vector3.MoveTowards(_currentRopeEndPos, _wallPos, Time.deltaTime * distance * ROPE_SHOOT_SPEED);
         SetPositions(_playerPos.position, _currentRopeEndPos);
         if (_currentRopeEndPos == _wallPos)
         {
@@ -84,21 +83,21 @@ public class Rope : MonoBehaviour
         _lr.positionCount = 3;
         DrawCompleteRope();
         _isComplete = true;
+        OnRopeComplete?.Invoke();
     }
 
     private void DrawCompleteRope()
     {
-        Vector3 midway = Vector3.Lerp(_playerPos.position, _wallPos, 0.5f);
+        Vector3 midway = Vector3.Lerp(_playerPos.position, _wallPos, VISUAL_MIDPOINT);
         SetPositions(_playerPos.position, midway, _wallPos);
     }
 
     private void RetractRope()
     {
-
         if (_currentRopeEndPos == _wallPos)
         {
             InitiateLineRenderer();
-            Vector3 midway = Vector3.Lerp(_playerPos.position, _wallPos, 0.5f);
+            Vector3 midway = Vector3.Lerp(_playerPos.position, _wallPos, VISUAL_MIDPOINT);
             _currentRopeEndPos = midway;
         }
 
@@ -107,17 +106,8 @@ public class Rope : MonoBehaviour
         SetPositions(_playerPos.position, _currentRopeEndPos);
         if (Vector3.Distance(_currentRopeEndPos, _playerPos.position) < 0.5f)
         {
-            _isActive = false;
-            Destroy(gameObject);
+            gameObject.SetActive(false);
         }
-    }
-
-    private void SpawnRopeCutoff(Vector3 playerMomentum)
-    {
-        RopeCutoff newCutoff = Instantiate(ropeCutoff, _wallPos, Quaternion.identity);
-        Vector3 midway = Vector3.Lerp(_playerPos.position, _wallPos, 0.5f);
-        newCutoff.Initialize(_wallPos, midway);
-        newCutoff.SetMomentum(playerMomentum);
     }
 
     //Method overloading for setting the positions of existing points in the LineRenderer.

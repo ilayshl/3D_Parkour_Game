@@ -24,7 +24,7 @@ public class RopeCutoff : MonoBehaviour
         movingEdge.position = endPos;
         InitializeLineRenderer();
         InitializeSpringJoint();
-        Destroy(gameObject, lifetime);
+        Destroy(gameObject.transform.parent.gameObject, lifetime);
     }
 
     public void SetMomentum(Vector3 matchVelocity)
@@ -37,7 +37,6 @@ public class RopeCutoff : MonoBehaviour
     private void InitializeLineRenderer()
     {
         _lr.positionCount = 2;
-        Debug.Log("Initialized line renderer");
     }
 
     private void InitializeSpringJoint()

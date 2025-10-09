@@ -15,7 +15,6 @@ GameObject:
   - component: {fileID: 8280727378965285636}
   - component: {fileID: 4432206499461015886}
   - component: {fileID: 4152821297663278892}
-  - component: {fileID: 1849560359104903290}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -161,24 +160,7 @@ MonoBehaviour:
   lookDirection: {fileID: 0}
   swingInput: 323
   predictionHitObject: {fileID: 0}
-  rope: {fileID: 0}
---- !u!114 &1849560359104903290
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1954457568472821955}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 347c7e1f43650a44491b861fb6d76753, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::PlayerSwing
-  checkObject: {fileID: 0}
-  lookDirection: {fileID: 0}
-  swingInput: 324
-  predictionHitObject: {fileID: 0}
-  rope: {fileID: 0}
+  ropeHandler: {fileID: 918613529698683968, guid: 65e89ce03bee4ee45b13af471bdddd0d, type: 3}
 --- !u!1 &6072807915654740772
 GameObject:
   m_ObjectHideFlags: 0

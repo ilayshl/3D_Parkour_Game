@@ -7,14 +7,13 @@ public class PlayerSwing : MonoBehaviour
     [SerializeField] private Transform lookDirection;
     [SerializeField] private KeyCode swingInput;
     [SerializeField] private HitPrediction predictionHitObject;
-    [SerializeField] private Rope rope;
+    [SerializeField] private RopeHandler ropeHandler;
     private Vector3 _swingPoint;
-    private Vector3 _currentGrapplePosition; //For line animation
     private SpringJoint _joint;
     private RaycastHit _predictionHit;
-    private Rope _activeRope;
+    private RopeHandler _activeRope;
 
-    private Coroutine _odmMovement, _drawRope, _checkForSwingPoints;
+    private Coroutine _odmMovement, _checkForSwingPoints;
 
     private PlayerData _playerData;
     private IMovementManager _playerManager;
@@ -50,8 +49,8 @@ public class PlayerSwing : MonoBehaviour
         _swingPoint = _predictionHit.point;
 
         InitializeSpringJoint();
-        _activeRope = Instantiate(rope, transform.position, Quaternion.identity);
-        _activeRope.Initialize(lookDirection, _swingPoint);
+        _activeRope = Instantiate(ropeHandler, transform.position, Quaternion.identity);
+        _activeRope.Initialize(lookDirection, _predictionHit);
 
         _playerManager.ChangeMovementState(MovementState.Swinging);
         _odmMovement = StartCoroutine(nameof(OdmMovement));
