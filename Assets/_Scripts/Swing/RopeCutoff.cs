@@ -1,12 +1,13 @@
-using System.Collections;
 using UnityEngine;
 
+/// <summary>
+/// Responsible for the RopeCutoff object.
+/// </summary>
 public class RopeCutoff : MonoBehaviour
 {
     [SerializeField] private float lifetime = 4;
     [SerializeField] private Transform anchorEdge, movingEdge;
     private LineRenderer _lr;
-    private Coroutine _drawLine;
 
     void Awake()
     {
@@ -51,13 +52,11 @@ public class RopeCutoff : MonoBehaviour
         joint.spring = 30f;
         joint.damper = 10f;
         joint.massScale = 1f;
-
-        _drawLine = StartCoroutine(nameof(DrawLine));
     }
 
     private void DrawLine()
     {
-            _lr.SetPosition(0, anchorEdge.position);
-            _lr.SetPosition(1, movingEdge.position);
+        _lr.SetPosition(0, anchorEdge.position);
+        _lr.SetPosition(1, movingEdge.position);
     }
 }

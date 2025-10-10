@@ -4,7 +4,7 @@ public class CameraFollow : MonoBehaviour
 {
     [SerializeField] Transform playerObject;
 
-    void Update()
+    void LateUpdate()
     {
         transform.position = playerObject.position;
         transform.rotation = playerObject.rotation;

@@ -30,7 +30,6 @@ public class RopeHandler : MonoBehaviour
     {
         Quaternion lookDirection = Quaternion.LookRotation(_activeRaycast.normal) * Quaternion.Euler(90, 0, 0);;
         Vector3 splashPosition = _activeRaycast.point;
-        Debug.Log($"Raycast normal: {_activeRaycast.normal}");
         _activeSplashModel = Instantiate(splashModel, splashPosition, lookDirection, this.transform);
     }
 

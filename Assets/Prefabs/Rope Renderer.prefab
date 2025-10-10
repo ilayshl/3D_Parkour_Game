@@ -45,7 +45,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 231f8e404f4b81943adf011b307fdd4e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ropeCutoff: {fileID: 2889981970482141420, guid: 378187094a31baa44bda239a5edf4dc5, type: 3}
 --- !u!120 &7493385385505687934
 LineRenderer:
   serializedVersion: 2
@@ -159,7 +158,7 @@ LineRenderer:
       m_NumColorKeys: 2
       m_NumAlphaKeys: 2
     numCornerVertices: 0
-    numCapVertices: 8
+    numCapVertices: 1
     alignment: 0
     textureMode: 0
     textureScale: {x: 1, y: 1}

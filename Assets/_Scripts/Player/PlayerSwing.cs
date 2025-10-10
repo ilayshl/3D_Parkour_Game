@@ -8,6 +8,7 @@ public class PlayerSwing : MonoBehaviour
     [SerializeField] private KeyCode swingInput;
     [SerializeField] private HitPrediction predictionHitObject;
     [SerializeField] private RopeHandler ropeHandler;
+    [SerializeField] private SwingingHandRotation handRotation;
     private Vector3 _swingPoint;
     private SpringJoint _joint;
     private RaycastHit _predictionHit;
@@ -55,6 +56,8 @@ public class PlayerSwing : MonoBehaviour
         _playerManager.ChangeMovementState(MovementState.Swinging);
         _odmMovement = StartCoroutine(nameof(OdmMovement));
         _playerData.rb.linearDamping = _playerData.AirDrag;
+
+        handRotation.SetTarget(_swingPoint);
     }
 
     private void InitializeSpringJoint()
@@ -77,6 +80,7 @@ public class PlayerSwing : MonoBehaviour
     {
         if (_playerManager.State == MovementState.Swinging)
         {
+            handRotation.ResetTarget();
             _activeRope.CutRope(_playerData.rb.linearVelocity);
             _playerData.playerManager.ChangeMovementState();
             Destroy(_joint);
