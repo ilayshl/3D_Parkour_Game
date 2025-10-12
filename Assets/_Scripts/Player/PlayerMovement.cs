@@ -107,7 +107,6 @@ public class PlayerMovement : MonoBehaviour, IMovementStateReceiver
         _playerData.rb.linearVelocity = new Vector3(_playerData.rb.linearVelocity.x, 0, _playerData.rb.linearVelocity.z);
         _playerData.rb.AddForce(transform.up * _playerData.JumpForce, ForceMode.Impulse);
         _readyToJump = false;
-        _playerManager.ChangeMovementState();
     }
 
     private void ResetJump()

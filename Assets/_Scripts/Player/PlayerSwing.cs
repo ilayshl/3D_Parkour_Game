@@ -1,12 +1,24 @@
 using System.Collections;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class PlayerSwing : MonoBehaviour
 {
-    [SerializeField] private Transform checkObject;
+    [Header("Input")]
+    [SerializeField] private KeyCode swingInput = KeyCode.Mouse0;
+    [SerializeField] private KeyCode shortenRopeInput = KeyCode.Space;
+    [Header("Ray Variables")]
+    [SerializeField] private int maxDistance = 25;
+    [SerializeField] private LayerMask hitLayer;
+    [Header("Movement Variables")]
+    [SerializeField] private float moveSpeed = 10f;
+    [SerializeField] private float swingSpeedLimitMult = 4f;
+    [SerializeField] private float horizontalThrustForce = 2000;
+    [SerializeField] private float forwardThrustForce = 3000;
+    [SerializeField] private float extendRopeSpeed = 20;
+    [Header("References")]
     [SerializeField] private Transform lookDirection;
-    [SerializeField] private KeyCode swingInput;
-    [SerializeField] private HitPrediction predictionHitObject;
+    [SerializeField] private HitPredictionHandler hitPredictionHandler;
     [SerializeField] private RopeHandler ropeHandler;
     [SerializeField] private SwingingHandRotation handRotation;
     private Vector3 _swingPoint;
@@ -16,19 +28,19 @@ public class PlayerSwing : MonoBehaviour
 
     private Coroutine _odmMovement, _checkForSwingPoints;
 
-    private PlayerData _playerData;
+    private Rigidbody _rb;
     private IMovementManager _playerManager;
 
     void Awake()
     {
-        _playerData = GetComponent<PlayerData>();
+        _rb = GetComponent<Rigidbody>();
         _playerManager = GetComponent<IMovementManager>();
     }
 
     void Start()
     {
         _checkForSwingPoints = StartCoroutine(nameof(CheckForSwingPoints));
-        _playerData.SwingPredictionPoint.gameObject.SetActive(true);
+        hitPredictionHandler.SetActive(true);
     }
 
     void Update()
@@ -55,7 +67,6 @@ public class PlayerSwing : MonoBehaviour
 
         _playerManager.ChangeMovementState(MovementState.Swinging);
         _odmMovement = StartCoroutine(nameof(OdmMovement));
-        _playerData.rb.linearDamping = _playerData.AirDrag;
 
         handRotation.SetTarget(_swingPoint);
     }
@@ -81,11 +92,11 @@ public class PlayerSwing : MonoBehaviour
         if (_playerManager.State == MovementState.Swinging)
         {
             handRotation.ResetTarget();
-            _activeRope.CutRope(_playerData.rb.linearVelocity);
-            _playerData.playerManager.ChangeMovementState();
+            _activeRope.CutRope(_rb.linearVelocity);
+            _playerManager.ChangeMovementState();
             Destroy(_joint);
             _checkForSwingPoints = StartCoroutine(nameof(CheckForSwingPoints));
-            _playerData.SwingPredictionPoint.gameObject.SetActive(true);
+            hitPredictionHandler.SetActive(true);
         }
     }
 
@@ -94,22 +105,22 @@ public class PlayerSwing : MonoBehaviour
         while (_playerManager.State == MovementState.Swinging)
         {
             //Sideways movement
-            Vector3 moveDirection = _playerData.Cam.transform.right * Input.GetAxisRaw("Horizontal") * _playerData.HorizontalThrustForce;
-            _playerData.rb.AddForce(moveDirection.normalized);
+            Vector3 moveDirection = lookDirection.transform.right * Input.GetAxisRaw("Horizontal") * horizontalThrustForce;
+            _rb.AddForce(moveDirection.normalized);
 
             //Lenghtening the joint
             if (Input.GetAxisRaw("Vertical") < 0)
             {
-                float extendedDistanceFromPoint = Vector3.Distance(transform.position, _swingPoint) + _playerData.ExtendCableSpeed;
+                float extendedDistanceFromPoint = Vector3.Distance(transform.position, _swingPoint) + extendRopeSpeed;
                 _joint.maxDistance = extendedDistanceFromPoint * 0.8f;
                 _joint.minDistance = extendedDistanceFromPoint * 0.2f;
             }
 
             //Shortening the joint
-            if (Input.GetKey(_playerData.ShortenJointInput))
+            if (Input.GetKey(shortenRopeInput))
             {
                 Vector3 directionToPoint = _swingPoint - transform.position;
-                _playerData.rb.AddForce(directionToPoint.normalized * _playerData.ForwardThrustForce * Time.deltaTime);
+                _rb.AddForce(directionToPoint.normalized * forwardThrustForce * Time.deltaTime);
 
                 float distanceFromPoint = Vector3.Distance(transform.position, _swingPoint);
 
@@ -125,11 +136,11 @@ public class PlayerSwing : MonoBehaviour
 
     private void LimitSpeed()
     {
-        Vector2 currentVelocity = new Vector2(_playerData.rb.linearVelocity.x, _playerData.rb.linearVelocity.z);
-        if (currentVelocity.magnitude > _playerData.MoveSpeed * _playerData.SwingSpeedLimitMult)
+        Vector2 currentVelocity = new Vector2(_rb.linearVelocity.x, _rb.linearVelocity.z);
+        if (currentVelocity.magnitude > moveSpeed * swingSpeedLimitMult)
         {
-            Vector2 limitVelocity = currentVelocity.normalized * _playerData.MoveSpeed * _playerData.SwingSpeedLimitMult;
-            _playerData.rb.linearVelocity = new Vector3(limitVelocity.x, _playerData.rb.linearVelocity.y, limitVelocity.y);
+            Vector2 limitVelocity = currentVelocity.normalized * moveSpeed * swingSpeedLimitMult;
+            _rb.linearVelocity = new Vector3(limitVelocity.x, _rb.linearVelocity.y, limitVelocity.y);
         }
     }
 
@@ -137,22 +148,10 @@ public class PlayerSwing : MonoBehaviour
     {
         while (_playerManager.State != MovementState.Swinging)
         {
-            RaycastHit raycastHit;
-            Physics.Raycast(_playerData.Cam.position, _playerData.Cam.forward,
-                    out raycastHit, _playerData.MaxSwingDistance, _playerData.GrappableLayer);
-
-            RaycastHit sphereCastHit;
-            Physics.SphereCast(_playerData.Cam.position, _playerData.PredictionSphereCastRadius, lookDirection.forward,
-                    out sphereCastHit, _playerData.MaxSwingDistance, _playerData.GrappableLayer);
-            
-            _predictionHit = raycastHit.point == Vector3.zero ? sphereCastHit : raycastHit;
-            predictionHitObject.SetPosition(_playerData.Cam.position, _predictionHit.point, _playerData.MaxSwingDistance);
+            _predictionHit = hitPredictionHandler.ShootRaycast(maxDistance, hitLayer);
             yield return null;
         }
         _checkForSwingPoints = null;
-        predictionHitObject.gameObject.SetActive(false);
+        hitPredictionHandler.SetActive(false);
     }
-
-    
-
 }
