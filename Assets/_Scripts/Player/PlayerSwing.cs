@@ -16,6 +16,7 @@ public class PlayerSwing : MonoBehaviour
     [SerializeField] private float horizontalThrustForce = 2000;
     [SerializeField] private float forwardThrustForce = 3000;
     [SerializeField] private float extendRopeSpeed = 20;
+    [SerializeField] private float swingDrag = 0.01f;
     [Header("References")]
     [SerializeField] private Transform lookDirection;
     [SerializeField] private HitPredictionHandler hitPredictionHandler;
@@ -69,6 +70,7 @@ public class PlayerSwing : MonoBehaviour
         _odmMovement = StartCoroutine(nameof(OdmMovement));
 
         handRotation.SetTarget(_swingPoint);
+        _rb.linearDamping = swingDrag;
     }
 
     private void InitializeSpringJoint()

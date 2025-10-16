@@ -3,8 +3,8 @@ using UnityEngine;
 
 public class SwingingHandRotation : MonoBehaviour
 {
-    private const int X_ROTATION_LIMIT = 30;
-    private const int Y_ROTATION_LIMIT = 50;
+    private const int X_ROTATION_LIMIT = 20;
+    private const int Y_ROTATION_LIMIT = 30;
     [SerializeField] private float rotationSpeed = 15;
     private Vector3 _wallPos;
     private Quaternion _originalRotation;

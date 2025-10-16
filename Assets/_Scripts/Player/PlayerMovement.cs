@@ -3,10 +3,12 @@ using UnityEngine;
 
 public class PlayerMovement : MonoBehaviour, IMovementStateReceiver
 {
+    private const float AIRBORNE_MOVEMENT_MULT = 0.3f;
     public Vector2 CurrentVelocity { get; private set; }
 
     [SerializeField] private Transform movementOrientation;
-    [SerializeField] private float airDrag;
+    [SerializeField] private float groundDrag = 0.5f;
+    [SerializeField] private float airDrag = 0.1f;
 
     private bool _readyToJump = true;
 
@@ -15,7 +17,7 @@ public class PlayerMovement : MonoBehaviour, IMovementStateReceiver
 
     private bool _isGrounded;
     private float _speedLimitMult = 1;
-
+ 
     private PlayerData _playerData;
     private IMovementManager _playerManager;
 
@@ -24,7 +26,6 @@ public class PlayerMovement : MonoBehaviour, IMovementStateReceiver
         _playerData = GetComponent<PlayerData>();
         _playerManager = GetComponent<IMovementManager>();
     }
-
     private void OnEnable()
     {
         _playerManager.OnMovementStateChanged += OnMovementStateChanged;
