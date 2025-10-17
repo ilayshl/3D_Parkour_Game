@@ -31,14 +31,14 @@ public class PlayerMovement : MonoBehaviour, IMovementStateReceiver
         _playerManager.OnMovementStateChanged += OnMovementStateChanged;
     }
 
-    void OnDisable()
+    private void OnDisable()
     {
         _playerManager.OnMovementStateChanged -= OnMovementStateChanged;
     }
 
     void Start()
     {
-        _playerManager.ChangeMovementState(MovementState.Walking);
+        _playerManager.ChangeMovementState(MovementState.Airborne);
     }
 
     void Update()
@@ -55,7 +55,6 @@ public class PlayerMovement : MonoBehaviour, IMovementStateReceiver
             _groundCheck = StartCoroutine(nameof(CheckForGround));
             _checkInput = StartCoroutine(nameof(CheckInput));
         }
-
     }
 
     private IEnumerator CheckInput()
@@ -86,20 +85,32 @@ public class PlayerMovement : MonoBehaviour, IMovementStateReceiver
         {
             if (!Physics.CheckSphere(transform.position, 0.1f, _playerData.GroundLayer))
             {
-                _playerManager.ChangeMovementState(MovementState.Airborne);
+                _playerManager.ChangeMovementState();
             }
             yield return null;
         }
-
         _groundCheck = null;
     }
 
     private void LimitSpeed()
     {
-        if (CurrentVelocity.magnitude > _playerData.MoveSpeed)
+        if (CurrentVelocity.magnitude > LimitedSpeedValue())
         {
             Vector2 limitVelocity = CurrentVelocity.normalized * _playerData.MoveSpeed * _speedLimitMult;
             _playerData.rb.linearVelocity = new Vector3(limitVelocity.x, _playerData.rb.linearVelocity.y, limitVelocity.y);
+        }
+    }
+    
+    private float LimitedSpeedValue()
+    {
+        float limitedSpeed = _playerData.MoveSpeed;
+        if (_isGrounded)
+        {
+            return limitedSpeed;
+        }
+        else
+        {
+            return limitedSpeed * 4;
         }
     }
 
@@ -120,13 +131,12 @@ public class PlayerMovement : MonoBehaviour, IMovementStateReceiver
         while (_playerManager.State == MovementState.Walking)
         {
             moveDirection = movementOrientation.forward * Input.GetAxisRaw("Vertical") + movementOrientation.right * Input.GetAxisRaw("Horizontal");
-            Vector3 forceToAdd = moveDirection.normalized * _playerData.MoveSpeed * 10;
-            forceToAdd = _isGrounded ? forceToAdd : forceToAdd * _playerData.GroundDrag;
+            Vector3 forceToAdd = moveDirection.normalized * _playerData.MoveSpeed * 15;
+            forceToAdd = _isGrounded ? forceToAdd : forceToAdd * groundDrag;
             _playerData.rb.AddForce(forceToAdd, ForceMode.Force);
 
             yield return new WaitForFixedUpdate();
         }
-
         _move = null;
     }
 }

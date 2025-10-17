@@ -6,5 +6,5 @@ public enum MovementState
     Walking,
     Sprinting,
     Crouching,
-    Airborne
+    Airborne,
 }

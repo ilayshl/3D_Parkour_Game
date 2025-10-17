@@ -6,7 +6,6 @@ public class HitPredictionHandler : MonoBehaviour
     [SerializeField] private HitPredictionObject predictionObject;
     [SerializeField] private float sphereRadius = 3f;
 
-
     public RaycastHit ShootRaycast(float maxDistance, LayerMask hitLayer)
     {
         RaycastHit raycastHit;
