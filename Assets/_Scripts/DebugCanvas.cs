@@ -5,7 +5,7 @@ using UnityEngine;
 public class DebugCanvas : MonoBehaviour
 {
     [SerializeField] private TextMeshProUGUI speedValueText, stateValueText, mouseSensitivity;
-    [SerializeField] private PlayerMovement player;
+    //[SerializeField] private PlayerMovement player;
     [SerializeField] private PlayerManager playerManager;
     [SerializeField] private PlayerCamera playerCamera;
 
@@ -21,7 +21,7 @@ public class DebugCanvas : MonoBehaviour
 
     void LateUpdate()
     {
-        speedValueText.SetText(Math.Round(player.CurrentVelocity.magnitude, 3).ToString());
+        //speedValueText.SetText(Math.Round(player.CurrentVelocity.magnitude, 3).ToString());
         mouseSensitivity.SetText(playerCamera.sensitivityX.ToString());
 
         if (Input.GetKeyDown(KeyCode.Escape)) Application.Quit();

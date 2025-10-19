@@ -1,4 +1,4 @@
-using System.Collections;
+/* using System.Collections;
 using UnityEngine;
 
 public class PlayerMovement : MonoBehaviour, IMovementStateReceiver
@@ -38,7 +38,7 @@ public class PlayerMovement : MonoBehaviour, IMovementStateReceiver
 
     void Start()
     {
-        _playerManager.ChangeMovementState(MovementState.Airborne);
+        _playerManager.ChangeMovementState();
     }
 
     void Update()
@@ -142,3 +142,4 @@ public class PlayerMovement : MonoBehaviour, IMovementStateReceiver
 }
 
 
+ */

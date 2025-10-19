@@ -7,9 +7,9 @@ public class PlayerManager : MonoBehaviour, IMovementManager
     public MovementState State { get => state; }
     private MovementState state;
 
-    public void ChangeMovementState(MovementState newState = MovementState.Airborne)
+    public void ChangeMovementState()
     {
-        if (newState == state) return;
+        /* if (newState == state) return;
         switch (newState)
         {
             case MovementState.Freeze:
@@ -37,6 +37,7 @@ public class PlayerManager : MonoBehaviour, IMovementManager
 
         state = newState;
         OnMovementStateChanged?.Invoke(state);
+        */
     }
 
 }

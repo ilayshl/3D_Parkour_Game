@@ -1,4 +1,4 @@
-public enum MovementState
+public enum MovementStateEnum
 {
     Freeze,
     Grappling,
