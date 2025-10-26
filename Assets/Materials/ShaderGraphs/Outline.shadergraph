@@ -3875,7 +3875,7 @@
     "m_ObjectId": "79e5ec341e9345ffa58aa8cc7a837466",
     "m_Version": 0,
     "m_fullscreenMode": 0,
-    "m_BlendMode": 0,
+    "m_BlendMode": 1,
     "m_SrcColorBlendMode": 0,
     "m_DstColorBlendMode": 1,
     "m_ColorBlendOperation": 0,
