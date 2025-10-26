@@ -57,12 +57,12 @@ MonoBehaviour:
   m_Active: 1
   settings:
     passTag: Toon Shading
-    Event: 550
+    Event: 500
     filterSettings:
       RenderQueueType: 0
       LayerMask:
         serializedVersion: 2
-        m_Bits: 4294967295
+        m_Bits: 479
       PassNames: []
     overrideMaterial: {fileID: 2100000, guid: 4af334c547618bf49bd3d1f26373c3f6, type: 2}
     overrideMaterialPassIndex: 0
@@ -70,7 +70,7 @@ MonoBehaviour:
     overrideShaderPassIndex: 0
     overrideMode: 1
     overrideDepthState: 0
-    depthCompareFunction: 8
+    depthCompareFunction: 0
     enableWrite: 1
     stencilSettings:
       overrideStencilState: 0

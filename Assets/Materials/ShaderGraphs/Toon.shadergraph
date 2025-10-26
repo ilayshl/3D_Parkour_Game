@@ -496,20 +496,6 @@
         {
             "m_OutputSlot": {
                 "m_Node": {
-                    "m_Id": "1ce2ce00a4fcfc8984222d990c3a9268"
-                },
-                "m_SlotId": 3
-            },
-            "m_InputSlot": {
-                "m_Node": {
-                    "m_Id": "bc46589cd340449f8f694709b4eade4e"
-                },
-                "m_SlotId": 0
-            }
-        },
-        {
-            "m_OutputSlot": {
-                "m_Node": {
                     "m_Id": "207b1967063de1889f2fd1eb68668e4e"
                 },
                 "m_SlotId": 2
@@ -573,6 +559,20 @@
             "m_InputSlot": {
                 "m_Node": {
                     "m_Id": "925803dabf20668cb89c07a4a1ce6b7f"
+                },
+                "m_SlotId": 0
+            }
+        },
+        {
+            "m_OutputSlot": {
+                "m_Node": {
+                    "m_Id": "29ba04366d96cb8da628d49d448e43cb"
+                },
+                "m_SlotId": 2
+            },
+            "m_InputSlot": {
+                "m_Node": {
+                    "m_Id": "bc46589cd340449f8f694709b4eade4e"
                 },
                 "m_SlotId": 0
             }
@@ -6470,7 +6470,7 @@
     "m_Title": "Cell Shading",
     "m_Position": {
         "x": -1076.0,
-        "y": -415.0
+        "y": -414.5
     }
 }
 
@@ -6824,7 +6824,7 @@
     "m_Title": "Outlines",
     "m_Position": {
         "x": -2596.0,
-        "y": 222.0
+        "y": 222.5
     }
 }
 
