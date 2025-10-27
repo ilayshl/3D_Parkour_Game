@@ -2,10 +2,10 @@ using UnityEngine;
 
 public class PlayerCamera : MonoBehaviour
 {
-    public float sensitivityX;
-    public float sensitivityY;
+    [Range(1f, 100f)] public float sensitivityX, sensitivityY;
 
     [SerializeField] private Transform playerOrientation, playerLook;
+    [SerializeField] private InputReader inputReader;
 
     private float _xRotation;
     private float _yRotation;
@@ -24,9 +24,9 @@ public class PlayerCamera : MonoBehaviour
 
     private void GetInput()
     {
-        //Getting input (old system)
-        float mouseX = Input.GetAxisRaw("Mouse X") * sensitivityX * 0.01f;
-        float mouseY = Input.GetAxisRaw("Mouse Y") * sensitivityY * 0.01f;
+        //Getting input (new system)
+        float mouseX = inputReader.LookInput.x * sensitivityX * 0.01f;
+        float mouseY = inputReader.LookInput.y * sensitivityY * 0.01f;
 
         //Moving the rotation values
         _yRotation += mouseX;

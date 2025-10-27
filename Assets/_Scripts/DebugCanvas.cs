@@ -24,7 +24,7 @@ public class DebugCanvas : MonoBehaviour
         //speedValueText.SetText(Math.Round(player.CurrentVelocity.magnitude, 3).ToString());
         mouseSensitivity.SetText(playerCamera.sensitivityX.ToString());
 
-        if (Input.GetKeyDown(KeyCode.Escape)) Application.Quit();
+        /* if (Input.GetKeyDown(KeyCode.Escape)) Application.Quit();
 
         if (Input.GetKeyDown(KeyCode.LeftBracket))
         {
@@ -35,7 +35,7 @@ public class DebugCanvas : MonoBehaviour
         {
             playerCamera.sensitivityX += 25;
             playerCamera.sensitivityY += 25;
-        }
+        } */
 
     }
 

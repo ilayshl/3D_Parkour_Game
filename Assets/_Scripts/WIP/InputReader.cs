@@ -5,7 +5,9 @@ using UnityEngine.InputSystem;
 public class InputReader : MonoBehaviour, Controls.IPlayerActions
 {
     public Vector2 MovementInput { get; private set; }
-    public event Action JumpEvent, MoveEvent, ShootEvent, SwingEvent, AbilityEvent;
+    public Vector2 LookInput { get; private set; }
+    public event Action JumpEvent, ShootEvent, SwingEvent, AbilityEvent;
+    public event Action<Vector2> MoveEvent, LookEvent;
     private Controls controls;
 
     private void Start()
@@ -29,22 +31,23 @@ public class InputReader : MonoBehaviour, Controls.IPlayerActions
 
     public void OnLook(InputAction.CallbackContext context)
     {
-        throw new System.NotImplementedException();
+        LookInput = context.ReadValue<Vector2>();
     }
 
     public void OnMove(InputAction.CallbackContext context)
     {
-        MovementInput = context.ReadValue<Vector2>();
+        if (context.started)
+            MoveEvent?.Invoke(context.ReadValue<Vector2>());
     }
 
     public void OnShoot(InputAction.CallbackContext context)
     {
-        throw new System.NotImplementedException();
+        Debug.Log("Shoot Event");
     }
 
     public void OnSwing(InputAction.CallbackContext context)
     {
-        throw new System.NotImplementedException();
+        Debug.Log("Swing Event");
     }
 
     public void OnAbility(InputAction.CallbackContext context)
