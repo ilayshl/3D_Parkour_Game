@@ -8,7 +8,7 @@ public class PlayerMovement : MonoBehaviour, IMovementStateReceiver
 
     [SerializeField] private Transform movementOrientation;
     [SerializeField] private float groundDrag = 0.5f;
-    [SerializeField] private float airDrag = 0.1f;
+    //[SerializeField] private float airDrag = 0.1f;
 
     private bool _readyToJump = true;
 
