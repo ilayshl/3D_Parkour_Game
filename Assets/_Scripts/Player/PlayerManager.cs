@@ -1,11 +1,11 @@
 using System;
 using UnityEngine;
 
-public class PlayerManager : MonoBehaviour, IMovementManager
+public class PlayerManager : MonoBehaviour
 {
-    public event Action<MovementState> OnMovementStateChanged;
+    /* public event Action<MovementState> OnMovementStateChanged;
     public MovementState State { get => state; }
-    private MovementState state;
+    private MovementState state; */
 
     public void ChangeMovementState()
     {

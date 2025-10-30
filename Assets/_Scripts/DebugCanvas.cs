@@ -11,12 +11,12 @@ public class DebugCanvas : MonoBehaviour
 
     void OnEnable()
     {
-        playerManager.OnMovementStateChanged += UpdateStateText;
+        //playerManager.OnMovementStateChanged += UpdateStateText;
     }
 
     void OnDisable()
     {
-        playerManager.OnMovementStateChanged -= UpdateStateText;
+        //playerManager.OnMovementStateChanged -= UpdateStateText;
     }
 
     void LateUpdate()
@@ -39,8 +39,8 @@ public class DebugCanvas : MonoBehaviour
 
     }
 
-    private void UpdateStateText(MovementState state)
+    /* private void UpdateStateText(MovementState state)
     {
         stateValueText.SetText(state.ToString());
-    }
+    } */
 }

@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class PlayerData : MonoBehaviour
+public class PlayerData : ScriptableObject
 {
     [Header("Inputs")]
     [SerializeField] private KeyCode leftSwingInput = KeyCode.Mouse0;
@@ -16,20 +16,14 @@ public class PlayerData : MonoBehaviour
     [Header("References")]
     [SerializeField] private LayerMask grappableLayer;
     [SerializeField] private LayerMask groundLayer;
-    [SerializeField] private Transform leftGunTip, rightGunTip, cam, swingPredictionPoint;
+    [SerializeField] private Transform leftGunTip, rightGunTip, cam;
 
 
     public Transform LeftGunTip { get => leftGunTip; }
     public Transform RightGunTip { get => rightGunTip; }
     public Transform Cam { get => cam; }
-    public Transform SwingPredictionPoint { get => swingPredictionPoint; }
     public LayerMask GrappableLayer { get => grappableLayer; }
     public LayerMask GroundLayer { get => groundLayer; }
-
-    [Header("Component References")]
-    public IMovementManager playerManager { get; private set; }
-    public Rigidbody rb { get; private set; }
-    public LineRenderer lr { get; private set; }
 
     [Header("Movement")]
     [SerializeField] private float moveSpeed = 10;
@@ -63,11 +57,4 @@ public class PlayerData : MonoBehaviour
     public float ForwardThrustForce { get => forwardThrustForce; }
     public float ExtendCableSpeed { get => extendCableSpeed; }
     public float PredictionSphereCastRadius { get => predictionSphereCastRadius; }
-
-    void Awake()
-    {
-        playerManager = GetComponent<IMovementManager>();
-        rb = GetComponent<Rigidbody>();
-        lr = GetComponent<LineRenderer>();
-    }
 }
