@@ -5,7 +5,7 @@ using UnityEngine;
 public class PlayerSwing : MonoBehaviour
 {
     [Header("Input")]
-    [SerializeField] private KeyCode swingInput = KeyCode.Mouse0;
+    [SerializeField] private KeyCode swingInput = KeyCode.Mouse1;
     [SerializeField] private KeyCode shortenRopeInput = KeyCode.Space;
     [Header("Ray Variables")]
     [SerializeField] private int maxDistance = 25;

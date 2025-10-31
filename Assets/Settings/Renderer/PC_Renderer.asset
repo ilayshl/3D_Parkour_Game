@@ -62,9 +62,9 @@ MonoBehaviour:
       RenderQueueType: 0
       LayerMask:
         serializedVersion: 2
-        m_Bits: 479
+        m_Bits: 4294967295
       PassNames: []
-    overrideMaterial: {fileID: 2100000, guid: 0a630c22ac62c47459b7eda3427f2fb1, type: 2}
+    overrideMaterial: {fileID: 2100000, guid: 4af334c547618bf49bd3d1f26373c3f6, type: 2}
     overrideMaterialPassIndex: 0
     overrideShader: {fileID: -6465566751694194690, guid: 362b1c22aaaa4f8459da6c77cb5ce5fc, type: 3}
     overrideShaderPassIndex: 0
@@ -155,7 +155,7 @@ MonoBehaviour:
   injectionPoint: 550
   fetchColorBuffer: 1
   requirements: 6
-  passMaterial: {fileID: -876546973899608171, guid: e58a41c31975548e68d036d8da46314c, type: 3}
+  passMaterial: {fileID: 2100000, guid: 71ee6255bff3a43ee92cc4e64026f853, type: 2}
   passIndex: 0
   bindDepthStencilAttachment: 0
   m_Version: 1
