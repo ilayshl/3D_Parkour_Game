@@ -186,6 +186,9 @@
         },
         {
             "m_Id": "5ba38d99c4ec416d841a3bd74ae7c848"
+        },
+        {
+            "m_Id": "68d67e7b6b65421eabea2546735f74af"
         }
     ],
     "m_GroupDatas": [
@@ -196,7 +199,11 @@
             "m_Id": "7b438d22037346328b9db4c43f70089a"
         }
     ],
-    "m_StickyNoteDatas": [],
+    "m_StickyNoteDatas": [
+        {
+            "m_Id": "c8ae1963d9164e5ca6f41d6af8e598d9"
+        }
+    ],
     "m_Edges": [
         {
             "m_OutputSlot": {
@@ -593,6 +600,20 @@
         {
             "m_OutputSlot": {
                 "m_Node": {
+                    "m_Id": "68d67e7b6b65421eabea2546735f74af"
+                },
+                "m_SlotId": 2
+            },
+            "m_InputSlot": {
+                "m_Node": {
+                    "m_Id": "172f17495e8b41fcb268e3007fbb607e"
+                },
+                "m_SlotId": 0
+            }
+        },
+        {
+            "m_OutputSlot": {
+                "m_Node": {
                     "m_Id": "695727835e4f41c3863552489effd13b"
                 },
                 "m_SlotId": 0
@@ -628,20 +649,6 @@
             "m_InputSlot": {
                 "m_Node": {
                     "m_Id": "e6d205221a7f4eedbcb7868323a4bdce"
-                },
-                "m_SlotId": 0
-            }
-        },
-        {
-            "m_OutputSlot": {
-                "m_Node": {
-                    "m_Id": "74f2ffe4a5964decb06a092c7e73b8eb"
-                },
-                "m_SlotId": 0
-            },
-            "m_InputSlot": {
-                "m_Node": {
-                    "m_Id": "172f17495e8b41fcb268e3007fbb607e"
                 },
                 "m_SlotId": 0
             }
@@ -2138,6 +2145,31 @@
 
 {
     "m_SGVersion": 0,
+    "m_Type": "UnityEditor.ShaderGraph.ColorRGBAMaterialSlot",
+    "m_ObjectId": "2837992eaf324440ab7203466f8d0b08",
+    "m_Id": 2,
+    "m_DisplayName": "Output",
+    "m_SlotType": 1,
+    "m_Hidden": false,
+    "m_ShaderOutputName": "Output",
+    "m_StageCapability": 2,
+    "m_Value": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0,
+        "w": 1.0
+    },
+    "m_DefaultValue": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0,
+        "w": 1.0
+    },
+    "m_Labels": []
+}
+
+{
+    "m_SGVersion": 0,
     "m_Type": "UnityEditor.ShaderGraph.DynamicVectorMaterialSlot",
     "m_ObjectId": "286166d0ce4d436390144304e8f9a590",
     "m_Id": 1,
@@ -3545,6 +3577,47 @@
 
 {
     "m_SGVersion": 0,
+    "m_Type": "UnityEditor.Rendering.Universal.UniversalSampleBufferNode",
+    "m_ObjectId": "68d67e7b6b65421eabea2546735f74af",
+    "m_Group": {
+        "m_Id": ""
+    },
+    "m_Name": "URP Sample Buffer",
+    "m_DrawState": {
+        "m_Expanded": true,
+        "m_Position": {
+            "serializedVersion": "2",
+            "x": 768.5659790039063,
+            "y": -1017.8306274414063,
+            "width": 0.0,
+            "height": 0.0
+        }
+    },
+    "m_Slots": [
+        {
+            "m_Id": "9f1dfcc4984748e18a2c885f47d672fb"
+        },
+        {
+            "m_Id": "2837992eaf324440ab7203466f8d0b08"
+        }
+    ],
+    "synonyms": [
+        "normal",
+        "motion vector",
+        "blit"
+    ],
+    "m_Precision": 0,
+    "m_PreviewExpanded": false,
+    "m_DismissedVersion": 0,
+    "m_PreviewMode": 0,
+    "m_CustomColors": {
+        "m_SerializableColors": []
+    },
+    "m_BufferType": 2
+}
+
+{
+    "m_SGVersion": 0,
     "m_Type": "UnityEditor.ShaderGraph.ScreenNode",
     "m_ObjectId": "695727835e4f41c3863552489effd13b",
     "m_Group": {
@@ -3970,8 +4043,8 @@
     "m_ObjectId": "7b438d22037346328b9db4c43f70089a",
     "m_Title": "Pixel color difference dependant outline",
     "m_Position": {
-        "x": -2004.5,
-        "y": -1513.0
+        "x": -2004.4998779296875,
+        "y": -1512.9998779296875
     }
 }
 
@@ -4465,8 +4538,8 @@
     "m_ObjectId": "925c4a607d31437b9d61de39431331ae",
     "m_Title": "Normal Vector dependant outline",
     "m_Position": {
-        "x": -2013.5,
-        "y": -494.5
+        "x": -2013.4998779296875,
+        "y": -494.4998779296875
     }
 }
 
@@ -4690,6 +4763,32 @@
     "m_Value": 0.0,
     "m_DefaultValue": 0.0,
     "m_Labels": []
+}
+
+{
+    "m_SGVersion": 0,
+    "m_Type": "UnityEditor.ShaderGraph.ScreenPositionMaterialSlot",
+    "m_ObjectId": "9f1dfcc4984748e18a2c885f47d672fb",
+    "m_Id": 0,
+    "m_DisplayName": "UV",
+    "m_SlotType": 0,
+    "m_Hidden": false,
+    "m_ShaderOutputName": "UV",
+    "m_StageCapability": 3,
+    "m_Value": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0,
+        "w": 0.0
+    },
+    "m_DefaultValue": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0,
+        "w": 0.0
+    },
+    "m_Labels": [],
+    "m_ScreenSpaceType": 0
 }
 
 {
@@ -5363,6 +5462,26 @@
         "m_SerializableColors": []
     },
     "m_ScreenSpaceType": 0
+}
+
+{
+    "m_SGVersion": 0,
+    "m_Type": "UnityEditor.ShaderGraph.StickyNoteData",
+    "m_ObjectId": "c8ae1963d9164e5ca6f41d6af8e598d9",
+    "m_Title": "Information",
+    "m_Content": "This shader was originally meant to be a standard outline fullscreen shader but was then changed to be an overlay for the gltiched out cheese hand.\nThis is because the toon+outline shader is overriding the overlay camera's viewed object (Always Visible)\n",
+    "m_TextSize": 0,
+    "m_Theme": 0,
+    "m_Position": {
+        "serializedVersion": "2",
+        "x": 743.0,
+        "y": -1184.0,
+        "width": 200.0,
+        "height": 160.0
+    },
+    "m_Group": {
+        "m_Id": ""
+    }
 }
 
 {
