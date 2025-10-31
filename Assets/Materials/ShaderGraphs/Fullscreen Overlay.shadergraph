@@ -22,11 +22,7 @@
         }
     ],
     "m_GroupDatas": [],
-    "m_StickyNoteDatas": [
-        {
-            "m_Id": "c8ae1963d9164e5ca6f41d6af8e598d9"
-        }
-    ],
+    "m_StickyNoteDatas": [],
     "m_Edges": [
         {
             "m_OutputSlot": {
@@ -344,26 +340,6 @@
     },
     "m_Labels": [],
     "m_ScreenSpaceType": 0
-}
-
-{
-    "m_SGVersion": 0,
-    "m_Type": "UnityEditor.ShaderGraph.StickyNoteData",
-    "m_ObjectId": "c8ae1963d9164e5ca6f41d6af8e598d9",
-    "m_Title": "Information",
-    "m_Content": "This shader was originally meant to be a standard outline fullscreen shader but was then changed to be an overlay for the gltiched out cheese hand.\nThis is because the toon+outline shader is overriding the overlay camera's viewed object (Always Visible)\n",
-    "m_TextSize": 0,
-    "m_Theme": 0,
-    "m_Position": {
-        "serializedVersion": "2",
-        "x": 856.0,
-        "y": -898.0,
-        "width": 200.0,
-        "height": 160.0
-    },
-    "m_Group": {
-        "m_Id": ""
-    }
 }
 
 {

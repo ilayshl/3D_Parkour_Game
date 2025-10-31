@@ -64,7 +64,7 @@ MonoBehaviour:
         serializedVersion: 2
         m_Bits: 4294967295
       PassNames: []
-    overrideMaterial: {fileID: 2100000, guid: 4af334c547618bf49bd3d1f26373c3f6, type: 2}
+    overrideMaterial: {fileID: 2100000, guid: 0a630c22ac62c47459b7eda3427f2fb1, type: 2}
     overrideMaterialPassIndex: 0
     overrideShader: {fileID: -6465566751694194690, guid: 362b1c22aaaa4f8459da6c77cb5ce5fc, type: 3}
     overrideShaderPassIndex: 0
@@ -149,7 +149,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: b00045f12942b46c698459096c89274e, type: 3}
-  m_Name: Outline Rendering
+  m_Name: Fullscreen Overlay
   m_EditorClassIdentifier: 
   m_Active: 1
   injectionPoint: 550
