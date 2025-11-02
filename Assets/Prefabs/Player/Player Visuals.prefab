@@ -11,10 +11,6 @@ GameObject:
   - component: {fileID: 6577251161588002668}
   - component: {fileID: 758209983721781517}
   - component: {fileID: 7744054713045679031}
-  - component: {fileID: 8321500694452280313}
-  - component: {fileID: 8280727378965285636}
-  - component: {fileID: 4432206499461015886}
-  - component: {fileID: 4152821297663278892}
   m_Layer: 0
   m_Name: Player Visuals
   m_TagString: Untagged
@@ -79,88 +75,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7fafd6cef9a1c8b45867bb6eda3dcab7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerManager
---- !u!114 &8321500694452280313
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1954457568472821955}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3dc3a2403bc562c4b826769b3c1889b5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::PlayerData
-  leftSwingInput: 323
-  rightSwingInput: 324
-  shortenJointInput: 32
-  jumpInput: 32
-  grappableLayer:
-    serializedVersion: 2
-    m_Bits: 64
-  groundLayer:
-    serializedVersion: 2
-    m_Bits: 72
-  leftGunTip: {fileID: 0}
-  rightGunTip: {fileID: 0}
-  cam: {fileID: 3662745359062086037}
-  swingPredictionPoint: {fileID: 0}
-  moveSpeed: 10
-  groundDrag: 5
-  airDrag: 0.1
-  swingSpeedLimitMult: 4
-  airMultiplier: 0.4
-  jumpForce: 12
-  jumpCooldown: 0.33
-  maxSwingDistance: 25
-  horizontalThrustForce: 2000
-  forwardThrustForce: 3000
-  extendCableSpeed: 20
-  predictionSphereCastRadius: 2
---- !u!114 &8280727378965285636
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1954457568472821955}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5f8582f36e5722847bf3c4fbc9658bb7, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::PlayerMovement
-  movementOrientation: {fileID: 3770480935366093033}
-  airDrag: 0
---- !u!114 &4432206499461015886
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1954457568472821955}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c935425235fcbf4449a9611956f8c6ae, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::PlayerAirborne
-  movementOrientation: {fileID: 3770480935366093033}
---- !u!114 &4152821297663278892
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1954457568472821955}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 347c7e1f43650a44491b861fb6d76753, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::PlayerSwing
-  checkObject: {fileID: 0}
-  lookDirection: {fileID: 0}
-  swingInput: 323
-  predictionHitObject: {fileID: 0}
-  ropeHandler: {fileID: 918613529698683968, guid: 65e89ce03bee4ee45b13af471bdddd0d, type: 3}
 --- !u!1 &6072807915654740772
 GameObject:
   m_ObjectHideFlags: 0
