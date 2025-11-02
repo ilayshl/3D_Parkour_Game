@@ -7290,6 +7290,10 @@ PrefabInstance:
       value: 0.1
       objectReference: {fileID: 0}
     - target: {fileID: 4343399340422851773, guid: f25c45922b4b34717ba47399836474d4, type: 3}
+      propertyPath: CollisionModule.m_Bounce.scalar
+      value: 0.3
+      objectReference: {fileID: 0}
+    - target: {fileID: 4343399340422851773, guid: f25c45922b4b34717ba47399836474d4, type: 3}
       propertyPath: CollisionModule.maxCollisionShapes
       value: 10
       objectReference: {fileID: 0}

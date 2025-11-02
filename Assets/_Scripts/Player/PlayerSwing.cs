@@ -113,7 +113,7 @@ public class PlayerSwing : MonoBehaviour
             Vector3 moveDirection = lookDirection.transform.right * Input.GetAxisRaw("Horizontal") * horizontalThrustForce;
             _rb.AddForce(moveDirection.normalized);
 
-            //Lenghtening the joint
+            //Lengthening the joint
             if (Input.GetAxisRaw("Vertical") < 0)
             {
                 float extendedDistanceFromPoint = Vector3.Distance(transform.position, _swingPoint) + extendRopeSpeed;
