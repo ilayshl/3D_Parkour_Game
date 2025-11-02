@@ -7097,6 +7097,17 @@ Mesh:
     offset: 0
     size: 0
     path: 
+--- !u!114 &2013632056 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 4608025338789206903, guid: f25c45922b4b34717ba47399836474d4, type: 3}
+  m_PrefabInstance: {fileID: 1130561568751161393}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5f8582f36e5722847bf3c4fbc9658bb7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PlayerMovement
 --- !u!114 &2013632057 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 2765662858071157700, guid: f25c45922b4b34717ba47399836474d4, type: 3}
@@ -7231,6 +7242,7 @@ MonoBehaviour:
   speedValueText: {fileID: 633093673}
   stateValueText: {fileID: 600542579}
   mouseSensitivity: {fileID: 347007243}
+  player: {fileID: 2013632056}
   playerManager: {fileID: 2013632057}
   playerCamera: {fileID: 441018932}
 --- !u!1001 &1130561568751161393
@@ -7241,26 +7253,66 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 1745916402118123283, guid: f25c45922b4b34717ba47399836474d4, type: 3}
-      propertyPath: sensitivityX
-      value: 100
+    - target: {fileID: 4343399340422851773, guid: f25c45922b4b34717ba47399836474d4, type: 3}
+      propertyPath: moveWithTransform
+      value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 1745916402118123283, guid: f25c45922b4b34717ba47399836474d4, type: 3}
-      propertyPath: sensitivityY
-      value: 100
+    - target: {fileID: 4343399340422851773, guid: f25c45922b4b34717ba47399836474d4, type: 3}
+      propertyPath: TrailModule.enabled
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4343399340422851773, guid: f25c45922b4b34717ba47399836474d4, type: 3}
+      propertyPath: emitterVelocityMode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4343399340422851773, guid: f25c45922b4b34717ba47399836474d4, type: 3}
+      propertyPath: CollisionModule.type
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4343399340422851773, guid: f25c45922b4b34717ba47399836474d4, type: 3}
+      propertyPath: TrailModule.worldSpace
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4343399340422851773, guid: f25c45922b4b34717ba47399836474d4, type: 3}
+      propertyPath: CollisionModule.enabled
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4343399340422851773, guid: f25c45922b4b34717ba47399836474d4, type: 3}
+      propertyPath: CollisionModule.quality
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4343399340422851773, guid: f25c45922b4b34717ba47399836474d4, type: 3}
+      propertyPath: TrailModule.lifetime.scalar
+      value: 0.3
+      objectReference: {fileID: 0}
+    - target: {fileID: 4343399340422851773, guid: f25c45922b4b34717ba47399836474d4, type: 3}
+      propertyPath: TrailModule.minVertexDistance
+      value: 0.1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4343399340422851773, guid: f25c45922b4b34717ba47399836474d4, type: 3}
+      propertyPath: CollisionModule.m_Bounce.scalar
+      value: 0.3
+      objectReference: {fileID: 0}
+    - target: {fileID: 4343399340422851773, guid: f25c45922b4b34717ba47399836474d4, type: 3}
+      propertyPath: CollisionModule.maxCollisionShapes
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 4343399340422851773, guid: f25c45922b4b34717ba47399836474d4, type: 3}
+      propertyPath: CollisionModule.collidesWith.m_Bits
+      value: 64
       objectReference: {fileID: 0}
     - target: {fileID: 4495185918800087946, guid: f25c45922b4b34717ba47399836474d4, type: 3}
       propertyPath: swingPredictionPoint
       value: 
       objectReference: {fileID: 1804231649}
-    - target: {fileID: 5753055812700735463, guid: f25c45922b4b34717ba47399836474d4, type: 3}
-      propertyPath: m_ClearDepth
-      value: 0
+    - target: {fileID: 4840900750324270212, guid: f25c45922b4b34717ba47399836474d4, type: 3}
+      propertyPath: m_Materials.Array.size
+      value: 2
       objectReference: {fileID: 0}
-    - target: {fileID: 5753055812700735463, guid: f25c45922b4b34717ba47399836474d4, type: 3}
-      propertyPath: m_RenderPostProcessing
-      value: 0
-      objectReference: {fileID: 0}
+    - target: {fileID: 4840900750324270212, guid: f25c45922b4b34717ba47399836474d4, type: 3}
+      propertyPath: 'm_Materials.Array.data[1]'
+      value: 
+      objectReference: {fileID: 2100000, guid: 3f995e3714d28eb40bd5405ebe779c9b, type: 2}
     - target: {fileID: 7664743865618184205, guid: f25c45922b4b34717ba47399836474d4, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0

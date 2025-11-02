@@ -5,7 +5,7 @@ using UnityEngine;
 public class PlayerSwing : MonoBehaviour
 {
     [Header("Input")]
-    [SerializeField] private KeyCode swingInput = KeyCode.Mouse0;
+    [SerializeField] private KeyCode swingInput = KeyCode.Mouse1;
     [SerializeField] private KeyCode shortenRopeInput = KeyCode.Space;
     [Header("Ray Variables")]
     [SerializeField] private int maxDistance = 25;
@@ -22,6 +22,7 @@ public class PlayerSwing : MonoBehaviour
     [SerializeField] private HitPredictionHandler hitPredictionHandler;
     [SerializeField] private RopeHandler ropeHandler;
     [SerializeField] private SwingingHandRotation handRotation;
+    [SerializeField] private ParticleSystem cheeseBitsParticle;
     private Vector3 _swingPoint;
     private SpringJoint _joint;
     private RaycastHit _predictionHit;
@@ -71,6 +72,8 @@ public class PlayerSwing : MonoBehaviour
 
         handRotation.SetTarget(_swingPoint);
         _rb.linearDamping = swingDrag;
+
+        cheeseBitsParticle.Play();
     }
 
     private void InitializeSpringJoint()
@@ -110,7 +113,7 @@ public class PlayerSwing : MonoBehaviour
             Vector3 moveDirection = lookDirection.transform.right * Input.GetAxisRaw("Horizontal") * horizontalThrustForce;
             _rb.AddForce(moveDirection.normalized);
 
-            //Lenghtening the joint
+            //Lengthening the joint
             if (Input.GetAxisRaw("Vertical") < 0)
             {
                 float extendedDistanceFromPoint = Vector3.Distance(transform.position, _swingPoint) + extendRopeSpeed;
