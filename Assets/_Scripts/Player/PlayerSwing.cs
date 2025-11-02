@@ -22,6 +22,7 @@ public class PlayerSwing : MonoBehaviour
     [SerializeField] private HitPredictionHandler hitPredictionHandler;
     [SerializeField] private RopeHandler ropeHandler;
     [SerializeField] private SwingingHandRotation handRotation;
+    [SerializeField] private ParticleSystem cheeseBitsParticle;
     private Vector3 _swingPoint;
     private SpringJoint _joint;
     private RaycastHit _predictionHit;
@@ -71,6 +72,8 @@ public class PlayerSwing : MonoBehaviour
 
         handRotation.SetTarget(_swingPoint);
         _rb.linearDamping = swingDrag;
+
+        cheeseBitsParticle.Play();
     }
 
     private void InitializeSpringJoint()
