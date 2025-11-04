@@ -2,14 +2,13 @@ using UnityEngine;
 
 public class PlayerCamera : MonoBehaviour
 {
-    [Range(1f, 100f)] public float sensitivityX, sensitivityY;
+    [Range(1f, 100f)] public float sensitivityX, sensitivityY = 25f;
 
     [SerializeField] private Transform playerOrientation, playerLook;
     [SerializeField] private PlayerController playerController;
 
     private float _xRotation;
     private float _yRotation;
-
 
     void Start()
     {

@@ -1,4 +1,4 @@
-/* using System.Collections;
+using System.Collections;
 using Unity.VisualScripting;
 using UnityEngine;
 
@@ -31,12 +31,10 @@ public class PlayerSwing : MonoBehaviour
     private Coroutine _odmMovement, _checkForSwingPoints;
 
     private Rigidbody _rb;
-    private IMovementManager _playerManager;
 
     void Awake()
     {
         _rb = GetComponent<Rigidbody>();
-        _playerManager = GetComponent<IMovementManager>();
     }
 
     void Start()
@@ -67,7 +65,6 @@ public class PlayerSwing : MonoBehaviour
         _activeRope = Instantiate(ropeHandler, transform.position, Quaternion.identity);
         _activeRope.Initialize(lookDirection, _predictionHit);
 
-        _playerManager.ChangeMovementState(MovementState.Swinging);
         _odmMovement = StartCoroutine(nameof(OdmMovement));
 
         handRotation.SetTarget(_swingPoint);
@@ -160,4 +157,3 @@ public class PlayerSwing : MonoBehaviour
         hitPredictionHandler.SetActive(false);
     }
 }
- */

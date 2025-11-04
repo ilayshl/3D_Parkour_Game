@@ -7254,11 +7254,11 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 1745916402118123283, guid: f25c45922b4b34717ba47399836474d4, type: 3}
       propertyPath: sensitivityX
-      value: 100
+      value: 25
       objectReference: {fileID: 0}
     - target: {fileID: 1745916402118123283, guid: f25c45922b4b34717ba47399836474d4, type: 3}
       propertyPath: sensitivityY
-      value: 100
+      value: 25
       objectReference: {fileID: 0}
     - target: {fileID: 1745916402118123283, guid: f25c45922b4b34717ba47399836474d4, type: 3}
       propertyPath: playerController
