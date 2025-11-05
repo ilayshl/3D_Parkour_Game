@@ -1,31 +1,28 @@
-public class PlayerSwingState : PlayerBaseState
+public class PlayerSwingState : PlayerState
 {
-    public PlayerSwingState(PlayerStateMachine currentContext, PlayerController player, PlayerStateFactory stateFactory) : base(currentContext, player, stateFactory)
+    
+    public PlayerSwingState(StateMachine currentContext, PlayerController player, PlayerStateFactory factory) : base(currentContext, player, factory)
     {
+        _moveData = new PlayerMovementData(1f, 1f, 1f);
     }
 
-    public override void InitializeSubState()
+    public override void CheckTransitionIn()
     {
-        throw new System.NotImplementedException();
     }
 
     public override void OnEnter()
     {
-        throw new System.NotImplementedException();
-    }
-    public override void Update()
-    {
-        throw new System.NotImplementedException();
+                base.OnEnter();
     }
 
-    public override void FixedUpdate()
+    public override void Update(float deltaTime)
     {
-        throw new System.NotImplementedException();
+        //Check if finished- if so, EndState();
     }
 
-    public override void CheckSwitchStates()
+    public override void FixedUpdate(float fixedDeltaTime)
     {
-        throw new System.NotImplementedException();
+        _player.HandleSwingMove();
     }
 
     public override void OnExit()

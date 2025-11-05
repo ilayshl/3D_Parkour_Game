@@ -1,41 +1,31 @@
 public class PlayerStateFactory
 {
-    private PlayerStateMachine _context;
+    private StateMachine _context;
     private PlayerController _player;
 
-    public PlayerStateFactory(PlayerStateMachine currentContext, PlayerController player)
+    public PlayerStateFactory(StateMachine currentContext, PlayerController player)
     {
         _context = currentContext;
+        _player = player;
     }
 
-    public PlayerBaseState Walk()
+    public PlayerState Walk()
     {
         return new PlayerWalkState(_context, _player, this);
     }
 
-    public PlayerBaseState Jump()
+    public PlayerState Airborne()
     {
-        return new PlayerJumpState(_context, _player, this);
+        return new PlayerAirborneState(_context, _player, this);
     }
 
-    public PlayerBaseState Grounded()
-    {
-        return new PlayerGroundedState(_context, _player, this);
-    }
-
-    public PlayerBaseState Dash()
+    public PlayerState Dash()
     {
         return new PlayerDashState(_context, _player, this);
     }
 
-    public PlayerBaseState Swing()
+    public PlayerState Swing()
     {
         return new PlayerSwingState(_context, _player, this);
     }
-
-    public PlayerBaseState Airborne()
-    {
-        return new PlayerAirborneState(_context, _player, this);
-    }
-    
 }

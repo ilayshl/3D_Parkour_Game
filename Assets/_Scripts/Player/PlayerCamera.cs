@@ -5,7 +5,6 @@ public class PlayerCamera : MonoBehaviour
     [Range(1f, 100f)] public float sensitivityX, sensitivityY = 25f;
 
     [SerializeField] private Transform playerOrientation, playerLook;
-    [SerializeField] private PlayerController playerController;
 
     private float _xRotation;
     private float _yRotation;
@@ -16,17 +15,17 @@ public class PlayerCamera : MonoBehaviour
         Cursor.visible = false;
     }
 
-    void Update()
+    public void HandleCameraMovement(Vector2 lookInput)
     {
-        GetInput();
+        GetInput(lookInput.x, lookInput.y);
         RotateCamera();
     }
 
-    private void GetInput()
+    private void GetInput(float xInput, float yInput)
     {
         //Getting input (new system)
-        float mouseX = playerController.LookInput.x * sensitivityX * 0.01f;
-        float mouseY = playerController.LookInput.y * sensitivityY * 0.01f;
+        float mouseX = xInput * sensitivityX * 0.005f;
+        float mouseY = yInput * sensitivityY * 0.005f;
 
         //Moving the rotation values
         _yRotation += mouseX;

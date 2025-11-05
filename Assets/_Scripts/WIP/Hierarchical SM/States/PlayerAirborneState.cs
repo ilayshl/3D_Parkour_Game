@@ -1,35 +1,38 @@
-public class PlayerAirborneState : PlayerBaseState
+public class PlayerAirborneState : PlayerState
 {
-    public PlayerAirborneState(PlayerStateMachine currentContext, PlayerController player, PlayerStateFactory stateFactory) : base(currentContext, player, stateFactory)
+    public PlayerAirborneState(StateMachine currentContext, PlayerController player, PlayerStateFactory factory) : base(currentContext, player, factory)
     {
+        _moveData = new PlayerMovementData(0.1f, 0.2f, 4f);
     }
 
-    public override void InitializeSubState()
+    public override void CheckTransitionIn()
     {
-        throw new System.NotImplementedException();
+
     }
 
     public override void OnEnter()
     {
-        throw new System.NotImplementedException();
-    }
-    public override void Update()
-    {
-        throw new System.NotImplementedException();
+        base.OnEnter();
     }
 
-    public override void FixedUpdate()
+    public override void Update(float deltaTime)
     {
-        throw new System.NotImplementedException();
+        CheckTransitionToWalk();
     }
 
-    public override void CheckSwitchStates()
+    public override void FixedUpdate(float fixedDeltaTime)
     {
-        throw new System.NotImplementedException();
+        _player.HandleMove();
+    }
+
+    private void CheckTransitionToWalk()
+    {
+        if (_player.IsGrounded) _context.ChangeState(_factory.Walk());
     }
 
     public override void OnExit()
     {
-        throw new System.NotImplementedException();
+
     }
+
 }

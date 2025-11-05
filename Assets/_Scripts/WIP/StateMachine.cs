@@ -1,12 +1,11 @@
 using UnityEngine;
 
-public class PlayerStateMachine : MonoBehaviour
+public class StateMachine : MonoBehaviour
 {
-    public PlayerBaseState CurrentState { get => _currentState; }
-    [SerializeField] private PlayerData data;
+    public PlayerState CurrentState { get => _currentState; }
 
     private PlayerController _playerController;
-    private PlayerBaseState _currentState;
+    private PlayerState _currentState;
     private PlayerStateFactory _stateFactory;
 
     private void Awake()
@@ -22,18 +21,19 @@ public class PlayerStateMachine : MonoBehaviour
 
     private void Update()
     {
-        _currentState?.Update();
+        _currentState?.Update(Time.deltaTime);
     }
 
     private void FixedUpdate()
     {
-        _currentState?.FixedUpdate();
+        _currentState?.FixedUpdate(Time.fixedDeltaTime);
     }
 
-    public void ChangeState(PlayerBaseState newState)
+    public void ChangeState(PlayerState newState)
     {
         _currentState?.OnExit();
         _currentState = newState;
         _currentState?.OnEnter();
+        Debug.Log("Changed to state "+newState);
     }
 }

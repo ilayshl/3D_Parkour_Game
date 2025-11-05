@@ -6,7 +6,8 @@ public class DebugCanvas : MonoBehaviour
 {
     [SerializeField] private TextMeshProUGUI speedValueText, stateValueText, mouseSensitivity;
     //[SerializeField] private PlayerMovement player;
-    [SerializeField] private PlayerManager playerManager;
+    [SerializeField] private StateMachine playerManager;
+    [SerializeField] private PlayerController controller;
     [SerializeField] private PlayerCamera playerCamera;
 
     void OnEnable()
@@ -21,8 +22,9 @@ public class DebugCanvas : MonoBehaviour
 
     void LateUpdate()
     {
-        //speedValueText.SetText(Math.Round(player.CurrentVelocity.magnitude, 3).ToString());
+        speedValueText.SetText(Math.Round(controller.CurrentVelocity.magnitude, 3).ToString());
         mouseSensitivity.SetText(playerCamera.sensitivityX.ToString());
+        stateValueText.SetText(playerManager.CurrentState.ToString());
 
         /* if (Input.GetKeyDown(KeyCode.Escape)) Application.Quit();
 
@@ -39,8 +41,4 @@ public class DebugCanvas : MonoBehaviour
 
     }
 
-    /* private void UpdateStateText(MovementState state)
-    {
-        stateValueText.SetText(state.ToString());
-    } */
 }
