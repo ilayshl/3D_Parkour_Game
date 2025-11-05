@@ -36,6 +36,7 @@ public class PlayerController : MonoBehaviour
         playerCamera.HandleCameraMovement(LookInput);
         GetInput();
         _playerSwing.CheckForSwingPoints();
+
     }
 
     private void InitializeInputs()
@@ -60,6 +61,7 @@ public class PlayerController : MonoBehaviour
     public void HandleMove()
     {
         _playerMovement.Move(MoveInput);
+        _playerMovement.LimitSpeed();
     }
     
     public void HandleSwingMove()

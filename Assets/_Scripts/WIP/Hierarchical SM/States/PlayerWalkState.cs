@@ -4,7 +4,7 @@ public class PlayerWalkState : PlayerState
 {
     public PlayerWalkState(StateMachine currentContext, PlayerController player, PlayerStateFactory factory) : base(currentContext, player, factory)
     {
-        _moveData = new PlayerMovementData(0.5f, 1f, 1f);
+        _moveData = new PlayerMovementData(5f, 1f, 1f);
     }
 
     public override void CheckTransitionIn()
