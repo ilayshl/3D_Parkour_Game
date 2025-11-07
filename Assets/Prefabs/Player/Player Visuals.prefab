@@ -12,7 +12,6 @@ GameObject:
   - component: {fileID: 758209983721781517}
   - component: {fileID: 269902086997675133}
   - component: {fileID: 7840023643767540934}
-  - component: {fileID: 7391960299451240204}
   m_Layer: 8
   m_Name: Player Visuals
   m_TagString: Untagged
@@ -83,6 +82,7 @@ MonoBehaviour:
     m_Bits: 8
   movementOrientation: {fileID: 6707824789098710413}
   lookCamera: {fileID: 0}
+  ropeHandler: {fileID: 0}
 --- !u!114 &7840023643767540934
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -98,18 +98,6 @@ MonoBehaviour:
   playerCamera: {fileID: 0}
   predictionPrefab: {fileID: 5936440194636463730, guid: 730591e4ceeba494c8a007371ee5d27f, type: 3}
   sphereRadius: 3
---- !u!114 &7391960299451240204
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1954457568472821955}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0b7c82bef3714e34d8852a5eefb5669a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &6072807915654740772
 GameObject:
   m_ObjectHideFlags: 0

@@ -12,12 +12,16 @@ public class PlayerSwingState : PlayerState
 
     public override void OnEnter()
     {
-                base.OnEnter();
+        base.OnEnter();
     }
 
     public override void Update()
     {
         //Check if finished- if so, EndState();
+        if (!_player.InputReader.IsSwinging)
+        {
+            _context.ChangeState(_factory.Airborne());
+        }
     }
 
     public override void FixedUpdate()
@@ -27,6 +31,6 @@ public class PlayerSwingState : PlayerState
 
     public override void OnExit()
     {
-        throw new System.NotImplementedException();
+        //Play sound or something
     }
 }

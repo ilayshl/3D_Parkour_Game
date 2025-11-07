@@ -3747,17 +3747,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 1197183140}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &930101664 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 3138014665699794815, guid: f25c45922b4b34717ba47399836474d4, type: 3}
-  m_PrefabInstance: {fileID: 1130561568751161393}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0b7c82bef3714e34d8852a5eefb5669a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &962607170
 GameObject:
   m_ObjectHideFlags: 0
@@ -6997,7 +6986,6 @@ MonoBehaviour:
   speedValueText: {fileID: 633093673}
   stateValueText: {fileID: 600542579}
   mouseSensitivity: {fileID: 347007243}
-  playerStateMachine: {fileID: 930101664}
   manager: {fileID: 1882251190}
   playerCamera: {fileID: 441018932}
 --- !u!1001 &1130561568751161393
@@ -7052,7 +7040,8 @@ PrefabInstance:
       propertyPath: m_Name
       value: Player Prefab
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 3138014665699794815, guid: f25c45922b4b34717ba47399836474d4, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []

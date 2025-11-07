@@ -8,7 +8,6 @@ using UnityEngine;
 public class DebugCanvas : MonoBehaviour
 {
     [SerializeField] private TextMeshProUGUI speedValueText, stateValueText, mouseSensitivity;
-    [SerializeField] private StateMachine playerStateMachine;
     [SerializeField] private PlayerManager manager;
     [SerializeField] private PlayerCamera playerCamera;
 
@@ -26,7 +25,7 @@ public class DebugCanvas : MonoBehaviour
     {
         speedValueText.SetText(Math.Round(manager.CurrentVelocity.magnitude, 3).ToString());
         mouseSensitivity.SetText(playerCamera.sensitivityX.ToString());
-        stateValueText.SetText(playerStateMachine.CurrentState.ToString());
+        stateValueText.SetText(manager.CurrentState.ToString());
 
         /* if (Input.GetKeyDown(KeyCode.Escape)) Application.Quit();
 

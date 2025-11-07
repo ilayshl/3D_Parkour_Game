@@ -8,6 +8,8 @@ public class InputReader : Controls.IPlayerActions
     public Vector2 MovementInput { get; private set; } //X, Y values
     public Vector2 LookInput { get; private set; }
     public event Action JumpEvent, ShootEvent, SwingEvent, AbilityEvent; //Button inputs
+    public bool IsSwinging { get; private set; }
+    public event Action SwingCancelEvent;
     private Controls controls;
 
     public void Initiate()
@@ -55,7 +57,14 @@ public class InputReader : Controls.IPlayerActions
         if (context.started)
         {
             SwingEvent?.Invoke();
+            IsSwinging = true;
             Debug.Log("Swing Event");
+        }
+        else if(context.canceled)
+        {
+            SwingCancelEvent?.Invoke();
+            IsSwinging = false;
+            Debug.Log("Swing Cancel Event");
         }
             
     }

@@ -1,32 +1,51 @@
+using System;
+using System.Collections.Generic;
 using UnityEngine;
 
-public class StateMachine : MonoBehaviour
+public class StateMachine
 {
-    public PlayerState CurrentState { get => _currentState; }
+    public PlayerState CurrentState => _currentState;
+    public PlayerStateFactory Factory => _stateFactory;
 
-    private PlayerManager _playerController;
+    private PlayerManager _playerManager;
     private PlayerState _currentState;
     private PlayerStateFactory _stateFactory;
+    private List<StatePredicate> anyTransitions = new();
 
-    private void Awake()
+    public StateMachine(PlayerManager playerManager)
     {
-        _playerController = GetComponent<PlayerManager>();
-        _stateFactory = new PlayerStateFactory(this, _playerController);
+        _playerManager = playerManager;
+        _stateFactory = new PlayerStateFactory(this, _playerManager);
     }
 
-    private void Start()
+    public void Start()
     {
         ChangeState(_stateFactory.Airborne());
     }
 
-    private void Update()
+    public void Update()
     {
         _currentState?.Update();
+        CheckAnyTransitions();
     }
 
-    private void FixedUpdate()
+    public void FixedUpdate()
     {
         _currentState?.FixedUpdate();
+    }
+
+    private void CheckAnyTransitions()
+    {
+        if (anyTransitions.Count == 0) return;
+
+        foreach(var transition in anyTransitions)
+        {
+            if(transition.Evaluate() && transition.To != CurrentState)
+            {
+                ChangeState(transition.To);
+                return;
+            }
+        }
     }
 
     public void ChangeState(PlayerState newState)
@@ -34,6 +53,42 @@ public class StateMachine : MonoBehaviour
         _currentState?.OnExit();
         _currentState = newState;
         _currentState?.OnEnter();
-        Debug.Log("Changed to state "+newState);
+        Debug.Log("Changed to state " + newState);
     }
+
+    public void AddAnyTransition(StatePredicate transition)
+    {
+        if (!anyTransitions.Contains(transition))
+        {
+            anyTransitions.Add(transition);
+        }
+        else
+        {
+            Debug.LogWarning($"[StateMachine] AnyTransitions list already contains {transition.ToString()}");
+        }
+    }
+    
+}
+
+public class StatePredicate
+{
+    public PlayerState To => _to;
+    private PlayerState _to;
+    private Func<bool>_predicate;
+    public StatePredicate(PlayerState toState, Func<bool> predicate)
+    {
+        _to = toState;
+        _predicate = predicate;
+    }
+
+    public bool Evaluate()
+    {
+        return _predicate.Invoke();
+    }
+
+    public override string ToString()
+    {
+        return $"StatePredicate to {To.GetType().Name}";
+    }
+    
 }
