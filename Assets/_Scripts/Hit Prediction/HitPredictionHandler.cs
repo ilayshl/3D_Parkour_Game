@@ -3,8 +3,14 @@ using UnityEngine;
 public class HitPredictionHandler : MonoBehaviour
 {
     [SerializeField] private Camera playerCamera;
-    [SerializeField] private HitPredictionObject predictionObject;
+    [SerializeField] private HitPredictionIndicator predictionPrefab;
     [SerializeField] private float sphereRadius = 3f;
+    private HitPredictionIndicator _activeIndicator;
+
+    void Start()
+    {
+        _activeIndicator = Instantiate(predictionPrefab);
+    }
 
     public RaycastHit ShootRaycast(float maxDistance, LayerMask hitLayer)
     {
@@ -17,14 +23,14 @@ public class HitPredictionHandler : MonoBehaviour
                 out sphereCastHit, maxDistance, hitLayer);
 
         RaycastHit _predictionHit = raycastHit.point == Vector3.zero ? sphereCastHit : raycastHit;
-        predictionObject.SetPosition(_predictionHit.point);
-        predictionObject.CalculatePredictionPointSize(playerCamera.transform.position, maxDistance);
+        _activeIndicator.SetPosition(_predictionHit.point);
+        _activeIndicator.CalculatePredictionPointSize(playerCamera.transform.position, maxDistance);
         return _predictionHit;
     }
 
     public void SetActive(bool value)
     {
-        predictionObject.gameObject.SetActive(value);
+        _activeIndicator.gameObject.SetActive(value);
     }
 
     }

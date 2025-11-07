@@ -10,8 +10,10 @@ GameObject:
   m_Component:
   - component: {fileID: 6577251161588002668}
   - component: {fileID: 758209983721781517}
-  - component: {fileID: 7744054713045679031}
-  m_Layer: 0
+  - component: {fileID: 269902086997675133}
+  - component: {fileID: 7840023643767540934}
+  - component: {fileID: 7391960299451240204}
+  m_Layer: 8
   m_Name: Player Visuals
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -63,7 +65,7 @@ Rigidbody:
   m_Interpolate: 1
   m_Constraints: 112
   m_CollisionDetection: 1
---- !u!114 &7744054713045679031
+--- !u!114 &269902086997675133
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -72,9 +74,42 @@ MonoBehaviour:
   m_GameObject: {fileID: 1954457568472821955}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7fafd6cef9a1c8b45867bb6eda3dcab7, type: 3}
+  m_Script: {fileID: 11500000, guid: 3c7e6ac1011e648faa2f479ff8ff77eb, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::PlayerManager
+  m_EditorClassIdentifier: 
+  SpeedLimitMult: 1
+  groundLayer:
+    serializedVersion: 2
+    m_Bits: 8
+  movementOrientation: {fileID: 6707824789098710413}
+  lookCamera: {fileID: 0}
+--- !u!114 &7840023643767540934
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1954457568472821955}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1bfad792f8a24b54da6d9d278692c520, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  playerCamera: {fileID: 0}
+  predictionPrefab: {fileID: 5936440194636463730, guid: 730591e4ceeba494c8a007371ee5d27f, type: 3}
+  sphereRadius: 3
+--- !u!114 &7391960299451240204
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1954457568472821955}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0b7c82bef3714e34d8852a5eefb5669a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &6072807915654740772
 GameObject:
   m_ObjectHideFlags: 0
@@ -87,8 +122,8 @@ GameObject:
   - component: {fileID: 4338224453367151198}
   - component: {fileID: 227236256848427702}
   - component: {fileID: 7989546131317184552}
-  m_Layer: 0
-  m_Name: PlayerCapsule
+  m_Layer: 8
+  m_Name: Player Model
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -194,7 +229,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3770480935366093033}
-  m_Layer: 0
+  - component: {fileID: 6707824789098710413}
+  - component: {fileID: 249696485014793023}
+  m_Layer: 8
   m_Name: Movement Orientation
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -216,6 +253,30 @@ Transform:
   m_Children: []
   m_Father: {fileID: 6577251161588002668}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &6707824789098710413
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8194416014992837674}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4b8cbe73854614a1bad429cc21205d46, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &249696485014793023
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8194416014992837674}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4b8cbe73854614a1bad429cc21205d46, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &8660017657918085652
 GameObject:
   m_ObjectHideFlags: 0
@@ -225,8 +286,10 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3662745359062086037}
-  m_Layer: 0
-  m_Name: Camera Look
+  - component: {fileID: 8835285930700843010}
+  - component: {fileID: 4126637289433676422}
+  m_Layer: 8
+  m_Name: Camera Anchor
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -247,3 +310,27 @@ Transform:
   m_Children: []
   m_Father: {fileID: 6577251161588002668}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &8835285930700843010
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8660017657918085652}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7b511e03f7938432ca74cee06f960445, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &4126637289433676422
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8660017657918085652}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7b511e03f7938432ca74cee06f960445, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class HitPredictionObject : MonoBehaviour
+public class HitPredictionIndicator : MonoBehaviour
 {
     [SerializeField] float minScale = 0.07f;
     [SerializeField] float maxScale = 0.8f;

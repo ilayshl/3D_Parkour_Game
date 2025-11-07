@@ -1,81 +1,71 @@
 using UnityEngine;
 
-public class PlayerSwing : MonoBehaviour
+public class PlayerSwing
 {
-    public bool IsReady { get => _predictionHit.point != Vector3.zero; }
-    [Header("Ray Variables")]
-    [SerializeField] private int maxDistance = 25;
-    [SerializeField] private LayerMask hitLayer;
-    [Header("Movement Variables")]
-    [SerializeField] private float moveSpeed = 10f;
-    [SerializeField] private float swingSpeedLimitMult = 4f;
-    [SerializeField] private float horizontalThrustForce = 2000;
-    [SerializeField] private float forwardThrustForce = 3000;
-    [SerializeField] private float extendRopeSpeed = 20;
-    [SerializeField] private float swingDrag = 0.01f;
-    [Header("References")]
-    [SerializeField] private Transform lookDirection;
-    [SerializeField] private HitPredictionHandler hitPredictionHandler;
-    [SerializeField] private RopeHandler ropeHandler;
-    [SerializeField] private SwingingHandRotation handRotation;
-    [SerializeField] private ParticleSystem cheeseBitsParticle;
+     private PlayerManager _player;
+    private PlayerSwingData _data;
+    private Rigidbody _rb;
+    private HitPredictionHandler _hitPredictionHandler;
+    private PlayerMovementOrientation _orientation;
+    private SwingingHandRotation _handRotation;
+    public PlayerSwing(PlayerManager player, PlayerSwingData data, Rigidbody rb)
+    {
+        _player = player;
+        _data = data;
+        _rb = rb;
+        _hitPredictionHandler = _player.GetComponent<HitPredictionHandler>();
+        _orientation = _player.GetComponentInChildren<PlayerMovementOrientation>();
+        _handRotation = _player.transform.parent.GetComponentInChildren<SwingingHandRotation>();
+        _hitPredictionHandler.gameObject.SetActive(true);
+    }
+
+    public bool IsSwinging => _swingPoint != Vector3.zero;
+    private bool isReady => _predictionHit.point != Vector3.zero;
     private Vector3 _swingPoint;
     private SpringJoint _joint;
     private RaycastHit _predictionHit;
     private RopeHandler _activeRope;
 
-    private Rigidbody _rb;
-
-    void Awake()
+    /// <summary>
+    /// Checks and returns bool for if swinging is possible.
+    /// </summary>
+    /// <returns></returns>
+    public bool CheckSwing()
     {
-        _rb = GetComponent<Rigidbody>();
-    }
-
-    void Start()
-    {
-        hitPredictionHandler.SetActive(true);
-    }
-
-    void Update()
-    {
-        /* if (Input.GetKeyDown(swingInput)) CheckSwing();
-        if (Input.GetKeyUp(swingInput)) StopSwing(); */
-    }
-
-    public void StartSwing(Vector3 position)
-    {
-        _predictionHit.point = position;
-    }
-
-    private void CheckSwing()
-    {
-        if (IsReady)
+        if (isReady)
         {
             InitializeSwing();
+            return true;
         }
+
+        return false;
     }
 
-    private void InitializeSwing()
+    /// <summary>
+    /// 
+    /// </summary>
+    private void InitializeSwing() //To do: insert factory and object pooling logic! CAN NOT USE INSTANTIATE HERE
     {
         _swingPoint = _predictionHit.point;
 
         InitializeSpringJoint();
-        _activeRope = Instantiate(ropeHandler, transform.position, Quaternion.identity);
-        _activeRope.Initialize(lookDirection, _predictionHit);
+        _activeRope = MonoBehaviour.Instantiate(_player.RopeHandler, _player.transform.position, Quaternion.identity);
+        _activeRope.Initialize(_player.LookCamera.transform, _predictionHit);
 
-        handRotation.SetTarget(_swingPoint);
-        _rb.linearDamping = swingDrag;
-
-        cheeseBitsParticle.Play();
+        _handRotation.SetTarget(_swingPoint);
+        //cheeseBitsParticle.Play(); // Should be along with the factory logic
     }
 
+    /// <summary>
+    /// Relevant data for spring joint component.
+    /// </summary>
     private void InitializeSpringJoint()
     {
-        _joint = this.gameObject.AddComponent<SpringJoint>();
+        _joint = _player.gameObject.AddComponent<SpringJoint>();
         _joint.autoConfigureConnectedAnchor = false;
         _joint.connectedAnchor = _swingPoint;
 
-        float distanceFromPoint = Vector3.Distance(transform.position, _swingPoint);
+        float distanceFromPoint = Vector3.Distance(_player.transform.position, _swingPoint);
 
         _joint.maxDistance = distanceFromPoint * 0.8f;
         _joint.minDistance = distanceFromPoint * 0.1f;
@@ -85,47 +75,59 @@ public class PlayerSwing : MonoBehaviour
         _joint.massScale = 4.5f;
     }
 
-    private void StopSwing()
+    /// <summary>
+    /// When Swinging State ends- finish up all variables.
+    /// </summary>
+    public void StopSwing() //To do: implement usage of factory and object pooling logic! CAN NOT USE DESTROY
     {
-            handRotation.ResetTarget();
-            _activeRope.CutRope(_rb.linearVelocity);
-            Destroy(_joint);
-            hitPredictionHandler.SetActive(true);
+        _handRotation.ResetTarget();
+        _activeRope.CutRope(_rb.linearVelocity);
+        MonoBehaviour.Destroy(_joint);
+        _hitPredictionHandler.SetActive(true);
     }
 
+    /// <summary>
+    /// Logic for movement when swinging.
+    /// </summary>
+    /// <param name="moveInput"></param>
     public void SwingMove(Vector2 moveInput)
     {
-            //Sideways movement
-            Vector3 moveDirection = lookDirection.transform.right * Input.GetAxisRaw("Horizontal") * horizontalThrustForce;
-            _rb.AddForce(moveDirection.normalized);
+        //Sideways movement
+        Vector3 moveDirection = _orientation.transform.right * _player.MoveInput.x * _data.HorizontalThrustForce;
+        _rb.AddForce(moveDirection.normalized);
 
-            //Lengthening the joint
-            if (Input.GetAxisRaw("Vertical") < 0)
-            {
-                float extendedDistanceFromPoint = Vector3.Distance(transform.position, _swingPoint) + extendRopeSpeed;
-                _joint.maxDistance = extendedDistanceFromPoint * 0.8f;
-                _joint.minDistance = extendedDistanceFromPoint * 0.2f;
-            }
-
-            //Shortening the joint
-            /* if (Input.GetKey(shortenRopeInput))
-            {
-                Vector3 directionToPoint = _swingPoint - transform.position;
-                _rb.AddForce(directionToPoint.normalized * forwardThrustForce * Time.deltaTime);
-
-                float distanceFromPoint = Vector3.Distance(transform.position, _swingPoint);
-
-                _joint.maxDistance = distanceFromPoint * 0.8f;
-                _joint.minDistance = distanceFromPoint * 0.25f;
-            } */
+        //Lengthening the joint
+        if (_player.MoveInput.y < 0)
+        {
+            float extendedDistanceFromPoint = Vector3.Distance(_player.transform.position, _swingPoint) + _data.ExtendRopeSpeed;
+            _joint.maxDistance = extendedDistanceFromPoint * 0.8f;
+            _joint.minDistance = extendedDistanceFromPoint * 0.2f;
+        }
     }
 
+    /// <summary>
+    /// When MoveInput.Y > 0, meaning player moves towards rope hit point
+    /// </summary>
+    public void ShortenRope()
+    {
+        Vector3 directionToPoint = _swingPoint - _player.transform.position;
+        _rb.AddForce(directionToPoint.normalized * _data.ForwardThrustForce * Time.deltaTime);
+
+        float distanceFromPoint = Vector3.Distance(_player.transform.position, _swingPoint);
+
+        _joint.maxDistance = distanceFromPoint * 0.8f;
+        _joint.minDistance = distanceFromPoint * 0.25f;
+    }
+
+    /// <summary>
+    /// Shoots a ray and a sphere cast to measure if Grappable is in the player's aim.
+    /// </summary>
     public void CheckForSwingPoints()
     {
-       if(_swingPoint == Vector3.zero)
+        if (_swingPoint == Vector3.zero)
         {
-            _predictionHit = hitPredictionHandler.ShootRaycast(maxDistance, hitLayer);
+            _predictionHit = _hitPredictionHandler.ShootRaycast(_data.MaxDistance, _data.HitLayer);
         }
-        hitPredictionHandler.SetActive(false);
+        _hitPredictionHandler.SetActive(false);
     }
 }

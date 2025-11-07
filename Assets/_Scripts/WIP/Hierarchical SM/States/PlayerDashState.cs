@@ -1,6 +1,6 @@
 public class PlayerDashState : PlayerState
 {
-    public PlayerDashState(StateMachine currentContext, PlayerController player, PlayerStateFactory factory) : base(currentContext, player, factory)
+    public PlayerDashState(StateMachine currentContext, PlayerManager player, PlayerStateFactory factory) : base(currentContext, player, factory)
     {
             _moveData = new PlayerMovementData(0.1f, 1f, 1f);
     }
@@ -15,12 +15,12 @@ public class PlayerDashState : PlayerState
         base.OnEnter();
     }
     
-    public override void Update(float deltaTime)
+    public override void Update()
     {
         //Check if finished- if so, EndState();
     }
 
-    public override void FixedUpdate(float fixedDeltaTime)
+    public override void FixedUpdate()
     {
         throw new System.NotImplementedException();
     }

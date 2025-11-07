@@ -2,34 +2,38 @@ using System;
 
 public class PlayerWalkState : PlayerState
 {
-    public PlayerWalkState(StateMachine currentContext, PlayerController player, PlayerStateFactory factory) : base(currentContext, player, factory)
+    public PlayerWalkState(StateMachine currentContext, PlayerManager player, PlayerStateFactory factory) : base(currentContext, player, factory)
     {
         _moveData = new PlayerMovementData(5f, 1f, 1f);
     }
 
     public override void CheckTransitionIn()
     {
-        
+
     }
 
     public override void OnEnter()
     {
         base.OnEnter();
+        _player.InputReader.JumpEvent += Jump;
     }
 
-    public override void Update(float deltaTime)
+    public override void Update()
     {
         CheckTransitionToAirborne();
     }
 
-    public override void FixedUpdate(float fixedDeltaTime)
+    public override void FixedUpdate()
     {
         _player.HandleMove();
     }
 
     private void CheckTransitionToAirborne()
     {
-        if (!IsGrounded() || CheckForJump()) EndState();
+        if (!IsGrounded())
+        {
+            EndState();
+        }
     }
 
     private bool IsGrounded()
@@ -37,13 +41,13 @@ public class PlayerWalkState : PlayerState
         return _player.IsGrounded;
     }
 
-    private bool CheckForJump()
+    private void Jump()
     {
-        return false;
+        _player.HandleJump();
     }
 
     public override void OnExit()
     {
-        
+        _player.InputReader.JumpEvent -= Jump;
     }
 }

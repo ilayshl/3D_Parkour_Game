@@ -1,20 +1,17 @@
 using System.Collections;
 using UnityEngine;
 
+/// <summary>
+/// Responsible for the rotation of the swinging hand towards the hitpoint of Grappable.
+/// </summary>
 public class SwingingHandRotation : MonoBehaviour
 {
     private const int X_ROTATION_LIMIT = 20;
     private const int Y_ROTATION_LIMIT = 30;
     [SerializeField] private float rotationSpeed = 15;
     private Vector3 _wallPos;
-    private Quaternion _originalRotation;
     private Coroutine _activeRotation;
-
-    void Start()
-    {
-        _originalRotation = transform.rotation;
-    }
-
+    
     public void SetTarget(Vector3 position)
     {
         _wallPos = position;

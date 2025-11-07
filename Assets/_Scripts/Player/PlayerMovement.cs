@@ -3,23 +3,22 @@ using UnityEngine;
 public class PlayerMovement
 {
     private const float MOVE_SPEED = 10;
+    private const float JUMP_FORCE = 12;
     public float Damp = 0.5f;
     public float MoveSpeedLimitMult = 1; //Normally 1
     public float MoveSpeedMult = 1; //Normally 1
-    private Transform _orientation;
+    private PlayerMovementOrientation _orientation;
     private Rigidbody _rb;
 
-
-
-    public PlayerMovement(Transform movementOrientation, Rigidbody rb)
+    public PlayerMovement(PlayerMovementOrientation orientation, Rigidbody rb)
     {
-        _orientation = movementOrientation;
+        _orientation = orientation;
         _rb = rb;
     }
 
     public void Move(Vector2 moveInput)
     {
-        Vector3 currentInput = (_orientation.forward * moveInput.y) + (_orientation.right * moveInput.x);
+        Vector3 currentInput = (_orientation.transform.forward * moveInput.y) + (_orientation.transform.right * moveInput.x);
         Vector3 forceToAdd = currentInput.normalized * MOVE_SPEED * 350 * Time.fixedDeltaTime;
         _rb.AddForce(forceToAdd * MoveSpeedMult, ForceMode.Force);
     }
@@ -30,22 +29,18 @@ public class PlayerMovement
          {
              Vector3 limitVelocity = _rb.linearVelocity.normalized * MOVE_SPEED * MoveSpeedLimitMult;
             _rb.linearVelocity = new Vector3(limitVelocity.x, _rb.linearVelocity.y, limitVelocity.z);
-             Debug.Log("Limited speed to "+_rb.linearVelocity);
          }
     }
+    public void Jump()
+     {
+         _rb.linearVelocity = new Vector3(_rb.linearVelocity.x, 0, _rb.linearVelocity.z);
+        _rb.AddForce(_orientation.transform.up * JUMP_FORCE, ForceMode.Impulse);
+         //_readyToJump = false;
+     }
+
     
-    /*
-     private void Jump()
-     {
-         _playerData.rb.linearVelocity = new Vector3(_playerData.rb.linearVelocity.x, 0, _playerData.rb.linearVelocity.z);
-         _playerData.rb.AddForce(transform.up * _playerData.JumpForce, ForceMode.Impulse);
-         _readyToJump = false;
-     }
-
-     private void ResetJump()
-     {
-         _readyToJump = true;
-     }
-
-      */
+    /* public void ResetJump()
+    {
+        _readyToJump = true;
+    } */
 }

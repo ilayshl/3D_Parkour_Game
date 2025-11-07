@@ -4,7 +4,8 @@ public class PlayerCamera : MonoBehaviour
 {
     [Range(1f, 100f)] public float sensitivityX, sensitivityY = 25f;
 
-    [SerializeField] private Transform playerOrientation, playerLook;
+    [SerializeField] private CameraAnchor playerCameraAnchor;
+    [SerializeField] private PlayerMovementOrientation playerOrientation;
 
     private float _xRotation;
     private float _yRotation;
@@ -40,8 +41,9 @@ public class PlayerCamera : MonoBehaviour
 
     private void RotateCamera()
     {
-        playerLook.transform.rotation = Quaternion.Euler(_xRotation, _yRotation, 0);
-        playerOrientation.transform.rotation = Quaternion.Euler(0, _yRotation, 0);
+        Vector2 direction = new Vector2(_xRotation, _yRotation);
+        playerCameraAnchor.LookTowards(Quaternion.Euler(direction.x, direction.y, 0));
+        playerOrientation.LookTowards(Quaternion.Euler(0, _yRotation, 0));
     }
 
 }

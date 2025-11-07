@@ -2,15 +2,15 @@ using System;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-public class InputReader : MonoBehaviour, Controls.IPlayerActions
+//Reads input and translates it to values and events.
+public class InputReader : Controls.IPlayerActions
 {
-    public Vector2 MovementInput { get; private set; }
+    public Vector2 MovementInput { get; private set; } //X, Y values
     public Vector2 LookInput { get; private set; }
-    public event Action JumpEvent, ShootEvent, SwingEvent, AbilityEvent;
-    //public event Action<Vector2> MoveEvent, LookEvent;
+    public event Action JumpEvent, ShootEvent, SwingEvent, AbilityEvent; //Button inputs
     private Controls controls;
 
-    private void Start()
+    public void Initiate()
     {
         controls = new Controls();
         controls.Player.SetCallbacks(this);
@@ -18,15 +18,17 @@ public class InputReader : MonoBehaviour, Controls.IPlayerActions
         controls.Player.Enable();
     }
 
-    private void OnDestroy()
+    public void Disable()
     {
         controls.Player.Disable();
     }
 
     public void OnJump(InputAction.CallbackContext context)
     {
-        if (context.performed)
+        if (context.started)
+        {
             JumpEvent?.Invoke();
+        }
     }
 
     public void OnLook(InputAction.CallbackContext context)
@@ -37,24 +39,30 @@ public class InputReader : MonoBehaviour, Controls.IPlayerActions
     public void OnMove(InputAction.CallbackContext context)
     {
         MovementInput = context.ReadValue<Vector2>();
-        //MoveEvent?.Invoke(context.ReadValue<Vector2>());
     }
 
     public void OnShoot(InputAction.CallbackContext context)
     {
-        if (context.performed)
+        if (context.started)
+        {
+            ShootEvent?.Invoke();
             Debug.Log("Shoot Event");
+        }
     }
 
     public void OnSwing(InputAction.CallbackContext context)
     {
-        if (context.performed)
+        if (context.started)
+        {
+            SwingEvent?.Invoke();
             Debug.Log("Swing Event");
+        }
+            
     }
 
     public void OnAbility(InputAction.CallbackContext context)
     {
-        if (context.performed)
+        if (context.started)
             AbilityEvent?.Invoke();
     }
 }

@@ -4,13 +4,13 @@ public class StateMachine : MonoBehaviour
 {
     public PlayerState CurrentState { get => _currentState; }
 
-    private PlayerController _playerController;
+    private PlayerManager _playerController;
     private PlayerState _currentState;
     private PlayerStateFactory _stateFactory;
 
     private void Awake()
     {
-        _playerController = GetComponent<PlayerController>();
+        _playerController = GetComponent<PlayerManager>();
         _stateFactory = new PlayerStateFactory(this, _playerController);
     }
 
@@ -21,12 +21,12 @@ public class StateMachine : MonoBehaviour
 
     private void Update()
     {
-        _currentState?.Update(Time.deltaTime);
+        _currentState?.Update();
     }
 
     private void FixedUpdate()
     {
-        _currentState?.FixedUpdate(Time.fixedDeltaTime);
+        _currentState?.FixedUpdate();
     }
 
     public void ChangeState(PlayerState newState)

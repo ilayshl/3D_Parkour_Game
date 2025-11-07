@@ -2,12 +2,14 @@ using System;
 using TMPro;
 using UnityEngine;
 
+/// <summary>
+/// A Temporary script to display the necessary debug information.
+/// </summary>
 public class DebugCanvas : MonoBehaviour
 {
     [SerializeField] private TextMeshProUGUI speedValueText, stateValueText, mouseSensitivity;
-    //[SerializeField] private PlayerMovement player;
-    [SerializeField] private StateMachine playerManager;
-    [SerializeField] private PlayerController controller;
+    [SerializeField] private StateMachine playerStateMachine;
+    [SerializeField] private PlayerManager manager;
     [SerializeField] private PlayerCamera playerCamera;
 
     void OnEnable()
@@ -22,9 +24,9 @@ public class DebugCanvas : MonoBehaviour
 
     void LateUpdate()
     {
-        speedValueText.SetText(Math.Round(controller.CurrentVelocity.magnitude, 3).ToString());
+        speedValueText.SetText(Math.Round(manager.CurrentVelocity.magnitude, 3).ToString());
         mouseSensitivity.SetText(playerCamera.sensitivityX.ToString());
-        stateValueText.SetText(playerManager.CurrentState.ToString());
+        stateValueText.SetText(playerStateMachine.CurrentState.ToString());
 
         /* if (Input.GetKeyDown(KeyCode.Escape)) Application.Quit();
 

@@ -1,7 +1,7 @@
 public class PlayerSwingState : PlayerState
 {
     
-    public PlayerSwingState(StateMachine currentContext, PlayerController player, PlayerStateFactory factory) : base(currentContext, player, factory)
+    public PlayerSwingState(StateMachine currentContext, PlayerManager player, PlayerStateFactory factory) : base(currentContext, player, factory)
     {
         _moveData = new PlayerMovementData(1f, 1f, 1f);
     }
@@ -15,12 +15,12 @@ public class PlayerSwingState : PlayerState
                 base.OnEnter();
     }
 
-    public override void Update(float deltaTime)
+    public override void Update()
     {
         //Check if finished- if so, EndState();
     }
 
-    public override void FixedUpdate(float fixedDeltaTime)
+    public override void FixedUpdate()
     {
         _player.HandleSwingMove();
     }

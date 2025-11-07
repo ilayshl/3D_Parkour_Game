@@ -1,6 +1,6 @@
 public class PlayerAirborneState : PlayerState
 {
-    public PlayerAirborneState(StateMachine currentContext, PlayerController player, PlayerStateFactory factory) : base(currentContext, player, factory)
+    public PlayerAirborneState(StateMachine currentContext, PlayerManager player, PlayerStateFactory factory) : base(currentContext, player, factory)
     {
         _moveData = new PlayerMovementData(0.2f, 0.1f, 4f);
     }
@@ -15,12 +15,12 @@ public class PlayerAirborneState : PlayerState
         base.OnEnter();
     }
 
-    public override void Update(float deltaTime)
+    public override void Update()
     {
         CheckTransitionToWalk();
     }
 
-    public override void FixedUpdate(float fixedDeltaTime)
+    public override void FixedUpdate()
     {
         _player.HandleMove();
     }

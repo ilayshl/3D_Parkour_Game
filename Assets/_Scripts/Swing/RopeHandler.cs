@@ -1,5 +1,6 @@
 using UnityEngine;
 
+//Is held by the prefab of the entire rope, manages the logic of the rope.
 public class RopeHandler : MonoBehaviour
 {
     [SerializeField] private Transform splashModel;
