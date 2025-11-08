@@ -2,12 +2,13 @@ using UnityEngine;
 
 public class PlayerSwing
 {
-     private PlayerManager _player;
+    private PlayerManager _player;
     private PlayerSwingData _data;
     private Rigidbody _rb;
     private HitPredictionHandler _hitPredictionHandler;
     private PlayerMovementOrientation _orientation;
     private SwingingHandRotation _handRotation;
+    private RopeAnchor _ropeAnchor;
     public PlayerSwing(PlayerManager player, PlayerSwingData data, Rigidbody rb)
     {
         _player = player;
@@ -16,6 +17,7 @@ public class PlayerSwing
         _hitPredictionHandler = _player.GetComponent<HitPredictionHandler>();
         _orientation = _player.GetComponentInChildren<PlayerMovementOrientation>();
         _handRotation = _player.transform.parent.GetComponentInChildren<SwingingHandRotation>();
+        _ropeAnchor = _handRotation.GetComponentInChildren<RopeAnchor>();
         _hitPredictionHandler.gameObject.SetActive(true);
     }
 
@@ -50,7 +52,7 @@ public class PlayerSwing
 
         InitializeSpringJoint();
         _activeRope = MonoBehaviour.Instantiate(_player.RopeHandler, _player.transform.position, Quaternion.identity);
-        _activeRope.Initialize(_player.LookCamera.transform, _predictionHit);
+        _activeRope.Initialize(_ropeAnchor.transform, _predictionHit);
 
         _handRotation.SetTarget(_swingPoint);
         //cheeseBitsParticle.Play(); // Should be along with the factory logic
@@ -81,12 +83,13 @@ public class PlayerSwing
     /// </summary>
     public void StopSwing() //To do: implement usage of factory and object pooling logic! CAN NOT USE DESTROY
     {
-        if(IsSwinging)
+        if (IsSwinging)
         {
-        _handRotation.ResetTarget();
-        _activeRope.CutRope(_rb.linearVelocity);
-        MonoBehaviour.Destroy(_joint);
-        _hitPredictionHandler.SetActive(true);
+            _handRotation.ResetTarget();
+            _activeRope.CutRope(_rb.linearVelocity);
+            MonoBehaviour.Destroy(_joint);
+            _hitPredictionHandler.SetActive(true);
+            _swingPoint = Vector3.zero;
         }
     }
 
@@ -107,13 +110,14 @@ public class PlayerSwing
             ShortenRope();
         }
     }
-
+    
     private void MoveSideways()
     {
         Vector3 moveDirection = _orientation.transform.right * _player.MoveInput.x * _data.HorizontalThrustForce;
         _rb.AddForce(moveDirection.normalized);
     }
 
+    //When player presses go back key
     private void ExtendRope()
     {
         float extendedDistanceFromPoint = Vector3.Distance(_player.transform.position, _swingPoint) + _data.ExtendRopeSpeed;
@@ -121,6 +125,7 @@ public class PlayerSwing
         _joint.minDistance = extendedDistanceFromPoint * 0.2f;
     }
 
+    //To Do: change to when player presses Jump key
     private void ShortenRope()
     {
         Vector3 directionToPoint = _swingPoint - _player.transform.position;
