@@ -5,11 +5,6 @@ public class PlayerDashState : PlayerState
             _moveData = new PlayerMovementData(0.1f, 1f, 1f);
     }
 
-    public override void CheckTransitionIn()
-    {
-        throw new System.NotImplementedException();
-    }
-
     public override void OnEnter()
     {
         base.OnEnter();

@@ -5,11 +5,6 @@ public class PlayerAirborneState : PlayerState
         _moveData = new PlayerMovementData(0.2f, 0.1f, 4f);
     }
 
-    public override void CheckTransitionIn()
-    {
-
-    }
-
     public override void OnEnter()
     {
         base.OnEnter();

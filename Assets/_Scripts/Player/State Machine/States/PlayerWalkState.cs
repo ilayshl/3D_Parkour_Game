@@ -7,11 +7,6 @@ public class PlayerWalkState : PlayerState
         _moveData = new PlayerMovementData(5f, 1f, 1f);
     }
 
-    public override void CheckTransitionIn()
-    {
-
-    }
-
     public override void OnEnter()
     {
         base.OnEnter();

@@ -24,6 +24,5 @@ public abstract class PlayerState
     public abstract void Update();
     public abstract void FixedUpdate(); //Physics calculations.
     public abstract void OnExit();
-    public virtual void CheckTransitionIn() { return; } //Checks for transition predicate.
     protected virtual void EndState() { _context.ChangeState(_factory.Airborne()); }
 }

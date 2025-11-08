@@ -6,13 +6,10 @@ public class PlayerSwingState : PlayerState
         _moveData = new PlayerMovementData(1f, 1f, 1f);
     }
 
-    public override void CheckTransitionIn()
-    {
-    }
-
     public override void OnEnter()
     {
         base.OnEnter();
+        _player.HandleSwingStart();
     }
 
     public override void Update()
@@ -31,6 +28,6 @@ public class PlayerSwingState : PlayerState
 
     public override void OnExit()
     {
-        //Play sound or something
+        _player.HandleSwingStop();
     }
 }

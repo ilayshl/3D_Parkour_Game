@@ -20,10 +20,10 @@ public class PlayerSwing
     }
 
     public bool IsSwinging => _swingPoint != Vector3.zero;
-    private bool isReady => _predictionHit.point != Vector3.zero;
+    public bool IsReady => _predictionHit.point != Vector3.zero;
     private Vector3 _swingPoint;
     private SpringJoint _joint;
-    private RaycastHit _predictionHit;
+    private RaycastHit _predictionHit; //The desired location of the hit prediction object.
     private RopeHandler _activeRope;
 
     /// <summary>
@@ -32,7 +32,7 @@ public class PlayerSwing
     /// <returns></returns>
     public bool CheckSwing()
     {
-        if (isReady)
+        if (IsReady)
         {
             InitializeSwing();
             return true;
@@ -73,6 +73,7 @@ public class PlayerSwing
         _joint.spring = 4.5f;
         _joint.damper = 7f;
         _joint.massScale = 4.5f;
+        Debug.Log("Joint configured!");
     }
 
     /// <summary>
@@ -80,10 +81,13 @@ public class PlayerSwing
     /// </summary>
     public void StopSwing() //To do: implement usage of factory and object pooling logic! CAN NOT USE DESTROY
     {
+        if(IsSwinging)
+        {
         _handRotation.ResetTarget();
         _activeRope.CutRope(_rb.linearVelocity);
         MonoBehaviour.Destroy(_joint);
         _hitPredictionHandler.SetActive(true);
+        }
     }
 
     /// <summary>
@@ -92,23 +96,32 @@ public class PlayerSwing
     /// <param name="moveInput"></param>
     public void SwingMove(Vector2 moveInput)
     {
-        //Sideways movement
-        Vector3 moveDirection = _orientation.transform.right * _player.MoveInput.x * _data.HorizontalThrustForce;
-        _rb.AddForce(moveDirection.normalized);
-
+        MoveSideways();
         //Lengthening the joint
         if (_player.MoveInput.y < 0)
         {
-            float extendedDistanceFromPoint = Vector3.Distance(_player.transform.position, _swingPoint) + _data.ExtendRopeSpeed;
-            _joint.maxDistance = extendedDistanceFromPoint * 0.8f;
-            _joint.minDistance = extendedDistanceFromPoint * 0.2f;
+            ExtendRope();
+        }
+        else if (_player.MoveInput.y > 0)
+        {
+            ShortenRope();
         }
     }
 
-    /// <summary>
-    /// When MoveInput.Y > 0, meaning player moves towards rope hit point
-    /// </summary>
-    public void ShortenRope()
+    private void MoveSideways()
+    {
+        Vector3 moveDirection = _orientation.transform.right * _player.MoveInput.x * _data.HorizontalThrustForce;
+        _rb.AddForce(moveDirection.normalized);
+    }
+
+    private void ExtendRope()
+    {
+        float extendedDistanceFromPoint = Vector3.Distance(_player.transform.position, _swingPoint) + _data.ExtendRopeSpeed;
+        _joint.maxDistance = extendedDistanceFromPoint * 0.8f;
+        _joint.minDistance = extendedDistanceFromPoint * 0.2f;
+    }
+
+    private void ShortenRope()
     {
         Vector3 directionToPoint = _swingPoint - _player.transform.position;
         _rb.AddForce(directionToPoint.normalized * _data.ForwardThrustForce * Time.deltaTime);

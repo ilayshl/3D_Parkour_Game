@@ -15,7 +15,7 @@ public class PlayerManager : MonoBehaviour, IPlayerManager
     public PlayerCamera LookCamera => lookCamera;
     public bool IsGrounded => _groundSensor.CheckForGround();
     public float SpeedLimitMult = 1;
-    //[SerializeField] private PlayerSwingData swingData; //Couldn't set a ScriptableObject in the SerializeField section
+    [SerializeField] private PlayerSwingData swingData;
     //[SerializeField] private float movementSpeed = 10f; //Should it be here?
     [SerializeField] private LayerMask groundLayer;
     [SerializeField] private PlayerMovementOrientation movementOrientation;
@@ -35,9 +35,10 @@ public class PlayerManager : MonoBehaviour, IPlayerManager
         InitializeAnyTransitionStates();
     }
 
-    void Start()
+    private void Start()
     {
         _stateMachine.Start();
+        StartCoroutine(nameof(CheckForSwingPoints));
     }
 
     private void Update()
@@ -63,8 +64,7 @@ public class PlayerManager : MonoBehaviour, IPlayerManager
     {
         _stateMachine = new(this);
         _factory = _stateMachine.Factory;
-        Debug.Log($"Instantiated StateMachine {_stateMachine.ToString()} and Factory {_factory.ToString()}");
-        _playerSwing = new(this, new PlayerSwingData(), Rigidbody);
+        _playerSwing = new(this, swingData, Rigidbody);
         _playerMovement = new(movementOrientation, Rigidbody);
         _groundSensor = new(transform, groundLayer);
     }
@@ -77,7 +77,8 @@ public class PlayerManager : MonoBehaviour, IPlayerManager
 
     private void InitializeAnyTransitionStates()
     {
-        _stateMachine.AddAnyTransition(new StatePredicate(_factory.Swing(), () => InputReader.IsSwinging));
+        _stateMachine.AddAnyTransition(new StatePredicate(_factory.Swing(), () => InputReader.IsSwinging && _playerSwing.IsReady));
+        //_stateMachine.AddAnyTransition(new StatePredicate(_factory.Dash(), () => InputReader.IsDashing));
     }
 
     private void GetInput()
@@ -91,7 +92,6 @@ public class PlayerManager : MonoBehaviour, IPlayerManager
         _playerMovement.MoveSpeedLimitMult = data.SpeedLimitMult;
         Rigidbody.linearDamping = data.Damp;
         _playerMovement.MoveSpeedMult = data.MoveSpeedMult;
-        Debug.Log($"Move Speed Limit Mult = {data.SpeedLimitMult}\nDamping = {data.Damp}\nMove Speed Mult = {data.MoveSpeedMult}");
     }
 
     public void HandleMove()
@@ -100,29 +100,32 @@ public class PlayerManager : MonoBehaviour, IPlayerManager
         _playerMovement.LimitSpeed();
     }
 
+    public void HandleSwingStart()
+    {
+        _playerSwing.CheckSwing();
+    }
+
     public void HandleSwingMove()
     {
         _playerSwing.SwingMove(MoveInput);
+    }
+
+    public void HandleSwingStop()
+    {
+        _playerSwing.StopSwing();
+        StartCoroutine(nameof(CheckForSwingPoints));
     }
     
     public void HandleJump()
     {
         _playerMovement.Jump();
-        //Invoke(nameof(_playerMovement.ResetJump), .25f); Unused, meant to prevent double-jumps
-    }
-
-    public void HandleSwing()
-    {
-        if(_playerSwing.CheckSwing())
-        {
-            
-        }
     }
 
     private IEnumerator CheckForSwingPoints()
     {
         while(!_playerSwing.IsSwinging)
         {
+            Debug.Log("CheckForSwingpoints!");
             _playerSwing.CheckForSwingPoints();
             yield return null;
         }
