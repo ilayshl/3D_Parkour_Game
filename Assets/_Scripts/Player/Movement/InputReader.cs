@@ -9,6 +9,7 @@ public class InputReader : Controls.IPlayerActions
     public Vector2 LookInput { get; private set; }
     public event Action JumpEvent, ShootEvent, SwingEvent, AbilityEvent; //Button inputs
     public bool IsSwinging { get; private set; }
+    public bool IsJumping { get; private set; }
     public bool IsDashing { get; private set; }
     public event Action SwingCancelEvent;
     private Controls controls;
@@ -31,6 +32,11 @@ public class InputReader : Controls.IPlayerActions
         if (context.started)
         {
             JumpEvent?.Invoke();
+            IsJumping = true;
+        }
+        else if(context.canceled)
+        {
+            IsJumping = false;
         }
     }
 

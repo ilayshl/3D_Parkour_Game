@@ -1,16 +1,13 @@
 public class PlayerSwingState : PlayerState
 {
-    private bool _isJumping;
-
     public PlayerSwingState(StateMachine currentContext, PlayerManager player, PlayerStateFactory factory) : base(currentContext, player, factory)
     {
-        _moveData = new PlayerMovementData(1f, 1f, 1f);
+        _moveData = new PlayerMovementData(0.2f, 0.1f, 4f);
     }
 
     public override void OnEnter()
     {
         base.OnEnter();
-        _player.InputReader.JumpEvent += GetJumpEvent;
         _player.HandleSwingStart();
     }
 
@@ -21,10 +18,10 @@ public class PlayerSwingState : PlayerState
             EndState();
         }
 
-        /* if(_isJumping)
+        if(_player.InputReader.IsJumping)
         {
             ShortenRope();
-        } */
+        }
     }
 
     public override void FixedUpdate()
@@ -34,11 +31,10 @@ public class PlayerSwingState : PlayerState
 
     public override void OnExit()
     {
-        _player.InputReader.JumpEvent -= GetJumpEvent;
         _player.HandleSwingStop();
     }
 
-    private void GetJumpEvent()
+    private void ShortenRope()
     {
         _player.ShortenRope();
     }

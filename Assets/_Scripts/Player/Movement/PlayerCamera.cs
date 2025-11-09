@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class PlayerCamera : MonoBehaviour
 {
-    [Range(1f, 100f)] public float sensitivityX, sensitivityY = 25f;
+    [Range(1f, 50f)] public float sensitivityX, sensitivityY = 15f;
 
     [SerializeField] private CameraAnchor playerCameraAnchor;
     [SerializeField] private PlayerMovementOrientation playerOrientation;

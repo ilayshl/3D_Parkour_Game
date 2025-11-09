@@ -6996,6 +6996,14 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1745916402118123283, guid: f25c45922b4b34717ba47399836474d4, type: 3}
+      propertyPath: sensitivityX
+      value: 15
+      objectReference: {fileID: 0}
+    - target: {fileID: 1745916402118123283, guid: f25c45922b4b34717ba47399836474d4, type: 3}
+      propertyPath: sensitivityY
+      value: 15
+      objectReference: {fileID: 0}
     - target: {fileID: 5341227879778074909, guid: f25c45922b4b34717ba47399836474d4, type: 3}
       propertyPath: m_LocalPosition.x
       value: -0.35
@@ -7004,6 +7012,10 @@ PrefabInstance:
       propertyPath: swingData
       value: 
       objectReference: {fileID: 11400000, guid: 735e3db04b4704608bcd7491dccaf982, type: 2}
+    - target: {fileID: 5667517934704417806, guid: f25c45922b4b34717ba47399836474d4, type: 3}
+      propertyPath: groundLayer.m_Bits
+      value: 72
+      objectReference: {fileID: 0}
     - target: {fileID: 7664743865618184205, guid: f25c45922b4b34717ba47399836474d4, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
