@@ -22,3 +22,4 @@ MonoBehaviour:
   forwardThrustForce: 3000
   extendRopeSpeed: 20
   swingDrag: 0.01
+  ropeHandler: {fileID: 918613529698683968, guid: 65e89ce03bee4ee45b13af471bdddd0d, type: 3}

@@ -2,7 +2,6 @@ using UnityEngine;
 
 public class PlayerSwing
 {
-    private PlayerManager _player;
     private PlayerSwingData _data;
     private Rigidbody _rb;
     private HitPredictionHandler _hitPredictionHandler;
@@ -10,25 +9,25 @@ public class PlayerSwing
     private SwingingHandRotation _handRotation;
     private ParticleSystem _swingParticles;
     private RopeAnchor _ropeAnchor;
-    public PlayerSwing(PlayerManager player, PlayerSwingData data, Rigidbody rb)
+
+    public bool IsSwinging => _swingPoint != Vector3.zero; //Is actually swinging now?
+    public bool IsReady => _predictionHit.point != Vector3.zero; //Is ready to swing?
+    private Vector3 _swingPoint; //When swinging, this is the active point hit.
+    private SpringJoint _joint; //The joint component connected to the player.
+    private RaycastHit _predictionHit; //The desired location of the hit prediction object.
+    private RopeHandler _activeRope; //The active rope visuals, after it was instantiated.
+
+    public PlayerSwing(PlayerSwingData data, Rigidbody rb)
     {
-        _player = player;
         _data = data;
         _rb = rb;
-        _hitPredictionHandler = _player.GetComponent<HitPredictionHandler>();
-        _orientation = _player.GetComponentInChildren<PlayerMovementOrientation>();
-        _handRotation = _player.transform.parent.GetComponentInChildren<SwingingHandRotation>();
+        _hitPredictionHandler = _rb.GetComponent<HitPredictionHandler>();
+        _orientation = _rb.GetComponentInChildren<PlayerMovementOrientation>();
+        _handRotation = _rb.transform.parent.GetComponentInChildren<SwingingHandRotation>();
         _swingParticles = _handRotation.GetComponentInChildren<ParticleSystem>();
         _ropeAnchor = _handRotation.GetComponentInChildren<RopeAnchor>();
         _hitPredictionHandler.gameObject.SetActive(true);
     }
-
-    public bool IsSwinging => _swingPoint != Vector3.zero;
-    public bool IsReady => _predictionHit.point != Vector3.zero;
-    private Vector3 _swingPoint;
-    private SpringJoint _joint;
-    private RaycastHit _predictionHit; //The desired location of the hit prediction object.
-    private RopeHandler _activeRope;
 
     /// <summary>
     /// Checks and returns bool for if swinging is possible.
@@ -53,7 +52,7 @@ public class PlayerSwing
         _swingPoint = _predictionHit.point;
 
         InitializeSpringJoint();
-        _activeRope = MonoBehaviour.Instantiate(_player.RopeHandler, _player.transform.position, Quaternion.identity);
+        _activeRope = MonoBehaviour.Instantiate(_data.RopeHandler, _rb.transform.position, Quaternion.identity);
         _activeRope.Initialize(_ropeAnchor.transform, _predictionHit);
 
         _handRotation.SetTarget(_swingPoint);
@@ -65,11 +64,11 @@ public class PlayerSwing
     /// </summary>
     private void InitializeSpringJoint()
     {
-        _joint = _player.gameObject.AddComponent<SpringJoint>();
+        _joint = _rb.gameObject.AddComponent<SpringJoint>();
         _joint.autoConfigureConnectedAnchor = false;
         _joint.connectedAnchor = _swingPoint;
 
-        float distanceFromPoint = Vector3.Distance(_player.transform.position, _swingPoint);
+        float distanceFromPoint = Vector3.Distance(_rb.transform.position, _swingPoint);
 
         _joint.maxDistance = distanceFromPoint * 0.8f;
         _joint.minDistance = distanceFromPoint * 0.1f;
@@ -77,7 +76,6 @@ public class PlayerSwing
         _joint.spring = 4.5f;
         _joint.damper = 7f;
         _joint.massScale = 4.5f;
-        Debug.Log("Joint configured!");
     }
 
     /// <summary>
@@ -101,45 +99,46 @@ public class PlayerSwing
     /// <param name="moveInput"></param>
     public void SwingMove(Vector2 moveInput)
     {
-        MoveSideways();
+        MoveSideways(moveInput.x);
         //Lengthening the joint
-        if (_player.MoveInput.y < 0)
+        if (moveInput.y < 0)
         {
             ExtendRope();
         }
-        else
+        //If W is pressed, just regularly move forward
+        else if(moveInput.y > 0)
         {
-            MoveForward();
+            MoveForward(moveInput.y);
         }
     }
 
-    private void MoveSideways()
+    private void MoveSideways(float horizontalInput)
     {
-        Vector3 moveDirection = _orientation.transform.right * _player.MoveInput.x * _data.HorizontalThrustForce;
-        _rb.AddForce(moveDirection.normalized);
+        Vector3 moveDirection = _orientation.transform.right * horizontalInput * _data.HorizontalThrustForce;
+        _rb.AddForce(moveDirection.normalized * _data.MoveSpeed);
     }
 
     //When player presses go back key
     private void ExtendRope()
     {
-        float extendedDistanceFromPoint = Vector3.Distance(_player.transform.position, _swingPoint) + _data.ExtendRopeSpeed;
+        float extendedDistanceFromPoint = Vector3.Distance(_rb.transform.position, _swingPoint) + _data.ExtendRopeSpeed;
         _joint.maxDistance = extendedDistanceFromPoint * 0.8f;
         _joint.minDistance = extendedDistanceFromPoint * 0.2f;
     }
 
-    private void MoveForward()
+    private void MoveForward(float verticalInput)
     {
-        Vector3 moveDirection = _orientation.transform.forward * _player.MoveInput.y * _data.HorizontalThrustForce;
-        _rb.AddForce(moveDirection.normalized);
+        Vector3 moveDirection = _orientation.transform.forward * verticalInput * _data.ForwardThrustForce;
+        _rb.AddForce(moveDirection.normalized * _data.MoveSpeed);
     }
 
     //To Do: change to when player presses Jump key
     public void ShortenRope()
     {
-        Vector3 directionToPoint = _swingPoint - _player.transform.position;
+        Vector3 directionToPoint = _swingPoint - _rb.transform.position;
         _rb.AddForce(directionToPoint.normalized * _data.ForwardThrustForce * Time.deltaTime);
 
-        float distanceFromPoint = Vector3.Distance(_player.transform.position, _swingPoint);
+        float distanceFromPoint = Vector3.Distance(_rb.transform.position, _swingPoint);
 
         _joint.maxDistance = distanceFromPoint * 0.8f;
         _joint.minDistance = distanceFromPoint * 0.25f;

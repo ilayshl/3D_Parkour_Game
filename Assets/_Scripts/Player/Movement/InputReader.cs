@@ -59,13 +59,11 @@ public class InputReader : Controls.IPlayerActions
         {
             SwingEvent?.Invoke();
             IsSwinging = true;
-            Debug.Log("Swing Event");
         }
         else if(context.canceled)
         {
             SwingCancelEvent?.Invoke();
             IsSwinging = false;
-            Debug.Log("Swing Cancel Event");
         }
             
     }

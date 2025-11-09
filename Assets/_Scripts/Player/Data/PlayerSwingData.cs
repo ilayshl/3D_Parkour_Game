@@ -23,13 +23,13 @@ public class PlayerSwingData : ScriptableObject
     public float ExtendRopeSpeed => extendRopeSpeed;
     public float SwingDrag => swingDrag;
 
-    /*[Header("References")]
-    [SerializeField] private HitPredictionHandler hitPredictionHandler;
+    [Header("References")]
     [SerializeField] private RopeHandler ropeHandler;
+    public RopeHandler RopeHandler => ropeHandler;
+    /* [SerializeField] private HitPredictionHandler hitPredictionHandler;
     [SerializeField] private SwingingHandRotation handRotation;
     [SerializeField] private ParticleSystem cheeseBitsParticle;
     public HitPredictionHandler HitPredictionHandler => hitPredictionHandler;
-    public RopeHandler RopeHandler => ropeHandler;
     public SwingingHandRotation HandRotation => handRotation;
     public ParticleSystem CheeseBitsParticle => cheeseBitsParticle; */
 

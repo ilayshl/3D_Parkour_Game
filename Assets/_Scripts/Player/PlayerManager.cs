@@ -14,7 +14,6 @@ public class PlayerManager : MonoBehaviour, IPlayerManager
     public RopeHandler RopeHandler => ropeHandler;
     public PlayerCamera LookCamera => lookCamera;
     public bool IsGrounded => _groundSensor.CheckForGround();
-    public float SpeedLimitMult = 1;
     [SerializeField] private PlayerSwingData swingData;
     //[SerializeField] private float movementSpeed = 10f; //Should it be here?
     [SerializeField] private LayerMask groundLayer;
@@ -64,7 +63,7 @@ public class PlayerManager : MonoBehaviour, IPlayerManager
     {
         _stateMachine = new(this);
         _factory = _stateMachine.Factory;
-        _playerSwing = new(this, swingData, Rigidbody);
+        _playerSwing = new(swingData, Rigidbody);
         _playerMovement = new(movementOrientation, Rigidbody);
         _groundSensor = new(transform, groundLayer);
     }
@@ -89,9 +88,7 @@ public class PlayerManager : MonoBehaviour, IPlayerManager
 
     public void SetMovementData(PlayerMovementData data)
     {
-        _playerMovement.MoveSpeedLimitMult = data.SpeedLimitMult;
-        Rigidbody.linearDamping = data.Damp;
-        _playerMovement.MoveSpeedMult = data.MoveSpeedMult;
+        _playerMovement.SetMovementData(data);
     }
 
     public void HandleMove()
@@ -132,6 +129,7 @@ public class PlayerManager : MonoBehaviour, IPlayerManager
     
     public void ShortenRope()
     {
+        Debug.Log("[PlayerManager] Shortening Rope!");
         _playerSwing.ShortenRope();
     }
 }
