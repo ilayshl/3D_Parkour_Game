@@ -1,6 +1,6 @@
 public class PlayerSwingState : PlayerState
 {
-    
+
     public PlayerSwingState(StateMachine currentContext, PlayerManager player, PlayerStateFactory factory) : base(currentContext, player, factory)
     {
         _moveData = new PlayerMovementData(1f, 1f, 1f);
@@ -9,6 +9,7 @@ public class PlayerSwingState : PlayerState
     public override void OnEnter()
     {
         base.OnEnter();
+        _player.InputReader.JumpEvent += ShortenRope;
         _player.HandleSwingStart();
     }
 
@@ -28,6 +29,12 @@ public class PlayerSwingState : PlayerState
 
     public override void OnExit()
     {
+        _player.InputReader.JumpEvent -= ShortenRope;
         _player.HandleSwingStop();
+    }
+
+    private void ShortenRope()
+    {
+        _player.ShortenRope();
     }
 }

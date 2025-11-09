@@ -8,6 +8,7 @@ public class PlayerSwing
     private HitPredictionHandler _hitPredictionHandler;
     private PlayerMovementOrientation _orientation;
     private SwingingHandRotation _handRotation;
+    private ParticleSystem _swingParticles;
     private RopeAnchor _ropeAnchor;
     public PlayerSwing(PlayerManager player, PlayerSwingData data, Rigidbody rb)
     {
@@ -17,6 +18,7 @@ public class PlayerSwing
         _hitPredictionHandler = _player.GetComponent<HitPredictionHandler>();
         _orientation = _player.GetComponentInChildren<PlayerMovementOrientation>();
         _handRotation = _player.transform.parent.GetComponentInChildren<SwingingHandRotation>();
+        _swingParticles = _handRotation.GetComponentInChildren<ParticleSystem>();
         _ropeAnchor = _handRotation.GetComponentInChildren<RopeAnchor>();
         _hitPredictionHandler.gameObject.SetActive(true);
     }
@@ -55,7 +57,7 @@ public class PlayerSwing
         _activeRope.Initialize(_ropeAnchor.transform, _predictionHit);
 
         _handRotation.SetTarget(_swingPoint);
-        //cheeseBitsParticle.Play(); // Should be along with the factory logic
+        _swingParticles.Play(); // Should be along with the factory logic
     }
 
     /// <summary>
@@ -105,12 +107,12 @@ public class PlayerSwing
         {
             ExtendRope();
         }
-        else if (_player.MoveInput.y > 0)
+        else
         {
-            ShortenRope();
+            MoveForward();
         }
     }
-    
+
     private void MoveSideways()
     {
         Vector3 moveDirection = _orientation.transform.right * _player.MoveInput.x * _data.HorizontalThrustForce;
@@ -125,8 +127,14 @@ public class PlayerSwing
         _joint.minDistance = extendedDistanceFromPoint * 0.2f;
     }
 
+    private void MoveForward()
+    {
+        Vector3 moveDirection = _orientation.transform.forward * _player.MoveInput.y * _data.HorizontalThrustForce;
+        _rb.AddForce(moveDirection.normalized);
+    }
+
     //To Do: change to when player presses Jump key
-    private void ShortenRope()
+    public void ShortenRope()
     {
         Vector3 directionToPoint = _swingPoint - _player.transform.position;
         _rb.AddForce(directionToPoint.normalized * _data.ForwardThrustForce * Time.deltaTime);
@@ -146,6 +154,9 @@ public class PlayerSwing
         {
             _predictionHit = _hitPredictionHandler.ShootRaycast(_data.MaxDistance, _data.HitLayer);
         }
-        _hitPredictionHandler.SetActive(false);
+        else
+        {
+            _hitPredictionHandler.SetActive(false);
+        }
     }
 }

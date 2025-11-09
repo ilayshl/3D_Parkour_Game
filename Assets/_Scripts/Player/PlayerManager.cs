@@ -123,11 +123,15 @@ public class PlayerManager : MonoBehaviour, IPlayerManager
 
     private IEnumerator CheckForSwingPoints()
     {
-        while(!_playerSwing.IsSwinging)
+        while (!_playerSwing.IsSwinging)
         {
-            Debug.Log("CheckForSwingpoints!");
             _playerSwing.CheckForSwingPoints();
             yield return null;
         }
+    }
+    
+    public void ShortenRope()
+    {
+        _playerSwing.ShortenRope();
     }
 }
