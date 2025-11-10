@@ -24,4 +24,9 @@ public class PlayerDashState : PlayerState
     {
         throw new System.NotImplementedException();
     }
+
+    private void HandleDash()
+    {
+        
+    }
 }

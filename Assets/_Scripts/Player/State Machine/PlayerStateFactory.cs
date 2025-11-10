@@ -9,6 +9,12 @@ public class PlayerStateFactory
         _player = player;
     }
 
+    /* Trying out Generics for this- can't figure out a solution though. I need to make a type param return a new instance of the type...
+    public T GetState<T>() where T: PlayerState
+    {
+        return new T(_context, _player, this);
+    } */
+
     public PlayerState Walk()
     {
         return new PlayerWalkState(_context, _player, this);

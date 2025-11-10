@@ -13,6 +13,7 @@ public class PlayerSwingState : PlayerState
 
     public override void Update()
     {
+        //End condition
         if (!_player.InputReader.IsSwinging)
         {
             EndState();

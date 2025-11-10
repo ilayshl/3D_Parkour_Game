@@ -1,5 +1,4 @@
 using System.Collections;
-using Unity.VisualScripting;
 using UnityEngine;
 
 //The brain of the player. FACADE TO ALL PLAYER BEHAVIOUR SCRIPTS
@@ -11,7 +10,6 @@ public class PlayerManager : MonoBehaviour, IPlayerManager
     public Vector2 LookInput { get; private set; }
     public Rigidbody Rigidbody { get; private set; }
     public Vector3 CurrentVelocity { get; private set; }
-    public RopeHandler RopeHandler => ropeHandler;
     public PlayerCamera LookCamera => lookCamera;
     public bool IsGrounded => _groundSensor.CheckForGround();
     [SerializeField] private PlayerSwingData swingData;
@@ -19,7 +17,6 @@ public class PlayerManager : MonoBehaviour, IPlayerManager
     [SerializeField] private LayerMask groundLayer;
     [SerializeField] private PlayerMovementOrientation movementOrientation;
     [SerializeField] private PlayerCamera lookCamera;
-    [SerializeField] private RopeHandler ropeHandler; //To remove from here in the future and move it to PlayerSwingData.
     private StateMachine _stateMachine;
     private PlayerSwing _playerSwing;
     private PlayerMovement _playerMovement;
@@ -37,7 +34,6 @@ public class PlayerManager : MonoBehaviour, IPlayerManager
     private void Start()
     {
         _stateMachine.Start();
-        StartCoroutine(nameof(CheckForSwingPoints));
     }
 
     private void Update()
@@ -77,7 +73,7 @@ public class PlayerManager : MonoBehaviour, IPlayerManager
     private void InitializeAnyTransitionStates()
     {
         _stateMachine.AddAnyTransition(new StatePredicate(_factory.Swing(), () => InputReader.IsSwinging && _playerSwing.IsReady));
-        //_stateMachine.AddAnyTransition(new StatePredicate(_factory.Dash(), () => InputReader.IsDashing));
+        _stateMachine.AddAnyTransition(new StatePredicate(_factory.Dash(), () => InputReader.IsUsingAbility));
     }
 
     private void GetInput()
@@ -86,50 +82,5 @@ public class PlayerManager : MonoBehaviour, IPlayerManager
         LookInput = InputReader.LookInput;
     }
 
-    public void SetMovementData(PlayerMovementData data)
-    {
-        _playerMovement.SetMovementData(data);
-    }
-
-    public void HandleMove()
-    {
-        _playerMovement.Move(MoveInput);
-        _playerMovement.LimitSpeed();
-    }
-
-    public void HandleSwingStart()
-    {
-        _playerSwing.CheckSwing();
-    }
-
-    public void HandleSwingMove()
-    {
-        _playerSwing.SwingMove(MoveInput);
-    }
-
-    public void HandleSwingStop()
-    {
-        _playerSwing.StopSwing();
-        StartCoroutine(nameof(CheckForSwingPoints));
-    }
     
-    public void HandleJump()
-    {
-        _playerMovement.Jump();
-    }
-
-    private IEnumerator CheckForSwingPoints()
-    {
-        while (!_playerSwing.IsSwinging)
-        {
-            _playerSwing.CheckForSwingPoints();
-            yield return null;
-        }
-    }
-    
-    public void ShortenRope()
-    {
-        Debug.Log("[PlayerManager] Shortening Rope!");
-        _playerSwing.ShortenRope();
-    }
 }

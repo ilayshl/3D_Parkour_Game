@@ -10,7 +10,7 @@ public class InputReader : Controls.IPlayerActions
     public event Action JumpEvent, ShootEvent, SwingEvent, AbilityEvent; //Button inputs
     public bool IsSwinging { get; private set; }
     public bool IsJumping { get; private set; }
-    public bool IsDashing { get; private set; }
+    public bool IsUsingAbility { get; private set; }
     public event Action SwingCancelEvent;
     private Controls controls;
 
@@ -77,6 +77,13 @@ public class InputReader : Controls.IPlayerActions
     public void OnAbility(InputAction.CallbackContext context)
     {
         if (context.started)
+        {
             AbilityEvent?.Invoke();
+            IsUsingAbility = true;
+        }
+        else if(context.canceled)
+        {
+            IsUsingAbility = false;
+        }
     }
 }
