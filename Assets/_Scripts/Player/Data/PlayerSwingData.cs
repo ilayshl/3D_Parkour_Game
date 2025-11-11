@@ -1,5 +1,8 @@
 using UnityEngine;
 
+/// <summary>
+/// Holds data for swinging, because I intend on giving it stats that can change with each character selected.
+/// </summary>
 [CreateAssetMenu(fileName = "New Swing Data", menuName = "Cheese Pull/Swing Data")]
 public class PlayerSwingData : ScriptableObject
 {
@@ -26,11 +29,4 @@ public class PlayerSwingData : ScriptableObject
     [Header("References")]
     [SerializeField] private RopeHandler ropeHandler;
     public RopeHandler RopeHandler => ropeHandler;
-    /* [SerializeField] private HitPredictionHandler hitPredictionHandler;
-    [SerializeField] private SwingingHandRotation handRotation;
-    [SerializeField] private ParticleSystem cheeseBitsParticle;
-    public HitPredictionHandler HitPredictionHandler => hitPredictionHandler;
-    public SwingingHandRotation HandRotation => handRotation;
-    public ParticleSystem CheeseBitsParticle => cheeseBitsParticle; */
-
 }

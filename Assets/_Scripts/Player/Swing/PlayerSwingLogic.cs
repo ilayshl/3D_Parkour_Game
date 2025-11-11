@@ -1,7 +1,15 @@
 using UnityEngine;
 
-public class PlayerSwing
+/// <summary>
+/// Holds the logic for the swinging acion, required PlayerSwingData SO.
+/// </summary>
+public class PlayerSwingLogic
 {
+    //Public variables
+    public bool IsSwinging => _swingPoint != Vector3.zero;
+    public bool CanSwing => _predictionHit.point != Vector3.zero;
+
+    //References
     private PlayerSwingData _data;
     private Rigidbody _rb;
     private HitPredictionHandler _hitPredictionHandler;
@@ -10,14 +18,13 @@ public class PlayerSwing
     private ParticleSystem _swingParticles;
     private RopeAnchor _ropeAnchor;
 
-    public bool IsSwinging => _swingPoint != Vector3.zero; //Is actually swinging now?
-    public bool IsReady => _predictionHit.point != Vector3.zero; //Is ready to swing?
+    //Logic variables
     private Vector3 _swingPoint; //When swinging, this is the active point hit.
     private SpringJoint _joint; //The joint component connected to the player.
-    private RaycastHit _predictionHit; //The desired location of the hit prediction object.
+    private RaycastHit _predictionHit { get => _hitPredictionHandler.PredictionHit; } //The desired location of the hit prediction object.
     private RopeHandler _activeRope; //The active rope visuals, after it was instantiated.
 
-    public PlayerSwing(PlayerSwingData data, Rigidbody rb)
+    public PlayerSwingLogic(PlayerSwingData data, Rigidbody rb)
     {
         _data = data;
         _rb = rb;
@@ -26,7 +33,12 @@ public class PlayerSwing
         _handRotation = _rb.transform.parent.GetComponentInChildren<SwingingHandRotation>();
         _swingParticles = _handRotation.GetComponentInChildren<ParticleSystem>();
         _ropeAnchor = _handRotation.GetComponentInChildren<RopeAnchor>();
-        _hitPredictionHandler.gameObject.SetActive(true);
+        InitializeHitPrediction();
+    }
+
+    private void InitializeHitPrediction()
+    {
+        _hitPredictionHandler.Initiaize(_data.MaxDistance, _data.HitLayer);
     }
 
     /// <summary>
@@ -35,21 +47,21 @@ public class PlayerSwing
     /// <returns></returns>
     public bool CheckSwing()
     {
-        if (IsReady)
+        if (CanSwing && !IsSwinging)
         {
             InitializeSwing();
             return true;
         }
-
         return false;
     }
 
     /// <summary>
-    /// 
+    /// Pre-swing calculations and letting all relevant classes know the swing has begun.
     /// </summary>
     private void InitializeSwing() //To do: insert factory and object pooling logic! CAN NOT USE INSTANTIATE HERE
     {
         _swingPoint = _predictionHit.point;
+        _hitPredictionHandler.SetActive(false);
 
         InitializeSpringJoint();
         _activeRope = MonoBehaviour.Instantiate(_data.RopeHandler, _rb.transform.position, Quaternion.identity);
@@ -60,7 +72,7 @@ public class PlayerSwing
     }
 
     /// <summary>
-    /// Relevant data for spring joint component.
+    /// Relevant data for spring joint component. Hardcoded because it never changes.
     /// </summary>
     private void InitializeSpringJoint()
     {
@@ -106,7 +118,7 @@ public class PlayerSwing
             ExtendRope();
         }
         //If W is pressed, just regularly move forward
-        else if(moveInput.y > 0)
+        else if (moveInput.y > 0)
         {
             MoveForward(moveInput.y);
         }
@@ -118,7 +130,7 @@ public class PlayerSwing
         _rb.AddForce(moveDirection.normalized * _data.MoveSpeed);
     }
 
-    //When player presses go back key
+    //When player presses go back key (S)
     private void ExtendRope()
     {
         float extendedDistanceFromPoint = Vector3.Distance(_rb.transform.position, _swingPoint) + _data.ExtendRopeSpeed;
@@ -132,7 +144,9 @@ public class PlayerSwing
         _rb.AddForce(moveDirection.normalized * _data.MoveSpeed);
     }
 
-    //To Do: change to when player presses Jump key
+    /// <summary>
+    /// Apply force towards the point of swing.
+    /// </summary>
     public void ShortenRope()
     {
         Vector3 directionToPoint = _swingPoint - _rb.transform.position;
@@ -142,20 +156,5 @@ public class PlayerSwing
 
         _joint.maxDistance = distanceFromPoint * 0.8f;
         _joint.minDistance = distanceFromPoint * 0.25f;
-    }
-
-    /// <summary>
-    /// Shoots a ray and a sphere cast to measure if Grappable is in the player's aim.
-    /// </summary>
-    public void CheckForSwingPoints()
-    {
-        if (_swingPoint == Vector3.zero)
-        {
-            _predictionHit = _hitPredictionHandler.ShootRaycast(_data.MaxDistance, _data.HitLayer);
-        }
-        else
-        {
-            _hitPredictionHandler.SetActive(false);
-        }
     }
 }

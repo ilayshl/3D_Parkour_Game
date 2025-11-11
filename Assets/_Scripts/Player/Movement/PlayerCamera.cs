@@ -1,11 +1,14 @@
 using UnityEngine;
 
+/// <summary>
+/// Responsible for rotating the camera on mouse delta movement.
+/// </summary>
 public class PlayerCamera : MonoBehaviour
 {
     [Range(1f, 50f)] public float sensitivityX, sensitivityY = 15f;
 
-    [SerializeField] private CameraAnchor playerCameraAnchor;
-    [SerializeField] private PlayerMovementOrientation playerOrientation;
+    [SerializeField] private CameraAnchor playerCameraAnchor; //The object on which the camera stays.
+    [SerializeField] private PlayerMovementOrientation playerOrientation; //The object that rotates X-Z to direct the movement of the player.
 
     private float _xRotation;
     private float _yRotation;

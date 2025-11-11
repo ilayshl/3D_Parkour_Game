@@ -1,14 +1,17 @@
 using UnityEngine;
 
+/// <summary>
+/// An abstract state that all states inherit from.
+/// </summary>
 public abstract class PlayerState
 {
     protected readonly StateMachine _context;
-    protected readonly PlayerManager _player;
+    protected readonly PlayerControllerFacade _player;
     protected readonly PlayerStateFactory _factory;
     protected readonly Rigidbody _rb;
     protected PlayerMovementData _moveData;
 
-    public PlayerState(StateMachine currentContext, PlayerManager player, PlayerStateFactory factory)
+    public PlayerState(StateMachine currentContext, PlayerControllerFacade player, PlayerStateFactory factory)
     {
         _context = currentContext;
         _player = player;
