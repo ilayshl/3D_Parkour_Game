@@ -1,6 +1,6 @@
 public class PlayerDashState : PlayerState
 {
-    public PlayerDashState(StateMachine currentContext, PlayerManager player, PlayerStateFactory factory) : base(currentContext, player, factory)
+    public PlayerDashState(StateMachine currentContext, PlayerMovementManager player, PlayerStateFactory factory) : base(currentContext, player, factory)
     {
             _moveData = new PlayerMovementData(0.1f, 1f, 1f);
     }

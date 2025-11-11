@@ -3,12 +3,12 @@ using UnityEngine;
 public abstract class PlayerState
 {
     protected readonly StateMachine _context;
-    protected readonly PlayerManager _player;
+    protected readonly PlayerMovementManager _player;
     protected readonly PlayerStateFactory _factory;
     protected readonly Rigidbody _rb;
     protected PlayerMovementData _moveData;
 
-    public PlayerState(StateMachine currentContext, PlayerManager player, PlayerStateFactory factory)
+    public PlayerState(StateMachine currentContext, PlayerMovementManager player, PlayerStateFactory factory)
     {
         _context = currentContext;
         _player = player;

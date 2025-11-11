@@ -1,6 +1,6 @@
 public class PlayerAirborneState : PlayerState
 {
-    public PlayerAirborneState(StateMachine currentContext, PlayerManager player, PlayerStateFactory factory) : base(currentContext, player, factory)
+    public PlayerAirborneState(StateMachine currentContext, PlayerMovementManager player, PlayerStateFactory factory) : base(currentContext, player, factory)
     {
         _moveData = new PlayerMovementData(0.2f, 0.1f, 4f);
     }
