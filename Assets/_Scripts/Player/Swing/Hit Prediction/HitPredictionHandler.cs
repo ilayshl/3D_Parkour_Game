@@ -7,6 +7,7 @@ using UnityEngine;
 public class HitPredictionHandler : MonoBehaviour
 {
     public RaycastHit PredictionHit { get; private set; }
+    [SerializeField] private bool isActiveOnStart = true;
     [SerializeField] private Camera playerCamera;
     [SerializeField] private HitPredictionIndicator predictionPrefab;
     [SerializeField] private float sphereRadius = 3f;
@@ -18,7 +19,7 @@ public class HitPredictionHandler : MonoBehaviour
     void Start()
     {
         _activeIndicator = Instantiate(predictionPrefab);
-        SetActive(true);
+        SetActive(isActiveAndEnabled);
     }
 
     public void Initiaize(float maxDistance, LayerMask hitLayer)
@@ -54,6 +55,7 @@ public class HitPredictionHandler : MonoBehaviour
 
     /// <summary>
     /// Decides the visibility of the active hit prediction indicator.
+    /// If active, the coroutine continues, if not, it immediately stops.
     /// </summary>
     /// <param name="value"></param>
     public void SetActive(bool value)

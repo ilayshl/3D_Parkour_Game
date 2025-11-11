@@ -1,5 +1,8 @@
 using UnityEngine;
 
+/// <summary>
+/// The object that is used as a hit prediction indicator.
+/// </summary>
 public class HitPredictionIndicator : MonoBehaviour
 {
     [SerializeField] float minScale = 0.07f;
@@ -9,6 +12,11 @@ public class HitPredictionIndicator : MonoBehaviour
         transform.position = hitPosition;
     }
 
+    /// <summary>
+    /// Grows larger when farther and smaller when closer.
+    /// </summary>
+    /// <param name="source"></param>
+    /// <param name="maxDistance"></param>
     public void CalculatePredictionPointSize(Vector3 source, float maxDistance)
     {
         float rangeFromPlayer = Vector3.Distance(transform.position, source) / maxDistance;

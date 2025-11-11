@@ -1,7 +1,7 @@
 using UnityEngine;
 
 /// <summary>
-/// Responsible for the RopeCutoff object.
+/// Responsible for the RopeCutoff object that spawns when the player stops swinging.
 /// </summary>
 public class RopeCutoff : MonoBehaviour
 {
@@ -40,6 +40,7 @@ public class RopeCutoff : MonoBehaviour
         _lr.positionCount = 2;
     }
 
+    //Don't mind the magic numbers it just works lol
     private void InitializeSpringJoint()
     {
         var joint = anchorEdge.GetComponent<SpringJoint>();

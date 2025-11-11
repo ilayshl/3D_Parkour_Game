@@ -16,7 +16,6 @@ public class Rope : MonoBehaviour
     private Vector3 _currentRopeEndPos;
     private LineRenderer _lr;
 
-
     void Awake()
     {
         _lr = GetComponent<LineRenderer>();

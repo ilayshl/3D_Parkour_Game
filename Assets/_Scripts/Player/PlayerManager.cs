@@ -1,6 +1,8 @@
 using UnityEngine;
 
-//The brain of the player. FACADE TO ALL PLAYER BEHAVIOUR SCRIPTS
+/// <summary>
+/// The brain of the player, acts as a single entry point starting script.
+/// </summary>
 public class PlayerManager : MonoBehaviour
 {
     public PlayerState CurrentState => _stateMachine.CurrentState;

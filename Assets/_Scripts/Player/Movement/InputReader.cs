@@ -73,7 +73,6 @@ public class InputReader : Controls.IPlayerActions
             SwingCancelEvent?.Invoke();
             IsSwinging = false;
         }
-            
     }
 
     public void OnAbility(InputAction.CallbackContext context)

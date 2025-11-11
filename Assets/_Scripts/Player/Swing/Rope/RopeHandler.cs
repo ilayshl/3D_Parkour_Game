@@ -1,6 +1,8 @@
 using UnityEngine;
 
-//Is held by the prefab of the entire rope, manages the logic of the rope.
+/// <summary>
+/// Is held by the prefab of the entire rope, manages the logic of the rope.
+/// </summary>
 public class RopeHandler : MonoBehaviour
 {
     [SerializeField] private Transform splashModel;
@@ -33,12 +35,6 @@ public class RopeHandler : MonoBehaviour
         Vector3 splashPosition = _activeRaycast.point;
         _activeSplashModel = Instantiate(splashModel, splashPosition, lookDirection, this.transform);
     }
-    
-    /* private Vector3 RandomizedRotation(Vector3 currentRotation)
-    {
-        float randomYRotation = Random.Range(-180, 180);
-        return new Vector3(currentRotation.x, randomYRotation, currentRotation.z);
-    } */
 
     private void InitializeRope()
     {
