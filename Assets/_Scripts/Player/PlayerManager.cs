@@ -1,46 +1,42 @@
-using System.Collections;
 using UnityEngine;
 
 //The brain of the player. FACADE TO ALL PLAYER BEHAVIOUR SCRIPTS
 public class PlayerManager : MonoBehaviour
 {
     public PlayerState CurrentState => _stateMachine.CurrentState;
-    private InputReader InputReader;
-    public Vector2 LookInput { get => InputReader.LookInput; }
+    public Vector2 LookInput { get => _input.LookInput; }
     public Vector3 CurrentVelocity { get => _rb.linearVelocity; }
     public PlayerCamera LookCamera => lookCamera;
-    public bool IsGrounded => _groundSensor.CheckForGround();
     [SerializeField] private PlayerSwingData swingData;
     [SerializeField] private IAbility equippedAbility;
     [SerializeField] private LayerMask groundLayer;
     [SerializeField] private PlayerMovementOrientation movementOrientation;
     [SerializeField] private PlayerCamera lookCamera;
+    private InputReader _input;
     private Rigidbody _rb;
     private StateMachine _stateMachine;
-    private PlayerMovementManager _movementManager;
-    private GroundSensor _groundSensor;
+    private PlayerControllerFacade _movementFacade;
     private PlayerStateFactory _factory;
 
     private void Awake()
     {
         _rb = GetComponent<Rigidbody>();
         InitializeInputs();
-        InitializeMovementManager();
-        InitializeMovementLogic();
+        InitializeMovementFacade();
+        InitializeStatesLogic();
         InitializeAnyTransitionStates();
     }
 
     private void Start()
     {
         _stateMachine.Start();
-        InitializeSwingPoint();
     }
 
     private void Update()
     {
         LookCamera.HandleCameraMovement(LookInput);
-        GetInput();
         _stateMachine.Update();
+        _movementFacade.Update();
     }
 
     private void FixedUpdate()
@@ -50,60 +46,32 @@ public class PlayerManager : MonoBehaviour
 
     void OnDestroy()
     {
-        InputReader.Disable();
-        _movementManager.SwingUpdateEvent -= HandleHitPrediction;
+        _input.Disable();
     }
 
-    private void InitializeMovementManager()
+    private void InitializeMovementFacade()
     {
-        _movementManager = new(_rb);
-        _movementManager.InitializeMovement(movementOrientation, _rb);
-        _movementManager.InitializeSwing(swingData, _rb);
-        _movementManager.InitializeAbility(equippedAbility);
-        _movementManager.SwingUpdateEvent += HandleHitPrediction;
+        _movementFacade = new(_rb, _input);
+        _movementFacade.InitializeMovement(movementOrientation, _rb, groundLayer);
+        _movementFacade.InitializeSwing(swingData, _rb);
+        _movementFacade.InitializeAbility(equippedAbility);
     }
 
-    private void InitializeMovementLogic()
+    private void InitializeStatesLogic()
     {
-        _stateMachine = new(this);
+        _stateMachine = new(_movementFacade);
         _factory = _stateMachine.Factory;
-        _groundSensor = new(transform, groundLayer);
     }
 
     private void InitializeInputs()
     {
-        InputReader = new();
-        InputReader.Initiate();
+        _input = new();
+        _input.Initiate();
     }
 
     private void InitializeAnyTransitionStates()
     {
-        _stateMachine.AddAnyTransition(new StatePredicate(_factory.Swing(), () => InputReader.IsSwinging && _playerSwing.IsReady));
-        _stateMachine.AddAnyTransition(new StatePredicate(_factory.Dash(), () => InputReader.IsUsingAbility));
+        _stateMachine.AddAnyTransition(_factory.Swing(), () => _input.IsSwinging && _movementFacade.CheckSwing());
+        _stateMachine.AddAnyTransition(_factory.Dash(), () => _input.IsUsingAbility);
     }
-
-    private void InitializeSwingPoint()
-    {
-        //StartCoroutine(nameof(CheckForSwingPoints));
-    }
-
-    private void GetInput()
-    {
-        _movementManager.MoveInput = InputReader.MovementInput;
-    }
-
-    private void HandleHitPrediction()
-    {
-        
-    }
-    
-    
-    /* private IEnumerator CheckForSwingPoints()
-    {
-        while (!_playerSwing.IsSwinging)
-        {
-            _playerSwing.CheckForSwingPoints();
-            yield return null;
-        }
-    } */
 }

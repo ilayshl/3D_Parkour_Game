@@ -1,26 +1,28 @@
-using System;
 using UnityEngine;
 
 /// <summary>
 /// Facade AND builder script that holds all PlayerMovement, PlayerSwing and PlayerAbility instanced scripts.
 /// </summary>
-public class PlayerMovementManager{
-    public event Action SwingUpdateEvent;
-    public Vector2 MoveInput;
+public class PlayerControllerFacade{
+    public Vector2 MoveInput { get => InputReader.MovementInput; }
+    public bool IsGrounded => _movement.CheckForGround();
+    public readonly InputReader InputReader;
     public Rigidbody Rigidbody { get; private set; }
-    private PlayerMovement _movement;
-    private PlayerSwing _swing;
-    private PlayerAbility _ability;
+    private PlayerMovementLogic _movement;
+    private PlayerSwingLogic _swing;
+    private PlayerAbilityFacade _ability;
 
-    public PlayerMovementManager(Rigidbody rb)
+    public PlayerControllerFacade(Rigidbody rb, InputReader input)
     {
         Rigidbody = rb;
+        InputReader = input;
     }
 
     #region Builder initialization
-    public void InitializeMovement(PlayerMovementOrientation orientation, Rigidbody rb)
+    public void InitializeMovement(PlayerMovementOrientation orientation, Rigidbody rb, LayerMask ground)
     {
         _movement = new(orientation, rb);
+        _movement.InitializeGroundSensor(ground);
     }
 
     public void InitializeSwing(PlayerSwingData data, Rigidbody rb)
@@ -42,7 +44,6 @@ public class PlayerMovementManager{
     public void Update()
     {
         _movement.LimitSpeed();
-        _swing.CheckForSwingPoints();
     }
 
     public void HandleMove()
@@ -50,10 +51,14 @@ public class PlayerMovementManager{
         _movement.Move(MoveInput);
     }
 
+    public bool CheckSwing()
+    {
+        return _swing.CheckSwing();
+    }
+    
     public void HandleSwingStart()
     {
         _swing.CheckSwing();
-        SwingUpdateEvent?.Invoke();
     }
 
     public void HandleSwingMove()
@@ -64,7 +69,6 @@ public class PlayerMovementManager{
     public void HandleSwingStop()
     {
         _swing.StopSwing();
-        SwingUpdateEvent?.Invoke();
     }
 
     public void HandleJump()

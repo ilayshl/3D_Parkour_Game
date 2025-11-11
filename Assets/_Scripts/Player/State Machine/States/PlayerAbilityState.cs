@@ -1,15 +1,18 @@
-public class PlayerDashState : PlayerState
+/// <summary>
+/// A temporary script that mimics a specific ability. This will be put on IAbility and PlayerAbilityFacade.
+/// </summary>
+public class PlayerAbilityState : PlayerState
 {
-    public PlayerDashState(StateMachine currentContext, PlayerMovementManager player, PlayerStateFactory factory) : base(currentContext, player, factory)
+    public PlayerAbilityState(StateMachine currentContext, PlayerControllerFacade player, PlayerStateFactory factory) : base(currentContext, player, factory)
     {
-            _moveData = new PlayerMovementData(0.1f, 1f, 1f);
+        _moveData = new PlayerMovementData(0.1f, 1f, 1f);
     }
 
     public override void OnEnter()
     {
         base.OnEnter();
     }
-    
+
     public override void Update()
     {
         //Check if finished- if so, EndState();
@@ -27,6 +30,6 @@ public class PlayerDashState : PlayerState
 
     private void HandleDash()
     {
-        
+
     }
 }

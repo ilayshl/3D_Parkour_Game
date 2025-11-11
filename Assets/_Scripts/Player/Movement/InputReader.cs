@@ -2,7 +2,9 @@ using System;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-//Reads input and translates it to values and events.
+/// <summary>
+/// Reads input and translates it to values and events.
+/// </summary>
 public class InputReader : Controls.IPlayerActions
 {
     public Vector2 MovementInput { get; private set; } //X, Y values

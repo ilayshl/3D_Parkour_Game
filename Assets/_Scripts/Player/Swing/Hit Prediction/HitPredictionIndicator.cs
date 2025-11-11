@@ -7,7 +7,6 @@ public class HitPredictionIndicator : MonoBehaviour
     public void SetPosition(Vector3 hitPosition)
     {
         transform.position = hitPosition;
-        gameObject.SetActive(hitPosition != Vector3.zero);
     }
 
     public void CalculatePredictionPointSize(Vector3 source, float maxDistance)

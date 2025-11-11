@@ -1,8 +1,9 @@
-using System;
-
+/// <summary>
+/// Redirects player's inputs to normal walk output. Changes when there's no ground below.
+/// </summary>
 public class PlayerWalkState : PlayerState
 {
-    public PlayerWalkState(StateMachine currentContext, PlayerManager player, PlayerStateFactory factory) : base(currentContext, player, factory)
+    public PlayerWalkState(StateMachine currentContext, PlayerControllerFacade player, PlayerStateFactory factory) : base(currentContext, player, factory)
     {
         _moveData = new PlayerMovementData(5f, 1f, 1f);
     }

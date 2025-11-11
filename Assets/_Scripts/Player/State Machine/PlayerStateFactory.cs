@@ -1,9 +1,12 @@
+/// <summary>
+/// A basic factory of PlayerState scripts. I need to make this an abstract factory to remove the specific states methods.
+/// </summary>
 public class PlayerStateFactory
 {
     private StateMachine _context;
-    private PlayerManager _player;
+    private PlayerControllerFacade _player;
 
-    public PlayerStateFactory(StateMachine currentContext, PlayerManager player)
+    public PlayerStateFactory(StateMachine currentContext, PlayerControllerFacade player)
     {
         _context = currentContext;
         _player = player;
@@ -27,7 +30,7 @@ public class PlayerStateFactory
 
     public PlayerState Dash()
     {
-        return new PlayerDashState(_context, _player, this);
+        return new PlayerAbilityState(_context, _player, this);
     }
 
     public PlayerState Swing()

@@ -1,6 +1,9 @@
+/// <summary>
+/// Redirects current inputs into swing movement.
+/// </summary>
 public class PlayerSwingState : PlayerState
 {
-    public PlayerSwingState(StateMachine currentContext, PlayerMovementManager player, PlayerStateFactory factory) : base(currentContext, player, factory)
+    public PlayerSwingState(StateMachine currentContext, PlayerControllerFacade player, PlayerStateFactory factory) : base(currentContext, player, factory)
     {
         _moveData = new PlayerMovementData(0.2f, 0.1f, 4f);
     }
@@ -19,7 +22,7 @@ public class PlayerSwingState : PlayerState
             EndState();
         }
 
-        if(_player.InputReader.IsJumping)
+        if (_player.InputReader.IsJumping)
         {
             ShortenRope();
         }

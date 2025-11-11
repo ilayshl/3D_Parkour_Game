@@ -1,12 +1,15 @@
 using UnityEngine;
 
+/// <summary>
+/// Follows the target object. Defaults to the player via the prefab.
+/// </summary>
 public class CameraFollow : MonoBehaviour
 {
-    [SerializeField] Transform playerObject;
+    [SerializeField] Transform target;
 
     void Update()
     {
-        transform.position = playerObject.position;
-        transform.rotation = playerObject.rotation;
+        transform.position = target.position;
+        transform.rotation = target.rotation;
     }
 }

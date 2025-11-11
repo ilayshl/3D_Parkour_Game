@@ -1,4 +1,6 @@
-
+/// <summary>
+///Relevant data for all player states' movement outputs.
+/// </summary>
 public struct PlayerMovementData
 {
     public float Damp;
