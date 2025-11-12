@@ -6,11 +6,11 @@ using UnityEngine;
 public class RopeHandler : MonoBehaviour
 {
     [SerializeField] private Transform splashModel;
-    [SerializeField] private Rope rope;
+    [SerializeField] private RopeView rope;
     [SerializeField] private RopeCutoff ropeCutoff;
     private RaycastHit _activeRaycast;
     private Transform _startPos;
-    private Rope _activeRope;
+    private RopeView _activeRope;
     private Transform _activeSplashModel;
 
     public void Initialize(Transform playerPos, RaycastHit ray)

@@ -4,7 +4,7 @@ using UnityEngine;
 /// <summary>
 /// Responsible for the visuals of the rope.
 /// </summary>
-public class Rope : MonoBehaviour
+public class RopeView : MonoBehaviour
 {
     private const float VISUAL_MIDPOINT = 0.3f;
     private const float ROPE_SHOOT_SPEED = 12f;

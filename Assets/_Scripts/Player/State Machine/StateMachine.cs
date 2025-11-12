@@ -38,6 +38,9 @@ public class StateMachine
         _currentState?.FixedUpdate();
     }
 
+    /// <summary>
+    /// Iterates through anyTransitions to find a condition that returns true.
+    /// </summary>
     private void CheckAnyTransitions()
     {
         if (anyTransitions.Count == 0) return;

@@ -5,6 +5,8 @@ using UnityEngine;
 /// </summary>
 public class PlayerSwingLogic
 {
+    private const int MOVE_SPEED = 10; //Need to find a way to share this const variable
+
     //Public variables
     public bool IsSwinging => _swingPoint != Vector3.zero;
     public bool CanSwing => _predictionHit.point != Vector3.zero;
@@ -127,7 +129,7 @@ public class PlayerSwingLogic
     private void MoveSideways(float horizontalInput)
     {
         Vector3 moveDirection = _orientation.transform.right * horizontalInput * _data.HorizontalThrustForce;
-        _rb.AddForce(moveDirection.normalized * _data.MoveSpeed);
+        _rb.AddForce(moveDirection.normalized * MOVE_SPEED);
     }
 
     //When player presses go back key (S)
@@ -141,7 +143,7 @@ public class PlayerSwingLogic
     private void MoveForward(float verticalInput)
     {
         Vector3 moveDirection = _orientation.transform.forward * verticalInput * _data.ForwardThrustForce;
-        _rb.AddForce(moveDirection.normalized * _data.MoveSpeed);
+        _rb.AddForce(moveDirection.normalized * MOVE_SPEED);
     }
 
     /// <summary>
@@ -154,7 +156,7 @@ public class PlayerSwingLogic
 
         float distanceFromPoint = Vector3.Distance(_rb.transform.position, _swingPoint);
 
-        _joint.maxDistance = distanceFromPoint * 0.8f;
+        _joint.maxDistance = distanceFromPoint * 0.85f;
         _joint.minDistance = distanceFromPoint * 0.25f;
     }
 }
