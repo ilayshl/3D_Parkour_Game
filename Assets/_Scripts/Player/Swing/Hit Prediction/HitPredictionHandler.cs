@@ -19,7 +19,7 @@ public class HitPredictionHandler : MonoBehaviour
     void Start()
     {
         _activeIndicator = Instantiate(predictionPrefab);
-        SetActive(isActiveAndEnabled);
+        SetActive(isActiveOnStart);
     }
 
     public void Initiaize(float maxDistance, LayerMask hitLayer)
