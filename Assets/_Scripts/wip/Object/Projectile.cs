@@ -17,4 +17,14 @@ public class Projectile : MonoBehaviour
         Rigidbody rb = GetComponent<Rigidbody>();
         rb.linearVelocity = transform.forward * shootForce;
     }
+
+    public void Deactivate()
+    {
+        gameObject.SetActive(false);
+    }
+
+    public void Activate()
+    {
+        gameObject.SetActive(true);
+    }
 }
