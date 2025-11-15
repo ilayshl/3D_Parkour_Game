@@ -14,6 +14,7 @@ public class Projectile : MonoBehaviour
 
     void Start()
     {
-        
+        Rigidbody rb = GetComponent<Rigidbody>();
+        rb.linearVelocity = transform.forward * shootForce;
     }
 }
