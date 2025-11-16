@@ -3,38 +3,28 @@ using DG.Tweening;
 using System.Collections;
 using System.Collections.Generic;
 
-public class LongGrater : MonoBehaviour, IWeapon
+public class LongGrater : Weapon
 {
-    private IWeaponHolder holder;
-    private bool _canShoot = true;
-    [SerializeField] private float animationTime = .25f;
-    //[SerializeField] int ammo = 10;
-    [SerializeField] Transform cheeseAmmo;
-    [SerializeField] Transform ammoStartPosition;
-    [SerializeField] Transform ammoEndPosition;
-    [SerializeField] Projectile bullet;
-    [SerializeField] Transform shootingPos;
-    [SerializeField] private int bulletsToShoot = 5;
-    bool shooting;
+    
     List<Projectile> bulletList = new();
 
     void Start()
     {
         // POOLING LOGIC- TO WORK ON 
-        for(int i = 0; i < 50; i++)
+        /* for(int i = 0; i < 50; i++)
         {
             bulletList.Add(Instantiate(bullet));
             bullet.Deactivate();
         }
-        Debug.Log(bulletList.Count);
+        Debug.Log(bulletList.Count); */
     }
 
-    public void Shoot()
+    public override void Shoot()
     {
     if(_canShoot)
         {
             _canShoot = !_canShoot;
-            shooting = true;
+            _shooting = true;
             StartCoroutine(nameof(ShootingProcess));
             cheeseAmmo.DOMove(ammoEndPosition.position, animationTime).OnComplete(ReturnAmmo);
         }
@@ -42,7 +32,7 @@ public class LongGrater : MonoBehaviour, IWeapon
 
     private void ReturnAmmo()
     {
-        shooting = false;
+        _shooting = false;
         cheeseAmmo.DOMove(ammoStartPosition.position, animationTime).OnComplete(() => _canShoot = true);
     }
 
@@ -50,15 +40,15 @@ public class LongGrater : MonoBehaviour, IWeapon
     {
         Debug.Log("Started coroutine");
         int bulletsShot = 0;
-        while(shooting == true)
+        while(_shooting == true)
         {
-            yield return new WaitForSeconds(animationTime / bulletsToShoot);
-            var cheeseBullet = Instantiate(bullet);
-            cheeseBullet.Initialize(this, shootingPos.position, cheeseAmmo.transform.rotation);
+            var cheeseBullet = Instantiate(projectileToShoot);
+            cheeseBullet.Initialize(this, shootingPos.position, cheeseAmmo.transform.rotation, shootForce);
+            cheeseBullet.gameObject.SetActive(true);
             bulletsShot++;
+            yield return new WaitForSeconds(animationTime / bulletsToShoot);
         }
                 Debug.Log($"Ended coroutine with {bulletsShot} bullets.");
     }
-        
-    }
+}
 

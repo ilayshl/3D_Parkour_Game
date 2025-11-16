@@ -64,7 +64,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: -3033667219593020291, guid: 97aba3e9dc73ba0418c3d306b6c2aff9, type: 3}
+  - {fileID: 2100000, guid: 88d9b020babd95e4abd80b5bfdd16b7c, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -190,7 +190,6 @@ GameObject:
   - component: {fileID: 6162697122732036185}
   - component: {fileID: 6097406008910981021}
   - component: {fileID: 5474709425830712073}
-  - component: {fileID: 5302018111769780097}
   m_Layer: 7
   m_Name: Cheese Ammo
   m_TagString: Untagged
@@ -245,7 +244,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 31321ba15b8f8eb4c954353edc038b1d, type: 2}
+  - {fileID: 2100000, guid: 3f995e3714d28eb40bd5405ebe779c9b, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -267,27 +266,6 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!65 &5302018111769780097
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7071093789769733534}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Size: {x: 1, y: 1, z: 1}
-  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &7440408082608666300
 GameObject:
   m_ObjectHideFlags: 0
@@ -315,8 +293,8 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0.07808066, y: 0.99429035, z: 0.07241483, w: -0.006798164}
   m_LocalPosition: {x: -1.02, y: 0.1, z: -8.4}
-  m_LocalScale: {x: 0.20376037, y: 0.20376031, z: 0.20376036}
-  m_ConstrainProportionsScale: 0
+  m_LocalScale: {x: 0.11999999, y: 0.11999999, z: 0.11999999}
+  m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 1158721565379785056}
   - {fileID: 1937952691683564724}
@@ -334,14 +312,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 527500a59c851824fb8387825f96a842, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  animationTime: 0.25
-  ammo: 10
   cheeseAmmo: {fileID: 6162697122732036185}
+  triggerType: 1
+  projectileToShoot: {fileID: 1728477603852042469, guid: a9e4c21b71f2bdd45a9175457f30e285, type: 3}
+  animationTime: 0.2
   ammoStartPosition: {fileID: 4846356289177546016}
   ammoEndPosition: {fileID: 6959557176930611262}
-  bullet: {fileID: 0}
   shootingPos: {fileID: 4038935921399811023}
   bulletsToShoot: 5
+  shootForce: 100
 --- !u!1 &7711081241697186318
 GameObject:
   m_ObjectHideFlags: 0

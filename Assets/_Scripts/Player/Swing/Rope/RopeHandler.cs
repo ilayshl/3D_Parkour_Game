@@ -68,7 +68,7 @@ public class RopeHandler : MonoBehaviour
             yield return null;
         }
         activeCutoff.Destroy(cutoffLifetime);
-        _activeSplashModel.transform.DOScale(Vector3.zero, .25f).OnComplete(() => gameObject.SetActive(false));
+        _activeSplashModel.transform.DOScale(Vector3.zero, .25f).OnComplete(() => Destroy(this.gameObject));
 
     }
 }

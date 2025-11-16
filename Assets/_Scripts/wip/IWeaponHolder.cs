@@ -1,4 +1,4 @@
 public interface IWeaponHolder
 {
-    public void LoadWeapon(IWeapon weapon);
+    public void LoadWeapon(Weapon weapon);
 }

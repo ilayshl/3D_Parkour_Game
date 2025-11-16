@@ -3,12 +3,12 @@ using UnityEngine;
 
 public class TestingFeatures : MonoBehaviour
 {
-    IWeapon weapon;
+    Weapon weapon;
     InputReader input = new();
 
     void Awake()
     {
-        weapon = GetComponentInChildren<IWeapon>();
+        weapon = GetComponentInChildren<Weapon>();
     }
     void OnEnable()
     {
