@@ -20,14 +20,13 @@ public class LongGrater : MonoBehaviour, IWeapon
 
     void Start()
     {
-        /* POOLING LOGIC- TO WORK ON 
-        int listSize = bulletList.Count;
-        for(int i = 50; listSize < i; i++)
+        // POOLING LOGIC- TO WORK ON 
+        for(int i = 0; i < 50; i++)
         {
             bulletList.Add(Instantiate(bullet));
             bullet.Deactivate();
-            listSize = bulletList.Count;
-        } */
+        }
+        Debug.Log(bulletList.Count);
     }
 
     public void Shoot()

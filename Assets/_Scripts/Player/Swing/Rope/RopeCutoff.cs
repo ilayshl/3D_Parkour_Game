@@ -1,3 +1,6 @@
+using System.Collections;
+using DG.Tweening;
+using Unity.VisualScripting;
 using UnityEngine;
 
 /// <summary>
@@ -5,7 +8,6 @@ using UnityEngine;
 /// </summary>
 public class RopeCutoff : MonoBehaviour
 {
-    [SerializeField] private float lifetime = 4;
     [SerializeField] private Transform anchorEdge, movingEdge;
     private LineRenderer _lr;
 
@@ -25,7 +27,6 @@ public class RopeCutoff : MonoBehaviour
         movingEdge.position = endPos;
         InitializeLineRenderer();
         InitializeSpringJoint();
-        Destroy(gameObject.transform.parent.gameObject, lifetime);
     }
 
     public void SetMomentum(Vector3 matchVelocity)
@@ -59,5 +60,11 @@ public class RopeCutoff : MonoBehaviour
     {
         _lr.SetPosition(0, anchorEdge.position);
         _lr.SetPosition(1, movingEdge.position);
+    }
+
+    public void Destroy(float time)
+    {
+        var rb = movingEdge.GetComponent<Rigidbody>();
+        rb.DOMove(anchorEdge.position, time / 2);
     }
 }

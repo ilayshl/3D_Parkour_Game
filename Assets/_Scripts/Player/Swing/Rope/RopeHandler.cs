@@ -1,10 +1,13 @@
+using System.Collections;
+using DG.Tweening;
 using UnityEngine;
 
 /// <summary>
 /// Is held by the prefab of the entire rope, manages the logic of the rope.
 /// </summary>
 public class RopeHandler : MonoBehaviour
-{
+{   
+    [SerializeField] private float cutoffLifetime = 4;
     [SerializeField] private Transform splashModel;
     [SerializeField] private RopeView rope;
     [SerializeField] private RopeCutoff ropeCutoff;
@@ -34,6 +37,7 @@ public class RopeHandler : MonoBehaviour
         Quaternion lookDirection = Quaternion.LookRotation(_activeRaycast.normal) * Quaternion.Euler(90, 0, 0); ;
         Vector3 splashPosition = _activeRaycast.point;
         _activeSplashModel = Instantiate(splashModel, splashPosition, lookDirection, this.transform);
+        _activeSplashModel.DOScale(Vector3.one, .1f).SetEase(Ease.OutBack);
     }
 
     private void InitializeRope()
@@ -51,5 +55,20 @@ public class RopeHandler : MonoBehaviour
         newCutoff.SetMomentum(playerMomentum);
 
         _activeRope.OnRopeComplete -= InitializeSplashModel;
+
+        StartCoroutine(Destroy(newCutoff));
+    }
+
+    private IEnumerator Destroy(RopeCutoff activeCutoff)
+    {
+        float timeElapsed = 0f;
+        while(timeElapsed < cutoffLifetime)
+        {
+            timeElapsed += Time.deltaTime;
+            yield return null;
+        }
+        activeCutoff.Destroy(cutoffLifetime);
+        _activeSplashModel.transform.DOScale(Vector3.zero, .25f).OnComplete(() => gameObject.SetActive(false));
+
     }
 }
