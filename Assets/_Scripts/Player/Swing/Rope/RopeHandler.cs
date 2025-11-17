@@ -16,7 +16,6 @@ public class RopeHandler : MonoBehaviour
 
     public void Initialize(Transform playerPos, RaycastHit ray)
     {
-        Debug.Log(ray.point);
         _activeRaycast = ray;
         _startPos = playerPos;
         InitializeRope();
@@ -25,7 +24,8 @@ public class RopeHandler : MonoBehaviour
     public void CutRope(Vector3 playerMomentum)
     {
         SpawnRopeCutoff(playerMomentum);
-        rope.DestroyRope();
+        rope.OnRopeComplete -= InitializeSplashModel;
+        rope.Disable();
     }
 
     private void InitializeRope()
@@ -45,16 +45,14 @@ public class RopeHandler : MonoBehaviour
         splashModel.DOScale(Vector3.one, .1f).SetEase(Ease.OutBack);
     }
 
-
     private void SpawnRopeCutoff(Vector3 playerMomentum)
     {
-        ropeCutoff.gameObject.SetActive(true);
         ropeCutoff.transform.position = _activeRaycast.point;
         Vector3 midway = Vector3.Lerp(_startPos.position, _activeRaycast.point, 0.3f);
+        ropeCutoff.gameObject.SetActive(true);
         ropeCutoff.Initialize(_activeRaycast.point, midway);
         ropeCutoff.SetMomentum(playerMomentum);
 
-        rope.OnRopeComplete -= InitializeSplashModel;
 
         StartCoroutine(Destroy());
     }

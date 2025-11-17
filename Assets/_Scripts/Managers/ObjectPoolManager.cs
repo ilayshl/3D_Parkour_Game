@@ -68,7 +68,7 @@ public class ObjectPoolManager : MonoBehaviour
 
     private static void OnGetObject(GameObject obj)
     {
-        
+        //Optional logic
     }
 
     private static void OnReleaseObject(GameObject obj)

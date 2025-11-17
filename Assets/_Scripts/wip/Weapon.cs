@@ -15,17 +15,6 @@ public abstract class Weapon : MonoBehaviour
     protected IWeaponHolder _holder;
     protected bool _canShoot = true;
     protected bool _shooting;
-    protected PoolHolder<Projectile> _pool;
-
-    void Start()
-    {
-      InitiatePool();
-    }
-
-    private void InitiatePool()
-    {
-        _pool = new PoolHolder<Projectile>(projectileToShoot, 50);
-    }
 
     public abstract void Shoot();
 }
