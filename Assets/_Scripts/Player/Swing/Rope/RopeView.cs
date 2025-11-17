@@ -29,8 +29,16 @@ public class RopeView : MonoBehaviour
         }
     }
 
+    void OnDisable()
+    {
+        _playerPos = null;
+        _wallPos = Vector3.zero;
+    }
+
     public void Initialize(Transform startPos, Vector3 endPos)
     {
+            gameObject.SetActive(true);
+            Debug.Log("Rope activated");
             _playerPos = startPos;
             _wallPos = endPos;
             _currentRopeEndPos = startPos.position;

@@ -22,6 +22,11 @@ public class PoolHolder<T> where T : MonoBehaviour
         pool = new();
     }
 
+    /* public T Get()
+    {
+        return pool.TryPeek(out T);
+    } */
+
     /* public T Create<T>(T subject, Vector3 position, Quaternion direction)
     {
         

@@ -65,6 +65,6 @@ public class RopeCutoff : MonoBehaviour
     public void Destroy(float time)
     {
         var rb = movingEdge.GetComponent<Rigidbody>();
-        rb.DOMove(anchorEdge.position, time / 2);
+        rb.DOMove(anchorEdge.position, time);
     }
 }

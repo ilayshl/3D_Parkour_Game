@@ -13,11 +13,10 @@ public class RopeHandler : MonoBehaviour
     [SerializeField] private RopeCutoff ropeCutoff;
     private RaycastHit _activeRaycast;
     private Transform _startPos;
-    private RopeView _activeRope;
-    private Transform _activeSplashModel;
 
     public void Initialize(Transform playerPos, RaycastHit ray)
     {
+        Debug.Log(ray.point);
         _activeRaycast = ray;
         _startPos = playerPos;
         InitializeRope();
@@ -25,50 +24,53 @@ public class RopeHandler : MonoBehaviour
 
     public void CutRope(Vector3 playerMomentum)
     {
-        if (_activeSplashModel != null)
-        {
         SpawnRopeCutoff(playerMomentum);
-        }
-        _activeRope.DestroyRope();
+        rope.DestroyRope();
+    }
+
+    private void InitializeRope()
+    {
+        rope.transform.position = _activeRaycast.point;
+        rope.Initialize(_startPos, _activeRaycast.point);
+        rope.OnRopeComplete += InitializeSplashModel;
     }
 
     private void InitializeSplashModel()
     {
         Quaternion lookDirection = Quaternion.LookRotation(_activeRaycast.normal) * Quaternion.Euler(90, 0, 0); ;
         Vector3 splashPosition = _activeRaycast.point;
-        _activeSplashModel = Instantiate(splashModel, splashPosition, lookDirection, this.transform);
-        _activeSplashModel.DOScale(Vector3.one, .1f).SetEase(Ease.OutBack);
+        splashModel.transform.position = splashPosition;
+        splashModel.transform.rotation = lookDirection;
+        splashModel.gameObject.SetActive(true);
+        splashModel.DOScale(Vector3.one, .1f).SetEase(Ease.OutBack);
     }
 
-    private void InitializeRope()
-    {
-        _activeRope = Instantiate(rope, _activeRaycast.point, Quaternion.identity, this.transform);
-        _activeRope.Initialize(_startPos, _activeRaycast.point);
-        _activeRope.OnRopeComplete += InitializeSplashModel;
-    }
 
     private void SpawnRopeCutoff(Vector3 playerMomentum)
     {
-        RopeCutoff newCutoff = Instantiate(ropeCutoff, _activeRaycast.point, Quaternion.identity, this.transform);
+        ropeCutoff.gameObject.SetActive(true);
+        ropeCutoff.transform.position = _activeRaycast.point;
         Vector3 midway = Vector3.Lerp(_startPos.position, _activeRaycast.point, 0.3f);
-        newCutoff.Initialize(_activeRaycast.point, midway);
-        newCutoff.SetMomentum(playerMomentum);
+        ropeCutoff.Initialize(_activeRaycast.point, midway);
+        ropeCutoff.SetMomentum(playerMomentum);
 
-        _activeRope.OnRopeComplete -= InitializeSplashModel;
+        rope.OnRopeComplete -= InitializeSplashModel;
 
-        StartCoroutine(Destroy(newCutoff));
+        StartCoroutine(Destroy());
     }
 
-    private IEnumerator Destroy(RopeCutoff activeCutoff)
+    private IEnumerator Destroy()
     {
-        float timeElapsed = 0f;
-        while(timeElapsed < cutoffLifetime)
-        {
-            timeElapsed += Time.deltaTime;
-            yield return null;
-        }
-        activeCutoff.Destroy(cutoffLifetime);
-        _activeSplashModel.transform.DOScale(Vector3.zero, .25f).OnComplete(() => Destroy(this.gameObject));
+        yield return new WaitForSeconds(cutoffLifetime);
+        ropeCutoff.Destroy(.25f);
+        splashModel.transform.DOScale(Vector3.zero, .25f).OnComplete(ReturnToPool);
 
+    }
+
+    private void ReturnToPool()
+    {
+        ropeCutoff.gameObject.SetActive(false);
+        splashModel.gameObject.SetActive(false);
+        ObjectPoolManager.ReturnObjectToPool(this.gameObject);
     }
 }
