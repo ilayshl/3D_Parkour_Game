@@ -10,7 +10,7 @@ public class HitPredictionHandler : MonoBehaviour
     [SerializeField] private bool isActiveOnStart = true;
     [SerializeField] private Camera playerCamera;
     [SerializeField] private HitPredictionIndicator predictionPrefab;
-    [SerializeField] private float sphereRadius = 3f;
+    [SerializeField] private float sphereRadius = 2f;
     private HitPredictionIndicator _activeIndicator;
     private Coroutine _activeCoroutine;
     private float _maxDistance;
@@ -19,7 +19,7 @@ public class HitPredictionHandler : MonoBehaviour
     void Start()
     {
         _activeIndicator = Instantiate(predictionPrefab);
-        SetActive(isActiveAndEnabled);
+        SetActive(isActiveOnStart);
     }
 
     public void Initiaize(float maxDistance, LayerMask hitLayer)

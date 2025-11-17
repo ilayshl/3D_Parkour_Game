@@ -5,6 +5,7 @@ using UnityEngine;
 /// </summary>
 public class PlayerSwingLogic
 {
+    [SerializeField] private Transform debugObject;
     private const int MOVE_SPEED = 10; //Need to find a way to share this const variable
 
     //Public variables
@@ -24,7 +25,7 @@ public class PlayerSwingLogic
     private Vector3 _swingPoint; //When swinging, this is the active point hit.
     private SpringJoint _joint; //The joint component connected to the player.
     private RaycastHit _predictionHit { get => _hitPredictionHandler.PredictionHit; } //The desired location of the hit prediction object.
-    private RopeHandler _activeRope; //The active rope visuals, after it was instantiated.
+    private RopeHandler _activeRope; //The active rope visuals, after it was pooled and activated.
 
     public PlayerSwingLogic(PlayerSwingData data, Rigidbody rb)
     {
@@ -66,11 +67,11 @@ public class PlayerSwingLogic
         _hitPredictionHandler.SetActive(false);
 
         InitializeSpringJoint();
-        _activeRope = MonoBehaviour.Instantiate(_data.RopeHandler, _rb.transform.position, Quaternion.identity);
-        _activeRope.Initialize(_ropeAnchor.transform, _predictionHit);
+        _activeRope = ObjectPoolManager.SpawnObject(_data.RopeHandler, _rb.transform.position, Quaternion.identity);
+        _activeRope.Initialize(_ropeAnchor.transform, _predictionHit);        
 
         _handRotation.SetTarget(_swingPoint);
-        _swingParticles.Play(); // Should be along with the factory logic
+        _swingParticles.Play();
     }
 
     /// <summary>
@@ -114,12 +115,12 @@ public class PlayerSwingLogic
     public void SwingMove(Vector2 moveInput)
     {
         MoveSideways(moveInput.x);
-        //Lengthening the joint
+
         if (moveInput.y < 0)
         {
             ExtendRope();
         }
-        //If W is pressed, just regularly move forward
+
         else if (moveInput.y > 0)
         {
             MoveForward(moveInput.y);

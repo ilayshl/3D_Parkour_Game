@@ -9,8 +9,8 @@ public class RopeView : MonoBehaviour
     private const float VISUAL_MIDPOINT = 0.3f;
     private const float ROPE_SHOOT_SPEED = 12f;
     public Action OnRopeComplete;
-    private bool _isActive = true;
-    private bool _isComplete = false;
+    private bool _isActive;
+    private bool _isComplete;
     private Transform _playerPos;
     private Vector3 _wallPos;
     private Vector3 _currentRopeEndPos;
@@ -29,10 +29,20 @@ public class RopeView : MonoBehaviour
         }
     }
 
-    public void Initialize(Transform startPos, Vector3 endPos)
+    void OnDisable()
     {
+        _playerPos = null;
+        _wallPos = Vector3.zero;
+    }
+
+    public void Initialize(Transform startPos)
+    {
+            gameObject.SetActive(true);
+            _isActive = true;
+            _isComplete = false;
+            Debug.Log("Rope activated");
             _playerPos = startPos;
-            _wallPos = endPos;
+            _wallPos = transform.position;
             _currentRopeEndPos = startPos.position;
             InitiateLineRenderer();
     }
@@ -42,7 +52,7 @@ public class RopeView : MonoBehaviour
         _lr.positionCount = 2;
     }
 
-    public void DestroyRope()
+    public void Disable()
     {
         _isActive = false;
     }

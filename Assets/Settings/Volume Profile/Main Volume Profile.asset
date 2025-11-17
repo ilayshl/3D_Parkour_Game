@@ -96,7 +96,7 @@ MonoBehaviour:
     m_Value: {x: 1, y: 0.98273164, z: 0.9717437, w: 0.035026267}
   highlights:
     m_OverrideState: 1
-    m_Value: {x: 0.8552309, y: 1, z: 0.7177462, w: 0.24518386}
+    m_Value: {x: 1, y: 0.96803844, z: 0.7633891, w: 0.24518386}
   shadowsStart:
     m_OverrideState: 0
     m_Value: 0
@@ -127,6 +127,7 @@ MonoBehaviour:
   - {fileID: 7391319092446245454}
   - {fileID: -3357603926938260329}
   - {fileID: -2535111773987550003}
+  - {fileID: 8030414271958353654}
 --- !u!114 &849379129802519247
 MonoBehaviour:
   m_ObjectHideFlags: 3
@@ -192,3 +193,31 @@ MonoBehaviour:
   clamp:
     m_OverrideState: 0
     m_Value: 0.05
+--- !u!114 &8030414271958353654
+MonoBehaviour:
+  m_ObjectHideFlags: 3
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 66f335fb1ffd8684294ad653bf1c7564, type: 3}
+  m_Name: ColorAdjustments
+  m_EditorClassIdentifier: 
+  active: 1
+  postExposure:
+    m_OverrideState: 0
+    m_Value: 0
+  contrast:
+    m_OverrideState: 1
+    m_Value: 20.8
+  colorFilter:
+    m_OverrideState: 0
+    m_Value: {r: 1, g: 1, b: 1, a: 1}
+  hueShift:
+    m_OverrideState: 0
+    m_Value: 0
+  saturation:
+    m_OverrideState: 0
+    m_Value: 0
