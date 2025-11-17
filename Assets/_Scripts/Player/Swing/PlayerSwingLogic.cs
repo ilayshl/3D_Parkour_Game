@@ -1,5 +1,4 @@
 using UnityEngine;
-using UnityEngine.Pool;
 
 /// <summary>
 /// Holds the logic for the swinging acion, required PlayerSwingData SO.

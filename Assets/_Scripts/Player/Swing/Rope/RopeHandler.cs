@@ -12,33 +12,35 @@ public class RopeHandler : MonoBehaviour
     [SerializeField] private RopeView rope;
     [SerializeField] private RopeCutoff ropeCutoff;
     private RaycastHit _activeRaycast;
+    private Vector3 _activePoint;
     private Transform _startPos;
 
     public void Initialize(Transform playerPos, RaycastHit ray)
     {
         _activeRaycast = ray;
+        _activePoint = _activeRaycast.point;
         _startPos = playerPos;
         InitializeRope();
     }
 
     public void CutRope(Vector3 playerMomentum)
     {
-        SpawnRopeCutoff(playerMomentum);
         rope.OnRopeComplete -= InitializeSplashModel;
         rope.Disable();
+        SpawnRopeCutoff(playerMomentum);
     }
 
     private void InitializeRope()
     {
-        rope.transform.position = _activeRaycast.point;
-        rope.Initialize(_startPos, _activeRaycast.point);
+        rope.transform.position = _activePoint;
+        rope.Initialize(_startPos);
         rope.OnRopeComplete += InitializeSplashModel;
     }
 
     private void InitializeSplashModel()
     {
         Quaternion lookDirection = Quaternion.LookRotation(_activeRaycast.normal) * Quaternion.Euler(90, 0, 0); ;
-        Vector3 splashPosition = _activeRaycast.point;
+        Vector3 splashPosition = _activePoint;
         splashModel.transform.position = splashPosition;
         splashModel.transform.rotation = lookDirection;
         splashModel.gameObject.SetActive(true);
@@ -47,14 +49,19 @@ public class RopeHandler : MonoBehaviour
 
     private void SpawnRopeCutoff(Vector3 playerMomentum)
     {
-        ropeCutoff.transform.position = _activeRaycast.point;
-        Vector3 midway = Vector3.Lerp(_startPos.position, _activeRaycast.point, 0.3f);
-        ropeCutoff.gameObject.SetActive(true);
-        ropeCutoff.Initialize(_activeRaycast.point, midway);
+        if(splashModel.gameObject.activeSelf)
+        {
+        ropeCutoff.transform.position = _activePoint;
+        Vector3 midway = Vector3.Lerp(_startPos.position, _activePoint, 0.3f);
+        ropeCutoff.Initialize(_activePoint, midway);
         ropeCutoff.SetMomentum(playerMomentum);
 
-
-        StartCoroutine(Destroy());
+        StartCoroutine(Destroy());            
+        }
+        else
+        {
+            ReturnToPool();
+        }
     }
 
     private IEnumerator Destroy()
@@ -67,7 +74,6 @@ public class RopeHandler : MonoBehaviour
 
     private void ReturnToPool()
     {
-        ropeCutoff.gameObject.SetActive(false);
         splashModel.gameObject.SetActive(false);
         ObjectPoolManager.ReturnObjectToPool(this.gameObject);
     }

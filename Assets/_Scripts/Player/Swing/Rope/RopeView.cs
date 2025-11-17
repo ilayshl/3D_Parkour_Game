@@ -35,14 +35,14 @@ public class RopeView : MonoBehaviour
         _wallPos = Vector3.zero;
     }
 
-    public void Initialize(Transform startPos, Vector3 endPos)
+    public void Initialize(Transform startPos)
     {
             gameObject.SetActive(true);
             _isActive = true;
             _isComplete = false;
             Debug.Log("Rope activated");
             _playerPos = startPos;
-            _wallPos = endPos;
+            _wallPos = transform.position;
             _currentRopeEndPos = startPos.position;
             InitiateLineRenderer();
     }

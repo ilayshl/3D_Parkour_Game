@@ -1,3 +1,4 @@
+using DG.Tweening;
 using UnityEngine;
 
 public class Projectile : MonoBehaviour
@@ -17,15 +18,20 @@ public class Projectile : MonoBehaviour
     {
         Rigidbody rb = GetComponent<Rigidbody>();
         rb.linearVelocity = transform.forward * _shootForce;
-    }
-
-    public void Deactivate()
-    {
-        gameObject.SetActive(false);
+        Invoke(nameof(Destroy), 5f);
     }
 
     public void Activate()
     {
         gameObject.SetActive(true);
+    }
+
+    private void Destroy()
+    {
+        transform.DOScale(Vector3.zero, .2f).SetEase(Ease.InElastic).OnComplete(ReturnToPool);
+    }
+    private void ReturnToPool()
+    {
+        ObjectPoolManager.ReturnObjectToPool(this.gameObject);
     }
 }
