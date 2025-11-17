@@ -1,24 +1,9 @@
 using UnityEngine;
 using DG.Tweening;
 using System.Collections;
-using System.Collections.Generic;
 
 public class LongGrater : Weapon
 {
-    
-    List<Projectile> bulletList = new();
-
-    void Start()
-    {
-        // POOLING LOGIC- TO WORK ON 
-        /* for(int i = 0; i < 50; i++)
-        {
-            bulletList.Add(Instantiate(bullet));
-            bullet.Deactivate();
-        }
-        Debug.Log(bulletList.Count); */
-    }
-
     public override void Shoot()
     {
     if(_canShoot)
@@ -28,6 +13,13 @@ public class LongGrater : Weapon
             StartCoroutine(nameof(ShootingProcess));
             cheeseAmmo.DOMove(ammoEndPosition.position, animationTime).OnComplete(ReturnAmmo);
         }
+    }
+
+    private Projectile CreateProjectile()
+    {
+        var projectileShot = ObjectPoolManager.SpawnObject(projectileToShoot, shootingPos.position, cheeseAmmo.rotation);
+        projectileShot.Initialize(this, shootForce);
+        return projectileShot;
     }
 
     private void ReturnAmmo()
@@ -42,9 +34,7 @@ public class LongGrater : Weapon
         int bulletsShot = 0;
         while(_shooting == true)
         {
-            var cheeseBullet = Instantiate(projectileToShoot);
-            cheeseBullet.Initialize(this, shootingPos.position, cheeseAmmo.transform.rotation, shootForce);
-            cheeseBullet.gameObject.SetActive(true);
+            CreateProjectile().gameObject.SetActive(true);
             bulletsShot++;
             yield return new WaitForSeconds(animationTime / bulletsToShoot);
         }

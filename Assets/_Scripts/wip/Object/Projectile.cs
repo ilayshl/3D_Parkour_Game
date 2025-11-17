@@ -6,11 +6,9 @@ public class Projectile : MonoBehaviour
     private float _shootForce;
     private Weapon _source;
 
-    public virtual void Initialize(Weapon source, Vector3 position, Quaternion direction, float shootForce)
+    public virtual void Initialize(Weapon source, float shootForce)
     {
         _source = source;
-        transform.position = position;
-        transform.rotation = direction;
         _shootForce = shootForce;
     }
 
