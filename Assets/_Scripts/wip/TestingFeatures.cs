@@ -28,7 +28,7 @@ public class TestingFeatures : MonoBehaviour
 
     private void ShootTesting()
     {
-            weapon.Shoot();
+            //weapon.Shoot();
     }
 
 }

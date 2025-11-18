@@ -11,6 +11,7 @@ public class PlayerControllerFacade{
     private PlayerMovementLogic _movement;
     private PlayerSwingLogic _swing;
     private PlayerAbilityFacade _ability;
+    private PlayerShootLogic _shoot;
 
     public PlayerControllerFacade(Rigidbody rb, InputReader input)
     {
@@ -33,6 +34,11 @@ public class PlayerControllerFacade{
     public void InitializeAbility(IAbility ability)
     {
         _ability = new(ability);
+    }
+
+    public void InitializeShooter(Weapon weapon, Transform cameraView)
+    {
+        _shoot = new(weapon, cameraView);
     }
     #endregion
 
@@ -79,5 +85,10 @@ public class PlayerControllerFacade{
     public void ShortenRope()
     {
         _swing.ShortenRope();
+    }
+
+    public void HandleShoot()
+    {
+        
     }
 }

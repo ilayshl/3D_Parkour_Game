@@ -1,22 +1,52 @@
+using UnityEditor;
 using UnityEngine;
 
 public abstract class Weapon : MonoBehaviour
 {
-    [SerializeField] protected Transform cheeseAmmo;
-    [SerializeField] protected TriggerType triggerType = TriggerType.Manual;
+    public Transform muzzle => shootingPos;
+    [Header("Projectile Prefab")]
     [SerializeField] protected Projectile projectileToShoot;
-    [SerializeField] protected float animationTime = .25f;
-    //[SerializeField] int ammo = 10;
-    [SerializeField] protected Transform ammoStartPosition;
-    [SerializeField] protected Transform ammoEndPosition;
-    [SerializeField] protected Transform shootingPos;
-    [SerializeField] protected int bulletsToShoot = 5;
+    [Header("Weapon settings")]
+    [SerializeField] protected TriggerType triggerType = TriggerType.Manual;
+    [SerializeField] protected int bulletsToShoot;
     [SerializeField] protected float shootForce;
-    protected IWeaponHolder _holder;
+    [SerializeField] protected float magazineSize;
+    [SerializeField] protected float spread;
+    //[SerializeField] int ammo = 10;
+    [Header("Animation anchors")]
+    [SerializeField] protected Transform cheeseMagazine;
+    [SerializeField] protected Transform magazineStartPosition;
+    [SerializeField] protected Transform magazineEndPosition;
+    [SerializeField] protected Transform shootingPos;
+    [SerializeField] protected float animationTime;
     protected bool _canShoot = true;
-    protected bool _shooting;
+    protected bool _isShooting = false;
+    protected ShootingHelper _shootHelper;
+    private float _ammoLeft;
+    private IWeaponHolder _holder;
 
-    public abstract void Shoot();
+
+    private void Awake()
+    {
+        _ammoLeft = magazineSize;
+    }
+
+    public void SetShootHelper(ShootingHelper helper)
+    {
+        _shootHelper = helper;
+    }
+
+    public void CheckForShoot()
+    {
+        if(_ammoLeft <= 0)
+        {
+            //No ammo logic - reload
+            return;
+        }
+        Shoot();
+    }
+
+    protected abstract void Shoot();
 }
 
 public enum TriggerType

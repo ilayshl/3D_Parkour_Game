@@ -86,7 +86,7 @@ public class PlayerSwingLogic
         float distanceFromPoint = Vector3.Distance(_rb.transform.position, _swingPoint);
 
         _joint.maxDistance = distanceFromPoint * 0.8f;
-        _joint.minDistance = distanceFromPoint * 0.1f;
+        _joint.minDistance = distanceFromPoint * 0.05f;
 
         _joint.spring = 4.5f;
         _joint.damper = 7f;
@@ -158,6 +158,6 @@ public class PlayerSwingLogic
         float distanceFromPoint = Vector3.Distance(_rb.transform.position, _swingPoint);
 
         _joint.maxDistance = distanceFromPoint * 0.85f;
-        _joint.minDistance = distanceFromPoint * 0.25f;
+        _joint.minDistance = distanceFromPoint * 0.1f;
     }
 }

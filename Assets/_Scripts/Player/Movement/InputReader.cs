@@ -57,7 +57,6 @@ public class InputReader : Controls.IPlayerActions
         if (context.started)
         {
             ShootEvent?.Invoke();
-            Debug.Log("Shoot Event");
         }
     }
 

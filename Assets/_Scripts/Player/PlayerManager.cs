@@ -5,10 +5,10 @@ using UnityEngine;
 /// </summary>
 public class PlayerManager : MonoBehaviour
 {
+    //For debug canvas
     public PlayerState CurrentState => _stateMachine.CurrentState;
-    public Vector2 LookInput { get => _input.LookInput; }
     public Vector3 CurrentVelocity { get => _rb.linearVelocity; }
-    public PlayerCamera LookCamera => lookCamera;
+    [SerializeField] private Weapon weapon;
     [SerializeField] private PlayerSwingData swingData;
     [SerializeField] private IAbility equippedAbility;
     [SerializeField] private LayerMask groundLayer;
@@ -16,9 +16,10 @@ public class PlayerManager : MonoBehaviour
     [SerializeField] private PlayerCamera lookCamera;
     private InputReader _input;
     private Rigidbody _rb;
+    private PlayerControllerFacade _controllerFacade;
     private StateMachine _stateMachine;
-    private PlayerControllerFacade _movementFacade;
     private PlayerStateFactory _factory;
+    private PlayerShootLogic _shoot;
 
     private void Awake()
     {
@@ -27,6 +28,7 @@ public class PlayerManager : MonoBehaviour
         InitializeMovementFacade();
         InitializeStatesLogic();
         InitializeAnyTransitionStates();
+        InitializeWeapon();
     }
 
     private void Start()
@@ -36,9 +38,9 @@ public class PlayerManager : MonoBehaviour
 
     private void Update()
     {
-        LookCamera.HandleCameraMovement(LookInput);
+        lookCamera.HandleCameraMovement(_input.LookInput);
         _stateMachine.Update();
-        _movementFacade.Update();
+        _controllerFacade.Update();
     }
 
     private void FixedUpdate()
@@ -53,15 +55,15 @@ public class PlayerManager : MonoBehaviour
 
     private void InitializeMovementFacade()
     {
-        _movementFacade = new(_rb, _input);
-        _movementFacade.InitializeMovement(movementOrientation, _rb, groundLayer);
-        _movementFacade.InitializeSwing(swingData, _rb);
-        _movementFacade.InitializeAbility(equippedAbility);
+        _controllerFacade = new(_rb, _input);
+        _controllerFacade.InitializeMovement(movementOrientation, _rb, groundLayer);
+        _controllerFacade.InitializeSwing(swingData, _rb);
+        _controllerFacade.InitializeAbility(equippedAbility);
     }
 
     private void InitializeStatesLogic()
     {
-        _stateMachine = new(_movementFacade);
+        _stateMachine = new(_controllerFacade);
         _factory = _stateMachine.Factory;
     }
 
@@ -73,7 +75,27 @@ public class PlayerManager : MonoBehaviour
 
     private void InitializeAnyTransitionStates()
     {
-        _stateMachine.AddAnyTransition(_factory.Swing(), () => _input.IsSwinging && _movementFacade.CheckSwing());
-        _stateMachine.AddAnyTransition(_factory.Dash(), () => _input.IsUsingAbility);
+        _stateMachine.AddAnyTransition(_factory.Swing(), () => _input.IsSwinging && _controllerFacade.CheckSwing());
+        //_stateMachine.AddAnyTransition(_factory.Dash(), () => _input.IsUsingAbility);
+    }
+
+    private void InitializeWeapon()
+    {
+        _shoot = new(weapon, lookCamera.transform);
+    }
+
+    void OnEnable()
+    {
+        _input.ShootEvent += CheckShootRemoveThisLater;
+    }
+
+    void OnDisable()
+    {
+        _input.ShootEvent -= CheckShootRemoveThisLater;
+    }
+
+    private void CheckShootRemoveThisLater()
+    {
+        _shoot.Shoot();
     }
 }

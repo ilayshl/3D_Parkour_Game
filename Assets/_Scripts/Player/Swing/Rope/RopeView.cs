@@ -40,7 +40,6 @@ public class RopeView : MonoBehaviour
             gameObject.SetActive(true);
             _isActive = true;
             _isComplete = false;
-            Debug.Log("Rope activated");
             _playerPos = startPos;
             _wallPos = transform.position;
             _currentRopeEndPos = startPos.position;

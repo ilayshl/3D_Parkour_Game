@@ -4,41 +4,41 @@ using System.Collections;
 
 public class LongGrater : Weapon
 {
-    public override void Shoot()
+    protected override void Shoot()
     {
-    if(_canShoot)
+        if (_canShoot)
         {
             _canShoot = !_canShoot;
-            _shooting = true;
+            _isShooting = true;
             StartCoroutine(nameof(ShootingProcess));
-            cheeseAmmo.DOMove(ammoEndPosition.position, animationTime).OnComplete(ReturnAmmo);
+            cheeseMagazine.DOLocalMove(magazineEndPosition.localPosition, animationTime).OnComplete(ReturnMagazine);
         }
     }
 
     private Projectile CreateProjectile()
     {
-        var projectileShot = ObjectPoolManager.SpawnObject(projectileToShoot, shootingPos.position, cheeseAmmo.rotation);
-        projectileShot.Initialize(this, shootForce);
+        Vector3 direction = _shootHelper.GetDirection(shootingPos);
+        var projectileShot = ObjectPoolManager.SpawnObject(projectileToShoot, shootingPos.position, cheeseMagazine.rotation);
+        projectileShot.Initialize(this, direction, shootForce);
         return projectileShot;
     }
 
-    private void ReturnAmmo()
+    private void ReturnMagazine()
     {
-        _shooting = false;
-        cheeseAmmo.DOMove(ammoStartPosition.position, animationTime).OnComplete(() => _canShoot = true);
+        _isShooting = false;
+        cheeseMagazine.DOLocalMove(magazineStartPosition.localPosition, animationTime).OnComplete(() => _canShoot = true);
     }
 
     private IEnumerator ShootingProcess()
     {
-        Debug.Log("Started coroutine");
         int bulletsShot = 0;
-        while(_shooting == true)
+        while (_isShooting == true)
         {
-            CreateProjectile().gameObject.SetActive(true);
+            CreateProjectile().Activate();
             bulletsShot++;
             yield return new WaitForSeconds(animationTime / bulletsToShoot);
         }
-                Debug.Log($"Ended coroutine with {bulletsShot} bullets.");
+        Debug.Log($"Ended coroutine with {bulletsShot} bullets.");
     }
 }
 
