@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 396432509839825170}
   - component: {fileID: 5893665494000394420}
   - component: {fileID: 791728012536906417}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Model
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -100,7 +100,7 @@ BoxCollider:
     m_Bits: 0
   m_ExcludeLayers:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 896
   m_LayerOverridePriority: 0
   m_IsTrigger: 0
   m_ProvidesContacts: 0
@@ -121,7 +121,7 @@ GameObject:
   - component: {fileID: 1728477603852042469}
   - component: {fileID: 8691231506247050682}
   - component: {fileID: 3638155038892155327}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Cheese Bullet
   m_TagString: Bullet
   m_Icon: {fileID: 0}
@@ -137,7 +137,7 @@ Transform:
   m_GameObject: {fileID: 8425402382344109488}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.82437634, y: 0.36111462, z: 0}
+  m_LocalPosition: {x: -0.82437634, y: 0.36111462, z: -0.314}
   m_LocalScale: {x: 0.18, y: 0.18, z: 0.18}
   m_ConstrainProportionsScale: 1
   m_Children:
@@ -163,7 +163,7 @@ Rigidbody:
     m_Bits: 1
   m_ExcludeLayers:
     serializedVersion: 2
-    m_Bits: 384
+    m_Bits: 896
   m_ImplicitCom: 1
   m_ImplicitTensor: 1
   m_UseGravity: 0
@@ -251,13 +251,22 @@ TrailRenderer:
       m_Curve:
       - serializedVersion: 3
         time: 0
-        value: 0.07546668
-        inSlope: 0.258401
-        outSlope: 0.258401
+        value: 0
+        inSlope: 0
+        outSlope: 0
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 0
+        outWeight: 0
+      - serializedVersion: 3
+        time: 0.15362899
+        value: 0.031442385
+        inSlope: 0.15530433
+        outSlope: 0.15530433
         tangentMode: 0
         weightedMode: 0
         inWeight: 0.33333334
-        outWeight: 0.19122188
+        outWeight: 0.21804273
       - serializedVersion: 3
         time: 0.8519717
         value: 0

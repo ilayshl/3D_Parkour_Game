@@ -17,9 +17,6 @@
         },
         {
             "m_Id": "edbaf24b157dd283b1a834834fb100b2"
-        },
-        {
-            "m_Id": "2f5b665c184a44489eee4c355656fb58"
         }
     ],
     "m_Keywords": [],
@@ -1731,7 +1728,7 @@
 }
 
 {
-    "m_SGVersion": 2,
+    "m_SGVersion": 3,
     "m_Type": "UnityEditor.ShaderGraph.Internal.ColorShaderProperty",
     "m_ObjectId": "0beaa34e967a7a8696c29c23f5bac5fe",
     "m_Guid": {
@@ -1751,9 +1748,9 @@
     "hlslDeclarationOverride": 0,
     "m_Hidden": false,
     "m_Value": {
-        "r": 0.0,
-        "g": 0.0,
-        "b": 0.0,
+        "r": 0.21698111295700074,
+        "g": 0.06652723252773285,
+        "b": 0.06652723252773285,
         "a": 0.0
     },
     "isMainColor": false,
@@ -2842,37 +2839,6 @@
         "z": 0.0,
         "w": 0.0
     }
-}
-
-{
-    "m_SGVersion": 0,
-    "m_Type": "UnityEditor.ShaderGraph.Internal.Texture2DShaderProperty",
-    "m_ObjectId": "2f5b665c184a44489eee4c355656fb58",
-    "m_Guid": {
-        "m_GuidSerialized": "21e5a7a1-4165-4580-bb62-988824cf5247"
-    },
-    "m_Name": "_mainTex",
-    "m_DefaultRefNameVersion": 1,
-    "m_RefNameGeneratedByDisplayName": "_mainTex",
-    "m_DefaultReferenceName": "_mainTex",
-    "m_OverrideReferenceName": "",
-    "m_GeneratePropertyBlock": true,
-    "m_UseCustomSlotLabel": false,
-    "m_CustomSlotLabel": "",
-    "m_DismissedVersion": 0,
-    "m_Precision": 0,
-    "overrideHLSLDeclaration": false,
-    "hlslDeclarationOverride": 0,
-    "m_Hidden": false,
-    "m_Value": {
-        "m_SerializedTexture": "",
-        "m_Guid": ""
-    },
-    "isMainTexture": false,
-    "useTilingAndOffset": false,
-    "useTexelSize": true,
-    "m_Modifiable": true,
-    "m_DefaultType": 0
 }
 
 {
@@ -4664,9 +4630,6 @@
         },
         {
             "m_Id": "edbaf24b157dd283b1a834834fb100b2"
-        },
-        {
-            "m_Id": "2f5b665c184a44489eee4c355656fb58"
         }
     ]
 }

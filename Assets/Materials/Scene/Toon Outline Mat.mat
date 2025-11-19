@@ -62,10 +62,11 @@ Material:
     - Vector1_533C9C05: 0.5
     - Vector1_911421B8: 0.6
     - Vector1_A7207CA3: 1
-    - _CellShading: 253
+    - _CellShading: 251
     - _QueueControl: 0
     - _QueueOffset: 0
     m_Colors:
     - Color_5DF75355: {r: 0.13207549, g: 0.12750374, b: 0.09531863, a: 0}
+    - _Color: {r: 0.43396226, g: 0.43396226, b: 0.43396226, a: 1}
   m_BuildTextureStacks: []
   m_AllowLocking: 1
