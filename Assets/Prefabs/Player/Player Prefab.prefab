@@ -125,6 +125,10 @@ PrefabInstance:
       propertyPath: m_LocalPosition.x
       value: -0.1
       objectReference: {fileID: 0}
+    - target: {fileID: 6943924742780146792, guid: e17d54d4ad216bf4abbc777c3f89b6f4, type: 3}
+      propertyPath: m_CullingMask.m_Bits
+      value: 895
+      objectReference: {fileID: 0}
     - target: {fileID: 7106835602194012077, guid: e17d54d4ad216bf4abbc777c3f89b6f4, type: 3}
       propertyPath: m_TagString
       value: Player
@@ -141,6 +145,18 @@ PrefabInstance:
       propertyPath: playerObject
       value: 
       objectReference: {fileID: 9209118464014246374}
+    - target: {fileID: 7649872289868095896, guid: e17d54d4ad216bf4abbc777c3f89b6f4, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0.115
+      objectReference: {fileID: 0}
+    - target: {fileID: 7649872289868095896, guid: e17d54d4ad216bf4abbc777c3f89b6f4, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -0.552
+      objectReference: {fileID: 0}
+    - target: {fileID: 7649872289868095896, guid: e17d54d4ad216bf4abbc777c3f89b6f4, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0.124
+      objectReference: {fileID: 0}
     - target: {fileID: 8674091526015877655, guid: e17d54d4ad216bf4abbc777c3f89b6f4, type: 3}
       propertyPath: m_IsActive
       value: 0
