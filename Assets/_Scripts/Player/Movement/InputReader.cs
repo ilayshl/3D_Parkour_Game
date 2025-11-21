@@ -86,4 +86,17 @@ public class InputReader : Controls.IPlayerActions
             IsUsingAbility = false;
         }
     }
+
+    public void OnFastLook(InputAction.CallbackContext context)
+    {
+        
+    }
+
+    public void OnExit(InputAction.CallbackContext context)
+    {
+        if(context.started)
+        {
+        Application.Quit();
+        }
+    }
 }
